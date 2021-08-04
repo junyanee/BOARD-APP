@@ -1,0 +1,37 @@
+spring:
+  profiles:
+    active:
+    - dev
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB    
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+  freemarker:
+    check-template-location: false
+  
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
+
+--- #dev
+server:
+  port: 8080
+spring:
+  profiles: dev
+  datasource:
+    name: a
+    url: jdbc:sqlserver://syc-app2:1433;databaseName=Board_DEV
+    username: syc-app2_admin
+    password: "$1Samyang#"
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+logging:
+  level:
+    org.springframework: DEBUG
+    org.springframework.web: DEBUG
