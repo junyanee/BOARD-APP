@@ -19,6 +19,17 @@ mybatis:
     map-underscore-to-camel-case: true
     call-setters-on-nulls: true
 
+login:
+  ldap:
+    host: 130.1.22.30
+    dn: DC=sy,DC=com
+    domain: sy.com
+  sso:
+    dbip: syc-app02.sy.com
+    dbid: LoginInfo
+    dbpw: "!1samyang"
+    dbname: GetSYUserInfo
+    dbdriver: com.microsoft.sqlserver.jdbc.SQLServerDriver
 --- #dev
 server:
   port: 8080

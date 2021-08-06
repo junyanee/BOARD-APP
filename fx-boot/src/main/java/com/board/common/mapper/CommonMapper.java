@@ -1,4 +1,4 @@
-package com.board.mapper;
+package com.board.common.mapper;
 
 import java.util.List;
 

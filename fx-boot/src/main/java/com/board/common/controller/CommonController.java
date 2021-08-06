@@ -1,6 +1,7 @@
-package com.board.controller;
+package com.board.common.controller;
 
 import java.util.List;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.board.common.model.ParameterWrapper;
+import com.board.common.service.CommonService;
 import com.board.model.ItemMaster;
-import com.board.service.CommonService;
 
 @RestController
 @RequestMapping(value="/Common")

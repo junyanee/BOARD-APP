@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.board.aop.annotation.LoginCheck;
 import com.board.common.model.ParameterWrapper;
 import com.board.model.testMaster;
 import com.board.service.InfoService;
-
 
 @RestController
 @RequestMapping(value="/Info")
@@ -34,7 +34,7 @@ public class InfoController {
 		mv.setViewName("info/home");
 		return mv;
 	}
-
+	@LoginCheck
 	@RequestMapping(value = "/getDataListJson.do")
 	public List<testMaster> getDataListJson(HttpServletRequest request, @RequestBody ParameterWrapper<testMaster> param) throws Exception {
 		logger.debug(param.param.getTestA());
