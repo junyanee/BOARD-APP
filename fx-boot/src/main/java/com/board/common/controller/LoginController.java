@@ -23,6 +23,7 @@ public class LoginController {
 	@RequestMapping(value = "/Login.do")
 	public ModelAndView Login(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
+		// HTTPSession 존재하면 세션 반환, 없으면 세션 생성
 		HttpSession session = request.getSession(true);
 		String userId = "";
 		if(session.getAttribute("userId") != null) {
@@ -34,7 +35,8 @@ public class LoginController {
 				mv.setViewName("login/ssoLogin");
 				mv.addObject("ticket", ticket);
 				session.setAttribute("ticket", ticket);
-				mv.addObject("url", "'home.do'");
+				// home으로 가지마!
+				// mv.addObject("url", "'home.do'");
 			}
 			else {
 				session.setAttribute("ticket", null);

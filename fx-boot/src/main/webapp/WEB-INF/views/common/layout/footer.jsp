@@ -4,12 +4,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>This is footer</title>
 <%@ include file="/resources/common/headerTag.jspf"%>
 </head>
 <body>
       <footer>
-        <p>© Company 2013</p>
+        <p> -- FOOTER -- </p>
       </footer>
 </body>
 </html>
