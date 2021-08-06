@@ -28,6 +28,7 @@ public class CommonController {
 	@RequestMapping(value = "/getItemCode.do")
 	public List<ItemMaster> getItemCode(HttpServletRequest request, @RequestBody ParameterWrapper<ItemMaster> param) throws Exception {
 		logger.debug("=============getItemCode Call =============");
+		logger.debug("=============getItemCode Call =============");
 		return service.getItemCode(param.param);
 	}
 }
