@@ -12,6 +12,6 @@
 <link rel="stylesheet" type="text/css" href="<c:url value="/resource/css/commoncss/loginForm.css?v=1" />"/>
 </head>
 <body>
-<p> This is Header Area</p>
+<p> This is Header Area.</p>
 </body>
 </html>
