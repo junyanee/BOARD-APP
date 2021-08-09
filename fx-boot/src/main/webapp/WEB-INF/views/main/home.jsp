@@ -49,10 +49,10 @@ $.fng_Ajax(ajaxOptions);
 </script>
 <div>
 <div class="container">
-
+<h1>Home</h1>
 
       <hr>
-
+<h3>home</h3>>
 
 
 

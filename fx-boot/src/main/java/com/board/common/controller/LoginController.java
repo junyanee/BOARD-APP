@@ -32,7 +32,8 @@ public class LoginController {
 		try {
 			if(userId.equals("")) {
 				ticket = service.ssoLegasy();
-				mv.setViewName("login/ssoLogin");
+				mv.setViewName("login/loginForm");
+				// mv.setViewName("login/ssoLogin");
 				mv.addObject("ticket", ticket);
 				session.setAttribute("ticket", ticket);
 				// home으로 가지마!
