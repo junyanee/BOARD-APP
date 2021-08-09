@@ -9,7 +9,6 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0" />
 <%@ include file="/resources/common/headerTag.jspf"%>
-<link rel="stylesheet" type="text/css" href="<c:url value="/resource/css/commoncss/loginForm.css?v=1" />"/>
 </head>
 <body>
 <p> This is Header Area.</p>
