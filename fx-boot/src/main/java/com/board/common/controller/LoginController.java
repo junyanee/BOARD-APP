@@ -32,12 +32,10 @@ public class LoginController {
 		try {
 			if(userId.equals("")) {
 				ticket = service.ssoLegasy();
-				mv.setViewName("login/loginForm");
-				// mv.setViewName("login/ssoLogin");
+				mv.setViewName("login/ssoLogin");
 				mv.addObject("ticket", ticket);
 				session.setAttribute("ticket", ticket);
-				// home으로 가지마!
-				// mv.addObject("url", "'home.do'");
+				mv.addObject("url", "'home.do'");
 			}
 			else {
 				session.setAttribute("ticket", null);
@@ -64,7 +62,7 @@ public class LoginController {
 
 
 		}
-		//mv.setViewName("login/login");
+		mv.setViewName("login/login");
 		return mv;
 	}
 
