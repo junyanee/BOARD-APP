@@ -110,7 +110,7 @@ address {
 
 dl, ol, ul {
 	margin-top: 0;
-	margin-bottom: 1rem
+	margin-bottom: 0rem
 }
 
 ol ol, ol ul, ul ol, ul ul {
@@ -531,8 +531,8 @@ pre code {
 
 .container {
 	width: 100%;
-	padding-right: 15px;
-	padding-left: 15px;
+	padding-right: 30px;
+	padding-left: 30px;
 	margin-right: auto;
 	margin-left: auto
 }
@@ -563,8 +563,8 @@ pre code {
 
 .container-fluid {
 	width: 100%;
-	padding-right: 15px;
-	padding-left: 15px;
+	padding-right: 30px;
+	padding-left: 30px;
 	margin-right: auto;
 	margin-left: auto
 }

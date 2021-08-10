@@ -12,18 +12,18 @@
 </head>
 <body>
      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="#">SYDS Boards</a>
+      <a class="navbar-brand" href="/home.do">SYDS Boards</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarsExample04">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+           <li class="nav-item active">
+            <a class="nav-link" href="/board-main.do">Main <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link" href="Login/Login.do">Login Page</a>
           </li>
           <li class="nav-item">
             <a class="nav-link disabled" href="#">Disabled</a>
@@ -37,11 +37,13 @@
             </div>
           </li>
         </ul>
-        <!-- SEARCH FORM
+        <button type="submit" class="btn btn-login" onclick = 'console.log("눌렀음")'>Login/Logout</button>
+
+<!--         SEARCH FORM
         <form class="form-inline my-2 my-md-0">
           <input class="form-control" type="text" placeholder="Search">
         </form>
-         -->
+-->
       </div>
     </nav>
 </body>

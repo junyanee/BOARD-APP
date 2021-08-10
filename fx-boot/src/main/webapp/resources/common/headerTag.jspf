@@ -25,9 +25,9 @@
 <script type="text/javascript" src="<c:url value="/resources/js/common.js?2" />"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/loginForm/bootstrap.min.js" />"></script>
 
-<!-- commoncss -->
+<!-- commoncss (custom css for jsp)-->
 <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/commoncss/loginForm.css" />"/>
 
-<!-- layout -->
+<!-- layout (fixed navbar, sticky footer)-->
 <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/commoncss/layout/sticky-footer.css" />"/>
 <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/commoncss/layout/fixed-navbar.css" />"/>

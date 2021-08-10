@@ -9,4 +9,14 @@
 	)
 }
 </select>
+
+<select id="getBoardTest" resultType="com.board.model.BoardMaster">
+{
+	call SP_GETBoard
+	(
+
+	)
+}
+</select>
+
 </mapper>
