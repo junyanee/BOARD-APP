@@ -8,6 +8,7 @@ import lombok.Setter;
 public class BoardMaster {
 	int idx;
 	String title;
+	String contents;
 	String insuser;
 	String insdate;
 	String moduser;

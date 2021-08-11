@@ -11,4 +11,6 @@ import com.board.board.model.BoardMaster;
 public interface BoardMapper {
 
 	public List<BoardMaster> getBoardTest() throws Exception;
+
+	public List<BoardMaster> insertArticle(BoardMaster param) throws Exception;
 }

@@ -1,14 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>게시글 목록</title>
+<title>메인 게시판</title>
 </head>
 <body>
 	<div class="container">
-		<h1>메인 게시판</h1>
+		<h2>메인 게시판</h2>
 		<hr>
 		<table class="table table-hover">
 			<thead>
@@ -22,20 +25,17 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:if="${#lists.size(list)} > 0" th:each="list : ${list}">
-					<td th:text="${list.boardIdx}"></td>
-					<td class="title"><a
-						href="/board/openBoardDetail.do?boardIdx="
-						th:attrappend="href=${list.boardIdx}" th:text="${list.title}"></a></td>
-					<td th:text="${list.hitCnt}"></td>
-					<td th:text="${list.createdDatetime}"></td>
-				</tr>
-				<tr th:unless="${#lists.size(list)} > 0">
-					<td colspan="4">조회된 결과가 없습니다.</td>
-				</tr>
+				<c:forEach var="boardList" items="${boardList}" varStatus="status">
+					<tr>
+						<td>${status.count }</td>
+						<td>${boardList.title }</td>
+						<td>${boardList.insuser }</td>
+						<td>${boardList.insdate }</td>
+						<td>${boardList.read_cnt }</td>
+						<td>${boardList.comment_cnt }</td>
+					</tr>
+				</c:forEach>
 			</tbody>
-
-
 		</table>
 		<hr />
 		<a class="btn btn-dark">글쓰기</a>

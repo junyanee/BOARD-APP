@@ -1,6 +1,7 @@
 package com.board.board.controller;
 
 import java.util.List;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -8,11 +9,14 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.board.aop.annotation.LoginCheck;
 import com.board.board.model.BoardMaster;
 import com.board.board.service.BoardService;
 import com.board.common.model.ParameterWrapper;
@@ -62,12 +66,38 @@ public class BoardController {
 		}
 		return empCode;
 	}
+	// 전체 게시판 불러오기
 	@RequestMapping(value = "/board-main.do")
 	public ModelAndView board_main(HttpServletRequest request) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		List<BoardMaster> boardList = boardService.getBoardTest();
-		mv.setViewName("boards/board-main");
+		mv.setViewName("boards/boardList");
 		mv.addObject("boardList", boardList);
+		return mv;
+	}
+	// 새 게시글 작성 페이지 호출 (GET)
+	@RequestMapping(value = "/boardWrite", method = RequestMethod.GET)
+	public ModelAndView boardWriteGET(HttpServletRequest request) throws Exception {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("boards/boardWrite");
+		return mv;
+	}
+	
+	// 새 게시글 작성 (POST)
+	@LoginCheck
+	@RequestMapping(value = "/boardWrite", method = RequestMethod.POST)
+	public ModelAndView boardWritePOST(HttpServletRequest request, ModelAndView mv) throws Exception {
+		HttpSession session = request.getSession(false);
+		String userId = session.getAttribute("userId").toString();
+		BoardMaster boardMaster = new BoardMaster();
+		boardMaster.setTitle(request.getParameter("newArticle.title"));
+		boardMaster.setContents(request.getParameter("newArticle.contents"));
+		boardMaster.setInsuser(userId);
+		boardMaster.setModuser(userId);
+		mv.addObject("newArticle", boardMaster);
+		mv.setViewName("redirect:/boards/boardList");
+		boardService.insertArticle(boardMaster);
+		logger.debug("=============boardWritePOST Call =============");
 		return mv;
 	}
 
@@ -75,7 +105,6 @@ public class BoardController {
 	public List<BoardMaster> getBoardTest(HttpServletRequest request, @RequestBody ParameterWrapper<BoardMaster> param) throws Exception {
 		logger.debug("=============getBoardTest Call =============");
 		logger.debug("=============getBoardTest Call =============");
-		System.out.println(this.getBoardTest(request, param));
 		return boardService.getBoardTest();
 	}
 

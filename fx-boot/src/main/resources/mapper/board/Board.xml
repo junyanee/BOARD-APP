@@ -11,4 +11,16 @@
 }
 </select>
 
+<insert id="insertArticle" parameterType="com.board.board.model.BoardMaster">
+{
+	call SP_INSERTBoard
+	(
+		@Title = #{title, mode = IN, jdbcType = VARCHAR},
+		@Contents = #{contents, mode = IN, jdbcType = VARCHAR},
+		@InsUser = #{insuser, mode = IN, jdbcType = VARCHAR},
+		@ModUser = #{moduser, mode = IN, jdbcType = VARCHAR}
+	)
+}
+</insert>
+
 </mapper>
