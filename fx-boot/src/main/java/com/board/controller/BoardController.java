@@ -5,16 +5,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.board.aop.annotation.LoginCheck;
-import com.board.common.model.ParameterWrapper;
 import com.board.common.service.CommonService;
 import com.board.common.service.LoginService;
 import com.board.model.BoardMaster;
@@ -23,10 +18,9 @@ import com.board.model.BoardMaster;
 @RequestMapping(value="/")
 public class BoardController {
 
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
 	@Autowired
 	LoginService loginService;
+	@Autowired
 	CommonService service;
 /*
  * Login Check 필요한 페이지의 경우 @RequestMapping 위에 @LoginCheck 어노테이션을 추가해줄것.
@@ -64,10 +58,8 @@ public class BoardController {
 	@RequestMapping(value = "/board-main.do")
 	public ModelAndView board_main(HttpServletRequest request) throws Exception {
 		ModelAndView mv = new ModelAndView();
-		List<BoardMaster> boardList;
+		List<BoardMaster> boardList = service.getBoardTest();
 		mv.setViewName("boards/board-main");
-		boardList = service.getBoardTest();
-		System.out.println(boardList);
 		mv.addObject("boardList", boardList);
 		return mv;
 	}
