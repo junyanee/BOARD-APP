@@ -34,13 +34,6 @@ public class CommonController {
 		return service.getItemCode(param.param);
 	}
 
-	@RequestMapping(value = "/getBoardTest.do")
-	public List<BoardMaster> getBoardTest(HttpServletRequest request, @RequestBody ParameterWrapper<BoardMaster> param) throws Exception {
-		logger.debug("=============getBoardTest Call =============");
-		logger.debug("=============getBoardTest Call =============");
-		System.out.println(this.getBoardTest(request, param));
-		return service.getBoardTest();
-	}
 
 }
 

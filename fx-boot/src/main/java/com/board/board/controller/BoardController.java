@@ -5,13 +5,17 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.board.board.model.BoardMaster;
-import com.board.common.service.CommonService;
+import com.board.board.service.BoardService;
+import com.board.common.model.ParameterWrapper;
 import com.board.common.service.LoginService;
 
 @RestController
@@ -21,7 +25,10 @@ public class BoardController {
 	@Autowired
 	LoginService loginService;
 	@Autowired
-	CommonService service;
+	BoardService boardService;
+
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
 /*
  * Login Check 필요한 페이지의 경우 @RequestMapping 위에 @LoginCheck 어노테이션을 추가해줄것.
  * */
@@ -58,10 +65,18 @@ public class BoardController {
 	@RequestMapping(value = "/board-main.do")
 	public ModelAndView board_main(HttpServletRequest request) throws Exception {
 		ModelAndView mv = new ModelAndView();
-		List<BoardMaster> boardList = service.getBoardTest();
+		List<BoardMaster> boardList = boardService.getBoardTest();
 		mv.setViewName("boards/board-main");
 		mv.addObject("boardList", boardList);
 		return mv;
+	}
+
+	@RequestMapping(value = "/getBoardTest.do")
+	public List<BoardMaster> getBoardTest(HttpServletRequest request, @RequestBody ParameterWrapper<BoardMaster> param) throws Exception {
+		logger.debug("=============getBoardTest Call =============");
+		logger.debug("=============getBoardTest Call =============");
+		System.out.println(this.getBoardTest(request, param));
+		return boardService.getBoardTest();
 	}
 
 

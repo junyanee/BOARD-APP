@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.board.common.mapper.CommonMapper">
-<select id="getItemCode" parameterType="com.board.model.ItemMaster" resultType="com.board.model.ItemMaster">
+<select id="getItemCode" parameterType="com.board.common.model.ItemMaster" resultType="com.board.common.model.ItemMaster">
 {
 	call SP_GetCode
 	(
 		@CodeValue = #{codeValue, mode=IN, jdbcType=VARCHAR}
-	)
-}
-</select>
-
-<select id="getBoardTest" resultType="com.board.model.BoardMaster">
-{
-	call SP_GETBoard
-	(
-
 	)
 }
 </select>

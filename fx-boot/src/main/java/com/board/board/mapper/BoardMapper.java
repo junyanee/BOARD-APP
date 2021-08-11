@@ -4,7 +4,11 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-@Mapper
-public class BoardMapper {
+import com.board.board.model.BoardMaster;
 
+
+@Mapper
+public interface BoardMapper {
+
+	public List<BoardMaster> getBoardTest() throws Exception;
 }
