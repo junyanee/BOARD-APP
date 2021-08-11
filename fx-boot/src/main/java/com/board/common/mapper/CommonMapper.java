@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.board.model.BoardMaster;
-import com.board.model.ItemMaster;
+import com.board.board.model.BoardMaster;
+import com.board.common.model.ItemMaster;
 
 @Mapper
 public interface CommonMapper {

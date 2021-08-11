@@ -1,4 +1,4 @@
-package com.board.controller;
+package com.board.info.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.board.aop.annotation.LoginCheck;
 import com.board.common.model.ParameterWrapper;
-import com.board.model.testMaster;
-import com.board.service.InfoService;
+import com.board.info.model.testMaster;
+import com.board.info.service.InfoService;
 
 @RestController
 @RequestMapping(value="/Info")

@@ -1,12 +1,12 @@
-package com.board.service;
+package com.board.info.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.board.mapper.InfoMapper;
-import com.board.model.testMaster;
+import com.board.info.mapper.InfoMapper;
+import com.board.info.model.testMaster;
 
 @Service
 public class InfoService {

@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.board.board.model.BoardMaster;
+import com.board.common.model.ItemMaster;
 import com.board.common.model.ParameterWrapper;
 import com.board.common.service.CommonService;
-import com.board.model.BoardMaster;
-import com.board.model.ItemMaster;
 
 @RestController
 @RequestMapping(value="/Common")

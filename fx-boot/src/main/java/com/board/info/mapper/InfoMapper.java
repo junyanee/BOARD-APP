@@ -1,10 +1,10 @@
-package com.board.mapper;
+package com.board.info.mapper;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.board.model.testMaster;
+import com.board.info.model.testMaster;
 
 @Mapper
 public interface InfoMapper {

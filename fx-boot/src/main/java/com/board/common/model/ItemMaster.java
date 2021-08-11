@@ -1,4 +1,4 @@
-package com.board.model;
+package com.board.common.model;
 
 import lombok.Getter;
 import lombok.Setter;

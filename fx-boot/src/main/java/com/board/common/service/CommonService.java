@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.board.model.BoardMaster;
-import com.board.model.ItemMaster;
+import com.board.board.model.BoardMaster;
+import com.board.common.model.ItemMaster;
 
 @Service
 public class CommonService {

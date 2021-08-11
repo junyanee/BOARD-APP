@@ -1,4 +1,4 @@
-package com.board.controller;
+package com.board.board.controller;
 
 import java.util.List;
 
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.board.board.model.BoardMaster;
 import com.board.common.service.CommonService;
 import com.board.common.service.LoginService;
-import com.board.model.BoardMaster;
 
 @RestController
 @RequestMapping(value="/")
