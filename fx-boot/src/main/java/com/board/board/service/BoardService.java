@@ -20,4 +20,9 @@ public class BoardService {
 	public void insertArticle(BoardMaster param) throws Exception {
 		boardMapper.insertArticle(param);
 	}
+
+	public List<BoardMaster> getArticle(String boardIdx) throws Exception{
+		return boardMapper.getArticle(boardIdx);
+
+	}
 }

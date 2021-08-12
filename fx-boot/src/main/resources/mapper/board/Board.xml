@@ -23,4 +23,13 @@
 }
 </insert>
 
+<select id="getArticle" parameterType="com.board.board.model.BoardMaster" resultType="com.board.board.model.BoardMaster">
+{
+	call SP_GETArticle
+	(
+		@Idx = #{idx, mode = IN, jdbcType = VARCHAR}
+	)
+}
+</select>
+
 </mapper>

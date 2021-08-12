@@ -1,5 +1,6 @@
 package com.board.board.controller;
 
+import java.net.http.HttpRequest;
 import java.util.List;
 import java.util.Random;
 
@@ -47,7 +48,7 @@ public class BoardController {
 			mv.setViewName("redirect:/Login/Login.do"); //ticket정보가 session에 없을 경우(logout, 다른사용자 로그인) loginForm으로 이동시키기 위함
 			return mv;
 		}*/
-		
+
 		empCode = getUser(ticket, request); //session에 담긴 ticket을 이용하여 사용자 정보 조회 (최초 1회 > home이동시 session에 있는 usermaster정보를 가져옴)
 		if(!empCode.equals("")) {
 			mv.setViewName("main/home");
@@ -90,7 +91,7 @@ public class BoardController {
 	}
 
 	// 새 게시글 작성 (POST)
-	@LoginCheck
+	// @LoginCheck
 	@RequestMapping(value = "/boardWrite", method = RequestMethod.POST)
 	public ModelAndView boardWritePOST(HttpServletRequest request, ModelAndView mv) throws Exception {
 		HttpSession session = request.getSession(false);
@@ -98,12 +99,25 @@ public class BoardController {
 		BoardMaster boardMaster = new BoardMaster();
 		boardMaster.setTitle(request.getParameter("newArticle.title"));
 		boardMaster.setContents(request.getParameter("newArticle.contents"));
-		boardMaster.setInsuser(userId);
-		boardMaster.setModuser(userId);
+		boardMaster.setInsuser("SYC221336");
+		boardMaster.setModuser("SYC221336");
+		// boardMaster.setInsuser(userId);
+		// boardMaster.setModuser(userId);
 		mv.addObject("newArticle", boardMaster);
 		mv.setViewName("redirect:/board-main.do");
 		boardService.insertArticle(boardMaster);
 		logger.debug("=============boardWritePOST Call =============");
+		return mv;
+	}
+
+	// 선택된 게시글 조회(GET)
+	@RequestMapping(value = "/getBoardContents", method = RequestMethod.GET)
+	public ModelAndView getArticle(HttpServletRequest request, ModelAndView mv) throws Exception {
+		String boardIdx = request.getParameter("idx");
+		List<BoardMaster> boardArticle = boardService.getArticle(boardIdx);
+		mv.addObject("getArticle", boardArticle);
+		mv.setViewName("boards/boardDetail");
+
 		return mv;
 	}
 
