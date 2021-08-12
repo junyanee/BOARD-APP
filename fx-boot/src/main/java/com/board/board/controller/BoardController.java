@@ -42,14 +42,20 @@ public class BoardController {
 		HttpSession session = request.getSession(false); //Home 진입시 Session에 담긴 정보를 가져오기 위함
 		String ticket = "";
 		String empCode = "";
-		if(session.getAttribute("ticket") != null) {
-			ticket = session.getAttribute("ticket").toString(); //최초 로그인시 session에 담긴 sso ticket을 가져옴
-		}else {
+		/*
+		if(session.getAttribute("ticket") == null) {
 			mv.setViewName("redirect:/Login/Login.do"); //ticket정보가 session에 없을 경우(logout, 다른사용자 로그인) loginForm으로 이동시키기 위함
 			return mv;
-		}
+		}*/
+		
 		empCode = getUser(ticket, request); //session에 담긴 ticket을 이용하여 사용자 정보 조회 (최초 1회 > home이동시 session에 있는 usermaster정보를 가져옴)
-		mv.setViewName("main/home");
+		if(!empCode.equals("")) {
+			mv.setViewName("main/home");
+		}
+		else {
+			mv.setViewName("redirect:/Login/Login.do"); //ticket정보가 session에 없을 경우(logout, 다른사용자 로그인) loginForm으로 이동시키기 위함
+		}
+
 		//User Master > getUserMaster > add Session - User Master
 
 		return mv;
@@ -82,7 +88,7 @@ public class BoardController {
 		mv.setViewName("boards/boardWrite");
 		return mv;
 	}
-	
+
 	// 새 게시글 작성 (POST)
 	@LoginCheck
 	@RequestMapping(value = "/boardWrite", method = RequestMethod.POST)
@@ -95,7 +101,7 @@ public class BoardController {
 		boardMaster.setInsuser(userId);
 		boardMaster.setModuser(userId);
 		mv.addObject("newArticle", boardMaster);
-		mv.setViewName("redirect:/boards/boardList");
+		mv.setViewName("redirect:/board-main.do");
 		boardService.insertArticle(boardMaster);
 		logger.debug("=============boardWritePOST Call =============");
 		return mv;

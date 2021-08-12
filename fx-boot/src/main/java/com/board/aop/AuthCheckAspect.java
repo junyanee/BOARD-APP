@@ -28,9 +28,12 @@ public class AuthCheckAspect {
 	@Before("@annotation(com.board.aop.annotation.LoginCheck)")
 	public void loginCheck() throws HttpClientErrorException{
 		HttpSession session = ((ServletRequestAttributes)(RequestContextHolder.currentRequestAttributes())).getRequest().getSession();
-		String userId = session.getAttribute("userId").toString();
-		if(userId == null) {
+		//String userId = session.getAttribute("userId").toString();
+		String userId;
+		if(session.getAttribute("userId") == null) {
 			throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+		}else {
+			userId = session.getAttribute("userId").toString();
 		}
 	}
 }

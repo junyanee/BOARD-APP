@@ -155,6 +155,7 @@ public class LoginService {
 
 				while (rs.next()) {
 					userId = rs.getString("EmpCode");
+					session.setAttribute("userId", userId);
 				}
 
 				if (!StringUtils.isEmpty(userId)) {
@@ -165,8 +166,11 @@ public class LoginService {
 			cs.close();
 			connection.close();
 		}
-		session.setAttribute("userId", userId);
-		_UserId = userId;
+
+
+
+
+		session.setAttribute("ticket", null);
 		return userId;
 	}
 	public String getCurrentUser() {

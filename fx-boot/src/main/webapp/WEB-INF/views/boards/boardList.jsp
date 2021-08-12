@@ -38,7 +38,7 @@
 			</tbody>
 		</table>
 		<hr />
-		<a class="btn btn-dark">글쓰기</a>
+		<a href="http://localhost:8080/boardWrite" class="btn btn-dark">글쓰기</a>
 
 		<div class="text-center">
 			<ul class="pagination justify-content-center">

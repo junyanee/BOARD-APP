@@ -12,5 +12,5 @@ public interface BoardMapper {
 
 	public List<BoardMaster> getBoardTest() throws Exception;
 
-	public List<BoardMaster> insertArticle(BoardMaster param) throws Exception;
+	public void insertArticle(BoardMaster param) throws Exception;
 }

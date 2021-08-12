@@ -17,8 +17,7 @@ public class BoardService {
 		return boardMapper.getBoardTest();
 	}
 
-	public List<BoardMaster> insertArticle(BoardMaster param) throws Exception {
-		return boardMapper.insertArticle(param);
-
+	public void insertArticle(BoardMaster param) throws Exception {
+		boardMapper.insertArticle(param);
 	}
 }
