@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,14 +27,12 @@
 				<tbody>
 					<c:forEach var="boardList" items="${boardList}" varStatus="status">
 						<tr>
-							<th scope = "row">${status.count }</th>
-							<td><a href="/boards/boardDetail?idx=<c:out value = "${boardList.idx}" />">
-							${boardList.title }
-							</a></td>
-							<td>${boardList.insuser }</td>
-							<td>${boardList.insdate }</td>
-							<td>${boardList.read_cnt }</td>
-							<td>${boardList.comment_cnt }</td>
+							<th scope="row"><c:out value="${status.count }" /></th>
+							<td><a href="/boardDetail?idx=${boardList.idx}"><c:out value="${boardList.title }" /> </a></td>
+							<td><c:out value="${boardList.insuser }" /></td>
+							<td><c:out value="${boardList.insdate }" /></td>
+							<td><c:out value="${boardList.read_cnt }" /></td>
+							<td><c:out value="${boardList.comment_cnt }" /></td>
 						</tr>
 					</c:forEach>
 				</tbody>

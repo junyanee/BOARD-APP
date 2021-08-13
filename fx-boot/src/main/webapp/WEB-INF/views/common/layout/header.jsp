@@ -37,7 +37,7 @@
             </div>
           </li>
         </ul>
-        <button type="submit" class="btn btn-login" onclick = 'console.log("눌렀음")'>Login/Logout</button>
+        <!-- <button type="submit" class="btn btn-login" onclick = 'console.log("눌렀음")'>Login/Logout</button>  -->
 
 <!--         SEARCH FORM
         <form class="form-inline my-2 my-md-0">

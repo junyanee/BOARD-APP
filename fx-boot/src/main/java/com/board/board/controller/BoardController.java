@@ -1,7 +1,9 @@
 package com.board.board.controller;
 
+import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -78,7 +80,7 @@ public class BoardController {
 	// 새 게시글 작성 (POST)
 	@LoginCheck
 	@RequestMapping(value = "/boardWrite", method = RequestMethod.POST)
-	public ModelAndView boardWritePOST(HttpServletRequest request, ModelAndView mv) throws Exception {
+	public ModelAndView boardWritePOST(HttpServletRequest request, HttpServletResponse response, ModelAndView mv) throws Exception {
 		HttpSession session = request.getSession(false);
 		UserMaster userMaster = (UserMaster)session.getAttribute("userInfo");
 		//String userId = session.getAttribute("userId").toString();
@@ -87,19 +89,35 @@ public class BoardController {
 		boardMaster.setContents(request.getParameter("newArticle.contents"));
 		boardMaster.setInsuser(userMaster.getEmpCode());
 		boardMaster.setModuser(userMaster.getEmpCode());
-		mv.addObject("newArticle", boardMaster);
-		mv.setViewName("redirect:/board-main.do");
-		boardService.insertArticle(boardMaster);
-		logger.debug("=============boardWritePOST Call =============");
+		if (boardMaster.getTitle().equals("")) {
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter Out = response.getWriter();
+			Out.println("<script>alert('제목을 입력해주세요.');</script>");
+			Out.flush();
+		} else {
+			if (boardMaster.getContents().equals("")) {
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter Out = response.getWriter();
+				Out.println("<script>alert('내용을 입력해주세요.');</script>");
+				Out.flush();
+			} else {
+				mv.addObject("boardDetail", boardMaster);
+				mv.setViewName("redirect:/board-main.do");
+				boardService.insertArticle(boardMaster);
+				return mv;
+			}
+		}
+		mv.setViewName("boards/boardWrite");
 		return mv;
+
 	}
 
 
 	// 선택된 게시글 조회(GET)
-	@RequestMapping(value = "/getBoardContents", method = RequestMethod.GET)
+	@RequestMapping(value = "/boardDetail", method = RequestMethod.GET)
 	public ModelAndView getArticle(HttpServletRequest request, ModelAndView mv) throws Exception {
 		int boardIdx = Integer.parseInt(request.getParameter("idx"));
-		List<BoardMaster> boardArticle = boardService.getArticle(boardIdx);
+		BoardMaster boardArticle = boardService.getArticle(boardIdx);
 		mv.addObject("getArticle", boardArticle);
 		mv.setViewName("boards/boardDetail");
 

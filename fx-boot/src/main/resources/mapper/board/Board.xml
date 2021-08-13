@@ -27,7 +27,7 @@
 {
 	call SP_GETArticle
 	(
-		@Idx = #{idx, mode = IN, jdbcType = INT}
+		@Idx = #{idx, mode = IN, jdbcType = INTEGER}
 	)
 }
 </select>

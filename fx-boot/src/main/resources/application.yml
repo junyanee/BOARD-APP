@@ -36,7 +36,7 @@ server:
 spring:
   profiles: dev
   datasource:
-    name: a
+    name: Board_DEV
     url: jdbc:sqlserver://syc-app2:1433;databaseName=Board_DEV
     username: syc-app2_admin
     password: "$1Samyang#"
