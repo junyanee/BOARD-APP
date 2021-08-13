@@ -1,8 +1,11 @@
 package com.board.aop;
 
 import java.net.http.HttpRequest;
+import java.net.http.HttpResponse.ResponseInfo;
 
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.aspectj.lang.annotation.Aspect;
@@ -12,9 +15,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.servlet.support.RequestContext;
+
 
 import com.board.common.service.LoginService;
+
 
 @Aspect
 @Component
@@ -29,11 +33,8 @@ public class AuthCheckAspect {
 	public void loginCheck() throws HttpClientErrorException{
 		HttpSession session = ((ServletRequestAttributes)(RequestContextHolder.currentRequestAttributes())).getRequest().getSession();
 		//String userId = session.getAttribute("userId").toString();
-		String userId;
-		if(session.getAttribute("userId") == null) {
+		if(session.getAttribute("userInfo") == null) {
 			throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
-		}else {
-			userId = session.getAttribute("userId").toString();
 		}
 	}
 }

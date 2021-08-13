@@ -1,16 +1,12 @@
 package com.board.board.controller;
 
-import java.net.http.HttpRequest;
 import java.util.List;
-import java.util.Random;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,6 +17,7 @@ import com.board.aop.annotation.LoginCheck;
 import com.board.board.model.BoardMaster;
 import com.board.board.service.BoardService;
 import com.board.common.model.ParameterWrapper;
+import com.board.common.model.UserMaster;
 import com.board.common.service.LoginService;
 
 @RestController
@@ -40,39 +37,27 @@ public class BoardController {
 	@RequestMapping(value = "/home.do")
 	public ModelAndView home(HttpServletRequest request) throws Exception {
 		ModelAndView mv = new ModelAndView();
-		HttpSession session = request.getSession(false); //Home 진입시 Session에 담긴 정보를 가져오기 위함
-		String ticket = "";
-		String empCode = "";
-		/*
-		if(session.getAttribute("ticket") == null) {
-			mv.setViewName("redirect:/Login/Login.do"); //ticket정보가 session에 없을 경우(logout, 다른사용자 로그인) loginForm으로 이동시키기 위함
-			return mv;
-		}*/
+		//최초 홈 접근시 세션이 없을 경우 세션 객체 생성함.
+		HttpSession session = request.getSession(true);
 
-		empCode = getUser(ticket, request); //session에 담긴 ticket을 이용하여 사용자 정보 조회 (최초 1회 > home이동시 session에 있는 usermaster정보를 가져옴)
-		if(!empCode.equals("")) {
-			mv.setViewName("main/home");
+		//Home 진입시 Session에 담긴 정보를 가져오기 위함
+		getUser(request);
+		UserMaster userVo = (UserMaster)session.getAttribute("userInfo");
+
+		if(userVo == null) {
+			//ticket정보가 session에 없을 경우(logout, 다른사용자 로그인) loginForm으로 이동시키기 위함
+			mv.setViewName("redirect:/Login/Login.do");
 		}
 		else {
-			mv.setViewName("redirect:/Login/Login.do"); //ticket정보가 session에 없을 경우(logout, 다른사용자 로그인) loginForm으로 이동시키기 위함
+			mv.setViewName("main/home");
 		}
-
-		//User Master > getUserMaster > add Session - User Master
-
 		return mv;
 	}
 	//session 정보를 활용한 getUser
-	private String getUser(String ticket, HttpServletRequest request) throws Exception{
-		String empCode = "";
-		HttpSession session = request.getSession(false);
-		if(session.getAttribute("userId") != null) {
-			empCode = session.getAttribute("userId").toString();
-		}
-		else {
-			empCode = loginService.ssoGetUserId(ticket, request);
-		}
-		return empCode;
+	private void getUser(HttpServletRequest request) throws Exception{
+		loginService.ssoGetUserId(request);
 	}
+
 	// 전체 게시판 불러오기
 	@RequestMapping(value = "/board-main.do")
 	public ModelAndView board_main(HttpServletRequest request) throws Exception {
@@ -91,18 +76,17 @@ public class BoardController {
 	}
 
 	// 새 게시글 작성 (POST)
-	// @LoginCheck
+	@LoginCheck
 	@RequestMapping(value = "/boardWrite", method = RequestMethod.POST)
 	public ModelAndView boardWritePOST(HttpServletRequest request, ModelAndView mv) throws Exception {
 		HttpSession session = request.getSession(false);
-		String userId = session.getAttribute("userId").toString();
+		UserMaster userMaster = (UserMaster)session.getAttribute("userInfo");
+		//String userId = session.getAttribute("userId").toString();
 		BoardMaster boardMaster = new BoardMaster();
 		boardMaster.setTitle(request.getParameter("newArticle.title"));
 		boardMaster.setContents(request.getParameter("newArticle.contents"));
-		boardMaster.setInsuser("SYC221336");
-		boardMaster.setModuser("SYC221336");
-		// boardMaster.setInsuser(userId);
-		// boardMaster.setModuser(userId);
+		boardMaster.setInsuser(userMaster.getEmpCode());
+		boardMaster.setModuser(userMaster.getEmpCode());
 		mv.addObject("newArticle", boardMaster);
 		mv.setViewName("redirect:/board-main.do");
 		boardService.insertArticle(boardMaster);
@@ -110,10 +94,11 @@ public class BoardController {
 		return mv;
 	}
 
+
 	// 선택된 게시글 조회(GET)
 	@RequestMapping(value = "/getBoardContents", method = RequestMethod.GET)
 	public ModelAndView getArticle(HttpServletRequest request, ModelAndView mv) throws Exception {
-		String boardIdx = request.getParameter("idx");
+		int boardIdx = Integer.parseInt(request.getParameter("idx"));
 		List<BoardMaster> boardArticle = boardService.getArticle(boardIdx);
 		mv.addObject("getArticle", boardArticle);
 		mv.setViewName("boards/boardDetail");

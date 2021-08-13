@@ -14,5 +14,5 @@ public interface BoardMapper {
 
 	public void insertArticle(BoardMaster param) throws Exception;
 
-	public List<BoardMaster> getArticle(String boardIdx) throws Exception;
+	public List<BoardMaster> getArticle(int boardIdx) throws Exception;
 }

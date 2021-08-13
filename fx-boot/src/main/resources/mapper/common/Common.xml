@@ -9,5 +9,13 @@
 	)
 }
 </select>
+<select id="getUserInfo" parameterType="String" resultType="com.board.common.model.UserMaster">
+{
+	call SP_GetUserInfo
+	(
+		@empCode = #{userId, mode=IN, jdbcType=VARCHAR}
+	)
+}
+</select>
 
 </mapper>

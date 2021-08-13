@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.board.common.model.UserMaster;
 import com.board.utility.DatabaseConnection;
 
 @Service
@@ -132,13 +133,16 @@ public class LoginService {
 
 		return ticket;
 	}
-	public String ssoGetUserId(String ticket, HttpServletRequest request) throws Exception{
+	public String ssoGetUserId(HttpServletRequest request) throws Exception{
 		CallableStatement cs = null;
 		ResultSet rs = null;
 		Connection connection = null;
 		HttpSession session = request.getSession(true);
 		String userId = "";
-
+		String ticket = "";
+		if(session.getAttribute("ticket") != null) {
+			ticket = session.getAttribute("ticket").toString();
+		}
 		try {
 			DatabaseConnection dc = new DatabaseConnection();
 			// url 생성
@@ -155,7 +159,6 @@ public class LoginService {
 
 				while (rs.next()) {
 					userId = rs.getString("EmpCode");
-					session.setAttribute("userId", userId);
 				}
 
 				if (!StringUtils.isEmpty(userId)) {
@@ -166,16 +169,17 @@ public class LoginService {
 			cs.close();
 			connection.close();
 		}
+		if(!userId.equals("")) {
+			setSessionUserInfo(request, userId);
+		}
 
 
-
-
-		session.setAttribute("ticket", null);
 		return userId;
 	}
-	public String getCurrentUser() {
-		// TODO Auto-generated method stub
-
-		return _UserId;
+	public void setSessionUserInfo(HttpServletRequest request, String userId) throws Exception {
+		HttpSession session = request.getSession(true);
+		UserMaster userMaster = userMasterService.getUserInfo(userId);
+		session.setAttribute("userInfo", userMaster);
 	}
+
 }

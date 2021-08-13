@@ -23,11 +23,11 @@
 }
 </insert>
 
-<select id="getArticle" parameterType="com.board.board.model.BoardMaster" resultType="com.board.board.model.BoardMaster">
+<select id="getArticle" parameterType="int" resultType="com.board.board.model.BoardMaster">
 {
 	call SP_GETArticle
 	(
-		@Idx = #{idx, mode = IN, jdbcType = VARCHAR}
+		@Idx = #{idx, mode = IN, jdbcType = INT}
 	)
 }
 </select>
