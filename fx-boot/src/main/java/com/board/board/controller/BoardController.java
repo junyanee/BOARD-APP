@@ -89,17 +89,19 @@ public class BoardController {
 		boardMaster.setContents(request.getParameter("newArticle.contents"));
 		boardMaster.setInsuser(userMaster.getEmpCode());
 		boardMaster.setModuser(userMaster.getEmpCode());
+
+		//////////// backend valCheck (x) ///////////////
 		if (boardMaster.getTitle().equals("")) {
 			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter Out = response.getWriter();
-			Out.println("<script>alert('제목을 입력해주세요.');</script>");
-			Out.flush();
+			PrintWriter out = response.getWriter();
+			out.println("<script>alert('제목을 입력해주세요.');</script>");
+			out.flush();
 		} else {
 			if (boardMaster.getContents().equals("")) {
 				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter Out = response.getWriter();
-				Out.println("<script>alert('내용을 입력해주세요.');</script>");
-				Out.flush();
+				PrintWriter out = response.getWriter();
+				out.println("<script>alert('내용을 입력해주세요.');</script>");
+				out.flush();
 			} else {
 				mv.addObject("boardDetail", boardMaster);
 				mv.setViewName("redirect:/board-main.do");
@@ -109,6 +111,7 @@ public class BoardController {
 		}
 		mv.setViewName("boards/boardWrite");
 		return mv;
+		/////////////////////////////////////////////////
 
 	}
 

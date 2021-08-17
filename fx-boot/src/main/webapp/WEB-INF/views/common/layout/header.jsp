@@ -20,10 +20,10 @@
       <div class="collapse navbar-collapse" id="navbarsExample04">
         <ul class="navbar-nav mr-auto">
            <li class="nav-item active">
-            <a class="nav-link" href="/board-main.do">Main <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="/board-main.do">게시판 <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="Login/Login.do">Login Page</a>
+            <a class="nav-link" href="Login/Login.do">로그인 페이지</a>
           </li>
           <li class="nav-item">
             <a class="nav-link disabled" href="#">Disabled</a>

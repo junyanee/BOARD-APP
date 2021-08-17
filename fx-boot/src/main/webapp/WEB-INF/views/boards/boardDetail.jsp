@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,8 +19,8 @@
 		</div>
 		<div class="mb-3">
 			<label for="getArticle.contents" class="form-label">내용</label>
-			<input type = "text" class="form-control" id="getBoardContents.contents"
-				name="getBoardContents.contents" value="${getArticle.contents }" readonly></input>
+			<textarea class="form-control" id="getBoardContents.contents"
+				name="getBoardContents.contents" readonly><c:out value = "${getArticle.contents }" escapeXml = "false" /></textarea>
 		</div>
 		<div class="float-right">
 			<button type="submit" class="btn btn-primary">수정</button>
