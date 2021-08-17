@@ -32,4 +32,25 @@
 }
 </select>
 
+<update id = "modifyArticle" parameterType = "com.board.board.model.BoardMaster">
+{
+	call SP_UpdateArticle
+	(
+		@Idx = #{idx, mode = IN, jdbcType = INTEGER},
+		@Title = #{title, mode = IN, jdbcType = VARCHAR},
+		@Contents = #{contents, mode = IN, jdbcType = VARCHAR},
+		@ModUser = #{moduser, mode = IN, jdbcType = VARCHAR}
+	)
+}
+</update>
+
+<update id = "deleteArticle" parameterType = "int">
+{
+	call SP_DeleteArticle
+	(
+		@Idx = #{idx, mode = IN, jdbcType = INTEGER}
+	)
+}
+</update>
+
 </mapper>

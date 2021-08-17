@@ -65,12 +65,12 @@ public class BoardController {
 	public ModelAndView board_main(HttpServletRequest request) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		List<BoardMaster> boardList = boardService.getBoardTest();
-		mv.setViewName("boards/boardList");
 		mv.addObject("boardList", boardList);
+		mv.setViewName("boards/boardList");
 		return mv;
 	}
 	// 새 게시글 작성 페이지 호출 (GET)
-	@RequestMapping(value = "/boardWrite", method = RequestMethod.GET)
+	@RequestMapping(value = "/boardWrite.do", method = RequestMethod.GET)
 	public ModelAndView boardWriteGET(HttpServletRequest request) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("boards/boardWrite");
@@ -79,7 +79,7 @@ public class BoardController {
 
 	// 새 게시글 작성 (POST)
 	@LoginCheck
-	@RequestMapping(value = "/boardWrite", method = RequestMethod.POST)
+	@RequestMapping(value = "/boardWrite.do", method = RequestMethod.POST)
 	public ModelAndView boardWritePOST(HttpServletRequest request, HttpServletResponse response, ModelAndView mv) throws Exception {
 		HttpSession session = request.getSession(false);
 		UserMaster userMaster = (UserMaster)session.getAttribute("userInfo");
@@ -117,7 +117,7 @@ public class BoardController {
 
 
 	// 선택된 게시글 조회(GET)
-	@RequestMapping(value = "/boardDetail", method = RequestMethod.GET)
+	@RequestMapping(value = "/boardDetail.do", method = RequestMethod.GET)
 	public ModelAndView getArticle(HttpServletRequest request, ModelAndView mv) throws Exception {
 		int boardIdx = Integer.parseInt(request.getParameter("idx"));
 		BoardMaster boardArticle = boardService.getArticle(boardIdx);
@@ -126,6 +126,45 @@ public class BoardController {
 
 		return mv;
 	}
+
+	// 선택된 게시글 수정(GET)
+	@RequestMapping(value = "/boardModify.do", method = RequestMethod.GET)
+	public ModelAndView modifyArticleGET(HttpServletRequest request, ModelAndView mv) throws Exception {
+		int boardIdx = Integer.parseInt(request.getParameter("idx"));
+		BoardMaster boardArticle = boardService.getArticle(boardIdx);
+		mv.addObject("modifyArticle", boardArticle);
+		mv.setViewName("boards/boardModify");
+		return mv;
+
+	}
+
+	// 선택된 게시글 수정(POST)
+	@RequestMapping(value = "/boardModify.do", method = RequestMethod.POST)
+	public ModelAndView modifyArticlePOST(HttpServletRequest request, HttpServletResponse response, ModelAndView mv) throws Exception {
+		HttpSession session = request.getSession(false);
+		UserMaster userMaster = (UserMaster)session.getAttribute("userInfo");
+		BoardMaster boardMaster = new BoardMaster();
+		boardMaster.setIdx(Integer.parseInt(request.getParameter("idx")));
+		boardMaster.setTitle(request.getParameter("modifyArticle.title"));
+		boardMaster.setContents(request.getParameter("modifyArticle.contents"));
+		boardMaster.setModuser(userMaster.getEmpCode());
+		mv.addObject("modifyArticle", boardMaster);
+		mv.setViewName("redirect:/board-main.do");
+		boardService.modifyArticle(boardMaster);
+		return mv;
+
+	}
+
+	// 선택된 게시글 삭제(POST)
+	@RequestMapping(value = "/boardDelete.do", method = RequestMethod.GET)
+	public ModelAndView deleteArticlePOST(HttpServletRequest requset, ModelAndView mv) throws Exception {
+		int boardIdx = Integer.parseInt(requset.getParameter("idx"));
+		boardService.deleteArticle(boardIdx);
+		mv.setViewName("redirect:/board-main.do");
+
+		return mv;
+	}
+
 
 	@RequestMapping(value = "/getBoardTest.do")
 	public List<BoardMaster> getBoardTest(HttpServletRequest request, @RequestBody ParameterWrapper<BoardMaster> param) throws Exception {

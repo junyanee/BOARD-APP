@@ -21,8 +21,16 @@ public class BoardService {
 		boardMapper.insertArticle(param);
 	}
 
-	public BoardMaster getArticle(int boardIdx) throws Exception{
+	public BoardMaster getArticle(int boardIdx) throws Exception {
 		return boardMapper.getArticle(boardIdx);
 
+	}
+
+	public void modifyArticle(BoardMaster param) throws Exception {
+		boardMapper.modifyArticle(param);
+	}
+
+	public void deleteArticle(int boardIdx) throws Exception {
+		boardMapper.deleteArticle(boardIdx);
 	}
 }

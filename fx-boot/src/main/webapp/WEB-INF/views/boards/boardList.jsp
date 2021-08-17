@@ -28,7 +28,7 @@
 					<c:forEach var="boardList" items="${boardList}" varStatus="status">
 						<tr>
 							<th scope="row"><c:out value="${status.count }" /></th>
-							<td><a href="/boardDetail?idx=${boardList.idx}"><c:out value="${boardList.title }" /> </a></td>
+							<td><a href="/boardDetail.do?idx=${boardList.idx}"><c:out value="${boardList.title }" /> </a></td>
 							<td><c:out value="${boardList.insuser }" /></td>
 							<td><c:out value="${boardList.insdate }" /></td>
 							<td><c:out value="${boardList.read_cnt }" /></td>
@@ -38,7 +38,7 @@
 				</tbody>
 			</table>
 			<hr />
-			<a href="http://localhost:8080/boardWrite" class="btn btn-dark">글쓰기</a>
+			<a href="http://localhost:8080/boardWrite.do" class="btn btn-dark">글쓰기</a>
 
 			<div class="text-center">
 				<ul class="pagination justify-content-center">

@@ -19,12 +19,13 @@
 		</div>
 		<div class="mb-3">
 			<label for="getArticle.contents" class="form-label">내용</label>
-			<textarea class="form-control" id="getBoardContents.contents"
-				name="getBoardContents.contents" readonly><c:out value = "${getArticle.contents }" escapeXml = "false" /></textarea>
+			<div>
+			<c:out value = "${getArticle.contents }" escapeXml = "false" />
+			</div>
 		</div>
 		<div class="float-right">
-			<button type="submit" class="btn btn-primary">수정</button>
-			<button type="submit" class="btn btn-primary">삭제</button>
+			<a href="http://localhost:8080/boardModify.do?idx=${getArticle.idx }"><button type="submit" class="btn btn-primary">수정</button></a>
+			<a href="http://localhost:8080/boardDelete.do?idx=${getArticle.idx }"><button type="submit" class="btn btn-primary">삭제</button></a>
 			<a href="http://localhost:8080/board-main.do"><button type="submit" class="btn btn-primary">목록</button></a>
 		</div>
 	</div>
