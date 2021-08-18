@@ -20,7 +20,7 @@
 			<div class="login-form">
 				<form>
 				<div>
-					<h2> Login Page </h2>
+					<h2> 로그인 </h2>
 				</div>
 					<div class="form-group">
 						<label>사번</label> <input type="text" class="form-control"
@@ -30,7 +30,7 @@
 						<label>비밀번호</label> <input type="password"
 							class="form-control" placeholder="Password" id="userPw">
 					</div>
-					<button type="submit" class="btn btn-login">Login</button>
+					<button type="submit" class="btn btn-login float-right">로그인</button>
 				</form>
 			</div>
 		</div>

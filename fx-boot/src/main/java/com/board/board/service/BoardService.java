@@ -26,11 +26,16 @@ public class BoardService {
 
 	}
 
+	public void updateReadCnt(int boardIdx) throws Exception {
+		boardMapper.updateReadCnt(boardIdx);
+	}
+
 	public void modifyArticle(BoardMaster param) throws Exception {
 		boardMapper.modifyArticle(param);
 	}
 
-	public void deleteArticle(int boardIdx) throws Exception {
-		boardMapper.deleteArticle(boardIdx);
+	public void deleteArticle(BoardMaster param) throws Exception {
+		boardMapper.deleteArticle(param);
 	}
+
 }

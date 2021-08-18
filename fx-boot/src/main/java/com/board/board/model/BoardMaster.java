@@ -13,7 +13,7 @@ public class BoardMaster {
 	String insdate;
 	String moduser;
 	String moddate;
-	int read_cnt;
-	int comment_cnt;
-	int delete_fg;
+	int readCnt;   
+	int commentCnt;
+	int deleteFg;
 }

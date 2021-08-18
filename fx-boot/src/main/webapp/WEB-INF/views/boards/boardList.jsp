@@ -28,29 +28,29 @@
 					<c:forEach var="boardList" items="${boardList}" varStatus="status">
 						<tr>
 							<th scope="row"><c:out value="${status.count }" /></th>
-							<td><a href="/boardDetail.do?idx=${boardList.idx}"><c:out value="${boardList.title }" /> </a></td>
+							<td><a href="/boardDetail.do?idx=${boardList.idx}"><c:out
+										value="${boardList.title }" /> </a></td>
 							<td><c:out value="${boardList.insuser }" /></td>
 							<td><c:out value="${boardList.insdate }" /></td>
-							<td><c:out value="${boardList.read_cnt }" /></td>
-							<td><c:out value="${boardList.comment_cnt }" /></td>
+							<td><c:out value="${boardList.readCnt }" /></td>
+							<td><c:out value="${boardList.commentCnt }" /></td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 			<hr />
-			<a href="http://localhost:8080/boardWrite.do" class="btn btn-dark">글쓰기</a>
-
-			<div class="text-center">
-				<ul class="pagination justify-content-center">
-					<li class="page-item"><a class="page-link" href="#">이전</a></li>
-					<li class="page-item"><a class="page-link" href="#">1</a></li>
-					<li class="page-item"><a class="page-link" href="#">2</a></li>
-					<li class="page-item"><a class="page-link" href="#">3</a></li>
-					<li class="page-item"><a class="page-link" href="#">4</a></li>
-					<li class="page-item"><a class="page-link" href="#">5</a></li>
-					<li class="page-item"><a class="page-link" href="#">다음</a></li>
-				</ul>
-			</div>
+			<a href="/boardWrite.do" class="btn btn-dark">글쓰기</a>
+		</div>
+		<div class="text-center">
+			<ul class="pagination justify-content-center">
+				<li class="page-item"><a class="page-link" href="#">이전</a></li>
+				<li class="page-item"><a class="page-link" href="#">1</a></li>
+				<li class="page-item"><a class="page-link" href="#">2</a></li>
+				<li class="page-item"><a class="page-link" href="#">3</a></li>
+				<li class="page-item"><a class="page-link" href="#">4</a></li>
+				<li class="page-item"><a class="page-link" href="#">5</a></li>
+				<li class="page-item"><a class="page-link" href="#">다음</a></li>
+			</ul>
 		</div>
 	</div>
 </body>

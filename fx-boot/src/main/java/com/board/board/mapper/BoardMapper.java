@@ -16,7 +16,10 @@ public interface BoardMapper {
 
 	public BoardMaster getArticle(int boardIdx) throws Exception;
 
+	public void updateReadCnt(int boardIdx) throws Exception;
+
 	public void modifyArticle(BoardMaster param) throws Exception;
 
-	public void deleteArticle(int boardIdx) throws Exception;
+	public void deleteArticle(BoardMaster param) throws Exception;
+
 }
