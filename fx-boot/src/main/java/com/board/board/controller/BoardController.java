@@ -17,7 +17,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.board.aop.annotation.LoginCheck;
 import com.board.board.model.BoardMaster;
+import com.board.board.model.CommentMaster;
 import com.board.board.service.BoardService;
+import com.board.board.service.CommentService;
 import com.board.common.model.ParameterWrapper;
 import com.board.common.model.UserMaster;
 import com.board.common.service.LoginService;
@@ -30,6 +32,8 @@ public class BoardController {
 	LoginService loginService;
 	@Autowired
 	BoardService boardService;
+	@Autowired
+	CommentService commentService;
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -64,7 +68,7 @@ public class BoardController {
 	@RequestMapping(value = "/board-main.do")
 	public ModelAndView board_main(HttpServletRequest request) throws Exception {
 		ModelAndView mv = new ModelAndView();
-		List<BoardMaster> boardList = boardService.getBoardTest();
+		List<BoardMaster> boardList = boardService.getBoard();
 		mv.addObject("boardList", boardList);
 		mv.setViewName("boards/boardList");
 		return mv;
@@ -121,8 +125,10 @@ public class BoardController {
 	public ModelAndView getArticle(HttpServletRequest request, ModelAndView mv) throws Exception {
 		int boardIdx = Integer.parseInt(request.getParameter("idx"));
 		BoardMaster boardArticle = boardService.getArticle(boardIdx);
+		List<CommentMaster> commentList = commentService.getComment(boardIdx);
 		boardService.updateReadCnt(boardIdx);
 		mv.addObject("getArticle", boardArticle);
+		mv.addObject("commentList", commentList);
 		mv.setViewName("boards/boardDetail");
 		return mv;
 	}
@@ -173,11 +179,11 @@ public class BoardController {
 	}
 
 
-	@RequestMapping(value = "/getBoardTest.do")
-	public List<BoardMaster> getBoardTest(HttpServletRequest request, @RequestBody ParameterWrapper<BoardMaster> param) throws Exception {
-		logger.debug("=============getBoardTest Call =============");
-		logger.debug("=============getBoardTest Call =============");
-		return boardService.getBoardTest();
+	@RequestMapping(value = "/getBoard.do")
+	public List<BoardMaster> getBoard(HttpServletRequest request, @RequestBody ParameterWrapper<BoardMaster> param) throws Exception {
+		logger.debug("=============getBoard Call =============");
+		logger.debug("=============getBoard Call =============");
+		return boardService.getBoard();
 	}
 
 

@@ -10,7 +10,7 @@ import com.board.board.model.BoardMaster;
 @Mapper
 public interface BoardMapper {
 
-	public List<BoardMaster> getBoardTest() throws Exception;
+	public List<BoardMaster> getBoard() throws Exception;
 
 	public void insertArticle(BoardMaster param) throws Exception;
 

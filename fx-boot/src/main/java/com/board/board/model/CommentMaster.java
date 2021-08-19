@@ -5,16 +5,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BoardMaster {
+public class CommentMaster {
 
 	int idx;
-	String title;
 	String contents;
 	String insuser;
 	String insdate;
 	String moduser;
 	String moddate;
-	int readCnt;
-	int commentCnt;
+	int boardIdx;
 	int deleteFg;
 }

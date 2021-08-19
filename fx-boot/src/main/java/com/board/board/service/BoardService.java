@@ -13,8 +13,8 @@ public class BoardService {
 	@Autowired
 	com.board.board.mapper.BoardMapper boardMapper;
 
-	public List<BoardMaster> getBoardTest() throws Exception {
-		return boardMapper.getBoardTest();
+	public List<BoardMaster> getBoard() throws Exception {
+		return boardMapper.getBoard();
 	}
 
 	public void insertArticle(BoardMaster param) throws Exception {

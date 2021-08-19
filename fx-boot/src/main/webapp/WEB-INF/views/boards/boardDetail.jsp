@@ -21,21 +21,42 @@ function del(idx) {
 		<hr />
 		<div class="mb-3">
 			<input type="hidden" name="getArticle.idx" value="${getArticle.idx }"></input>
-			<label for="getArticle.title" class="form-label">제목</label> <input
-				type="text" class="form-control" id="getBoardContents.title"
-				name="getArticle.title" value="${getArticle.title }" readonly></input>
+			<label for="getArticle.title" class="form-label">제목</label>
+			<div class = "form-control">
+				<c:out value = "${getArticle.title }" />
+			</div>
 		</div>
 		<div class="mb-3">
 			<label for="getArticle.contents" class="form-label">내용</label>
-			<div class="form-control" readonly>
+			<div class="form-control">
 				<c:out value="${getArticle.contents }" escapeXml="false" />
 			</div>
 		</div>
 		<div class="float-right">
 			<a href="/boardModify.do?idx=${getArticle.idx }"><button type="button" class="btn btn-primary">수정</button></a>
-			<!-- <a href="/boardDelete.do?idx=${getArticle.idx }"> --><button type="button" id = "deleteButton" class="btn btn-primary"
-			onclick = "del(${getArticle.idx})">삭제</button>
+			<button type="button" id = "deleteButton" class="btn btn-primary" onclick = "del(${getArticle.idx})">삭제</button>
 			<a href="/board-main.do"><button type="submit" class="btn btn-primary">목록</button></a>
+		</div>
+		<br /> <br />
+		<div>
+			<label for = "commentList">댓글</label>
+		</div>
+		<hr>
+		<div>
+			<ol>
+				<c:forEach items = "${commentList }" var = "commentList">
+					<li>
+						<input type = "hidden" name = "getComment.idx" value = "${commentList.idx }"></input>
+							<div class = "comment">
+								<strong id = "getComment.moduser">${commentList.moduser }</strong>
+								<small id = "getComment.moddate" class = "float-center">${commentList.moddate }</small>
+							</div>
+							<div>
+								<p id = "getComment.contents">${commentList.contents }</p>
+							</div>
+					</li>
+				</c:forEach>
+			</ol>
 		</div>
 	</div>
 </body>
