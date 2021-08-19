@@ -35,7 +35,7 @@ function del(idx) {
 		<div class="float-right">
 			<a href="/boardModify.do?idx=${getArticle.idx }"><button type="button" class="btn btn-primary">수정</button></a>
 			<button type="button" id = "deleteButton" class="btn btn-primary" onclick = "del(${getArticle.idx})">삭제</button>
-			<a href="/board-main.do"><button type="submit" class="btn btn-primary">목록</button></a>
+			<a href="/board-main.do"><button type="button" class="btn btn-primary">목록</button></a>
 		</div>
 		<br /> <br />
 		<div>
@@ -44,10 +44,10 @@ function del(idx) {
 		<hr>
 		<div>
 			<ol>
-				<c:forEach items = "${commentList }" var = "commentList">
-					<li>
+				<c:forEach items = "${commentList }" var = "commentList" varStatus = "status">
+					<li class = "form-control">
 						<input type = "hidden" name = "getComment.idx" value = "${commentList.idx }"></input>
-							<div class = "comment">
+							<div>
 								<strong id = "getComment.moduser">${commentList.moduser }</strong>
 								<small id = "getComment.moddate" class = "float-center">${commentList.moddate }</small>
 							</div>

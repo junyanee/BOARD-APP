@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,6 +24,7 @@ import com.board.board.service.CommentService;
 import com.board.common.model.ParameterWrapper;
 import com.board.common.model.UserMaster;
 import com.board.common.service.LoginService;
+import com.board.utility.Pagination;
 
 @RestController
 @RequestMapping(value="/")
@@ -66,13 +68,23 @@ public class BoardController {
 
 	// 전체 게시판 불러오기
 	@RequestMapping(value = "/board-main.do")
-	public ModelAndView board_main(HttpServletRequest request) throws Exception {
+	public ModelAndView board_main(HttpServletRequest request,
+			@RequestParam(required = false, defaultValue = "1") int page,
+			@RequestParam(required = false, defaultValue = "1") int range) throws Exception {
 		ModelAndView mv = new ModelAndView();
-		List<BoardMaster> boardList = boardService.getBoard();
+
+		// Pagination
+		int listCnt = boardService.getBoardListCnt();
+		Pagination pagination = new Pagination();
+		pagination.pageInfo(page, range, listCnt);
+		List<BoardMaster> boardList = boardService.getBoardList(pagination);
+		mv.addObject("pagination", pagination);
+
 		mv.addObject("boardList", boardList);
 		mv.setViewName("boards/boardList");
 		return mv;
 	}
+
 	// 새 게시글 작성 페이지 호출 (GET)
 	@RequestMapping(value = "/boardWrite.do", method = RequestMethod.GET)
 	public ModelAndView boardWriteGET(HttpServletRequest request) throws Exception {
@@ -179,12 +191,12 @@ public class BoardController {
 	}
 
 
-	@RequestMapping(value = "/getBoard.do")
-	public List<BoardMaster> getBoard(HttpServletRequest request, @RequestBody ParameterWrapper<BoardMaster> param) throws Exception {
-		logger.debug("=============getBoard Call =============");
-		logger.debug("=============getBoard Call =============");
-		return boardService.getBoard();
-	}
+//	@RequestMapping(value = "/getBoardList.do")
+//	public List<BoardMaster> getBoardList(HttpServletRequest request, @RequestBody ParameterWrapper<BoardMaster> param) throws Exception {
+//		logger.debug("=============getBoardList Call =============");
+//		logger.debug("=============getBoardList Call =============");
+//		return boardService.getBoardList();
+//	}
 
 
 
