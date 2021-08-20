@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.board.board.model.BoardMaster;
-import com.board.utility.Pagination;
+import com.board.utility.Search;
 
 
 @Service
@@ -14,12 +14,12 @@ public class BoardService {
 	@Autowired
 	com.board.board.mapper.BoardMapper boardMapper;
 
-	public List<BoardMaster> getBoardList(Pagination pagination) throws Exception {
-		return boardMapper.getBoardList(pagination);
+	public List<BoardMaster> getBoardList(Search search) throws Exception {
+		return boardMapper.getBoardList(search);
 	}
 
-	public int getBoardListCnt() throws Exception {
-		return boardMapper.getBoardListCnt();
+	public int getBoardListCnt(Search search) throws Exception {
+		return boardMapper.getBoardListCnt(search);
 	}
 
 	public void insertArticle(BoardMaster param) throws Exception {

@@ -6,10 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,10 +19,9 @@ import com.board.board.model.BoardMaster;
 import com.board.board.model.CommentMaster;
 import com.board.board.service.BoardService;
 import com.board.board.service.CommentService;
-import com.board.common.model.ParameterWrapper;
 import com.board.common.model.UserMaster;
 import com.board.common.service.LoginService;
-import com.board.utility.Pagination;
+import com.board.utility.Search;
 
 @RestController
 @RequestMapping(value="/")
@@ -37,7 +34,7 @@ public class BoardController {
 	@Autowired
 	CommentService commentService;
 
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+//	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 /*
  * Login Check 필요한 페이지의 경우 @RequestMapping 위에 @LoginCheck 어노테이션을 추가해줄것.
@@ -69,17 +66,23 @@ public class BoardController {
 	// 전체 게시판 불러오기
 	@RequestMapping(value = "/board-main.do")
 	public ModelAndView board_main(HttpServletRequest request,
-			@RequestParam(required = false, defaultValue = "1") int page,
-			@RequestParam(required = false, defaultValue = "1") int range) throws Exception {
+		@RequestParam(required = false, defaultValue = "1") int page,
+		@RequestParam(required = false, defaultValue = "1") int range,
+		@RequestParam(required = false, defaultValue = "title") String searchType,
+		@RequestParam(required = false) String keyword,
+		@ModelAttribute("search") Search search) throws Exception {
 		ModelAndView mv = new ModelAndView();
 
-		// Pagination
-		int listCnt = boardService.getBoardListCnt();
-		Pagination pagination = new Pagination();
-		pagination.pageInfo(page, range, listCnt);
-		List<BoardMaster> boardList = boardService.getBoardList(pagination);
-		mv.addObject("pagination", pagination);
+		// Search
+		mv.addObject("search", search);
+		search.setSearchType(searchType);
+		search.setKeyword(keyword);
 
+		// Pagination
+		int listCnt = boardService.getBoardListCnt(search);
+		search.pageInfo(page, range, listCnt);
+		List<BoardMaster> boardList = boardService.getBoardList(search);
+		mv.addObject("pagination", search);
 		mv.addObject("boardList", boardList);
 		mv.setViewName("boards/boardList");
 		return mv;
