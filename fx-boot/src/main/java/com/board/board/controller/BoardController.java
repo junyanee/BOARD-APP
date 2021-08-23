@@ -23,6 +23,8 @@ import com.board.common.model.UserMaster;
 import com.board.common.service.LoginService;
 import com.board.utility.Search;
 
+import ch.qos.logback.classic.Logger;
+
 @RestController
 @RequestMapping(value="/")
 public class BoardController {
@@ -102,7 +104,6 @@ public class BoardController {
 	public ModelAndView boardWritePOST(HttpServletRequest request, HttpServletResponse response, ModelAndView mv) throws Exception {
 		HttpSession session = request.getSession(false);
 		UserMaster userMaster = (UserMaster)session.getAttribute("userInfo");
-		//String userId = session.getAttribute("userId").toString();
 		BoardMaster boardMaster = new BoardMaster();
 		boardMaster.setTitle(request.getParameter("newArticle.title"));
 		boardMaster.setContents(request.getParameter("newArticle.contents"));
@@ -152,18 +153,25 @@ public class BoardController {
 	@LoginCheck
 	@RequestMapping(value = "/boardModify.do", method = RequestMethod.GET)
 	public ModelAndView modifyArticleGET(HttpServletRequest request, ModelAndView mv) throws Exception {
+		HttpSession session = request.getSession(false);
+		UserMaster userMaster = (UserMaster)session.getAttribute("userInfo");
 		int boardIdx = Integer.parseInt(request.getParameter("idx"));
 		BoardMaster boardArticle = boardService.getArticle(boardIdx);
-		mv.addObject("modifyArticle", boardArticle);
-		mv.setViewName("boards/boardModify");
-		return mv;
+		if (userMaster.getEmpCode().equals(boardArticle.getInsuser())) {
+			mv.addObject("modifyArticle", boardArticle);
+			mv.setViewName("boards/boardModify");
+			return mv;
+		} else {
+			mv.setViewName("redirect:/board-main.do");
+			return mv;
+		}
 
 	}
 
 	// 선택된 게시글 수정(POST)
 	@LoginCheck
 	@RequestMapping(value = "/boardModify.do", method = RequestMethod.POST)
-	public ModelAndView modifyArticlePOST(HttpServletRequest request, HttpServletResponse response, ModelAndView mv) throws Exception {
+	public ModelAndView modifyArticlePOST(HttpServletRequest request, ModelAndView mv) throws Exception {
 		HttpSession session = request.getSession(false);
 		UserMaster userMaster = (UserMaster)session.getAttribute("userInfo");
 		BoardMaster boardMaster = new BoardMaster();
@@ -175,8 +183,8 @@ public class BoardController {
 		mv.setViewName("redirect:/board-main.do");
 		boardService.modifyArticle(boardMaster);
 		return mv;
+		}
 
-	}
 
 	// 선택된 게시글 삭제(GET)
 	@LoginCheck
@@ -184,13 +192,19 @@ public class BoardController {
 	public ModelAndView deleteArticlePOST(HttpServletRequest request, ModelAndView mv) throws Exception {
 		HttpSession session = request.getSession(false);
 		UserMaster userMaster = (UserMaster)session.getAttribute("userInfo");
-		BoardMaster boardMaster = new BoardMaster();
-		boardMaster.setIdx(Integer.parseInt(request.getParameter("idx")));
-		boardMaster.setModuser(userMaster.getEmpCode());
-		boardService.deleteArticle(boardMaster);
-		mv.setViewName("redirect:/board-main.do");
+		int boardIdx = Integer.parseInt(request.getParameter("idx"));
+		BoardMaster boardMaster = boardService.getArticle(boardIdx);
+		if (userMaster.getEmpCode().equals(boardMaster.getInsuser())) {
+			boardMaster.setIdx(Integer.parseInt(request.getParameter("idx")));
+			boardMaster.setModuser(userMaster.getEmpCode());
+			boardService.deleteArticle(boardMaster);
+			mv.setViewName("redirect:/board-main.do");
+			return mv;
+		} else {
+			mv.setViewName("redirect:/board-main.do");
+			return mv;
+		}
 
-		return mv;
 	}
 
 

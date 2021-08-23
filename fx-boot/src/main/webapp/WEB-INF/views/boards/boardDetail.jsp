@@ -21,6 +21,7 @@ function del(idx) {
 		<hr />
 		<div class="mb-3">
 			<input type="hidden" name="getArticle.idx" value="${getArticle.idx }"></input>
+			<input type = "hidden" name = "getArticle.insuser" value = "${getArticle.insuser }"></input>
 			<label for="getArticle.title" class="form-label">제목</label>
 			<div class = "form-control">
 				<c:out value = "${getArticle.title }" />
@@ -33,13 +34,16 @@ function del(idx) {
 			</div>
 		</div>
 		<div class="float-right">
-			<a href="/boardModify.do?idx=${getArticle.idx }"><button type="button" class="btn btn-primary">수정</button></a>
-			<button type="button" id = "deleteButton" class="btn btn-primary" onclick = "del(${getArticle.idx})">삭제</button>
-			<a href="/board-main.do"><button type="button" class="btn btn-primary">목록</button></a>
+			<!-- 게시글 등록한 사람에게만 수정, 삭제 버튼 출력 -->
+			<c:if test = "${sessionScope.userInfo.empCode == getArticle.insuser }">
+				<a href ="/boardModify.do?idx=${getArticle.idx }"><button type ="button" class="btn btn-primary"> 수정 </button></a>
+				<button type="button" id = "deleteButton" class="btn btn-primary" onclick = "del(${getArticle.idx})"> 삭제 </button>
+			</c:if>
+			<a href="/board-main.do"><button type="button" class="btn btn-primary"> 목록 </button></a>
 		</div>
 		<br /> <br />
 		<div>
-			<label for = "commentList">댓글</label>
+			<label for = "commentList"> 댓글 </label>
 		</div>
 		<hr>
 		<div>

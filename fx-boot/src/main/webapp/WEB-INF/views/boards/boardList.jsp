@@ -85,7 +85,10 @@ $(document).on('click', '#btnSearch', function(e) {
 			</table>
 		</div>
 		<div>
-			<a href="/boardWrite.do"><button type = "button" class="btn btn-dark float-right">글쓰기</button></a>
+			<!-- 로그인 정보 있을때만 글쓰기 버튼 출력 -->
+			<c:if test = "${sessionScope.userInfo != null }">
+				<a href="/boardWrite.do"><button type = "button" class="btn btn-dark float-right">글쓰기</button></a>
+			</c:if>
 		</div>
 			<br>
 			<hr>
@@ -109,20 +112,41 @@ $(document).on('click', '#btnSearch', function(e) {
 				</c:if>
 			</ul>
 		</div>
+		<br />
 		<!-- Search  -->
-		<div class = "form-group row justify-content-center">
-			<div>
-				<select class = "form-control form-control-sm" name = "searchType" id = "searchType">
-					<option value = "title">제목</option>
-					<option value = "content">본문</option>
-					<option value = "insuser">사번</option>
+		<div class = "form-group row">
+			<div class = "col-1">
+				<select name = "searchType" id = "searchType"
+				style = "
+				color: #495057;
+                background-color: #fff;
+                border-color: #ced4da;
+                display: inline-block;
+                padding: 6px 12px;
+                margin-bottom: 0;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 1.42857143;
+                text-align: center;
+                white-space: nowrap;
+                vertical-align: middle;
+                -ms-touch-action: manipulation;
+                touch-action: manipulation;
+                cursor: pointer;
+                background-image: none;
+                border: 1px solid;
+                border-radius: 4px;
+                ">
+						<option value = "title">제목</option>
+						<option value = "content">본문</option>
+						<option value = "insuser">사번</option>
 				</select>
 			</div>
-			<div>
-				<input type = "text" class = "form-control form-control-sm" name = "keyword" id = "keyword" value = "${pagination.keyword }">
+			<div class = "col-10">
+				<input type = "text" class = "form-control" name = "keyword" id = "keyword" value = "${pagination.keyword }" placeholder = "검색어를 입력해주세요">
 			</div>
-			<div>
-				<button class = "btn btn-sm btn-primary float-right" name = "btnSearch" id = "btnSearch">검색</button>
+			<div class = "col">
+				<button class = "btn btn-default btn-primary" type = "button" name = "btnSearch" id = "btnSearch">검색</button>
 			</div>
 		</div>
 	</div>
