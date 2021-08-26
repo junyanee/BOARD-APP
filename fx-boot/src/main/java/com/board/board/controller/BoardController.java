@@ -27,8 +27,6 @@ import com.board.common.model.UserMaster;
 import com.board.common.service.LoginService;
 import com.board.utility.Search;
 
-import ch.qos.logback.classic.Logger;
-
 @RestController
 @RequestMapping(value = "/")
 public class BoardController {
