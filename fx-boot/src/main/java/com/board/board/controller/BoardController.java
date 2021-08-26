@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,7 +30,7 @@ import com.board.utility.Search;
 import ch.qos.logback.classic.Logger;
 
 @RestController
-@RequestMapping(value="/")
+@RequestMapping(value = "/")
 public class BoardController {
 
 	@Autowired
@@ -41,43 +40,40 @@ public class BoardController {
 	@Autowired
 	CommentService commentService;
 
-//	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-/*
- * Login Check 필요한 페이지의 경우 @RequestMapping 위에 @LoginCheck 어노테이션을 추가해줄것.
- * */
+	/*
+	 * Login Check 필요한 페이지의 경우 @RequestMapping 위에 @LoginCheck 어노테이션을 추가해줄것.
+	 */
 	@RequestMapping(value = "/home.do")
 	public ModelAndView home(HttpServletRequest request) throws Exception {
 		ModelAndView mv = new ModelAndView();
-		//최초 홈 접근시 세션이 없을 경우 세션 객체 생성함.
+		// 최초 홈 접근시 세션이 없을 경우 세션 객체 생성함.
 		HttpSession session = request.getSession(true);
 
-		//Home 진입시 Session에 담긴 정보를 가져오기 위함
+		// Home 진입시 Session에 담긴 정보를 가져오기 위함
 		getUser(request);
-		UserMaster userVo = (UserMaster)session.getAttribute("userInfo");
+		UserMaster userVo = (UserMaster) session.getAttribute("userInfo");
 
-		if(userVo == null) {
-			//ticket정보가 session에 없을 경우(logout, 다른사용자 로그인) loginForm으로 이동시키기 위함
+		if (userVo == null) {
+			// ticket정보가 session에 없을 경우(logout, 다른사용자 로그인) loginForm으로 이동시키기 위함
 			mv.setViewName("redirect:/Login/Login.do");
-		}
-		else {
+		} else {
 			mv.setViewName("main/home");
 		}
 		return mv;
 	}
-	//session 정보를 활용한 getUser
-	private void getUser(HttpServletRequest request) throws Exception{
+
+	// session 정보를 활용한 getUser
+	private void getUser(HttpServletRequest request) throws Exception {
 		loginService.ssoGetUserId(request);
 	}
 
 	// 전체 게시판 불러오기
 	@RequestMapping(value = "/board-main.do")
 	public ModelAndView board_main(HttpServletRequest request,
-		@RequestParam(required = false, defaultValue = "1") int page,
-		@RequestParam(required = false, defaultValue = "1") int range,
-		@RequestParam(required = false, defaultValue = "title") String searchType,
-		@RequestParam(required = false) String keyword,
-		@ModelAttribute("search") Search search) throws Exception {
+			@RequestParam(required = false, defaultValue = "1") int page,
+			@RequestParam(required = false, defaultValue = "1") int range,
+			@RequestParam(required = false, defaultValue = "title") String searchType,
+			@RequestParam(required = false) String keyword, @ModelAttribute("search") Search search) throws Exception {
 		ModelAndView mv = new ModelAndView();
 
 		// Search
@@ -106,9 +102,10 @@ public class BoardController {
 	// 새 게시글 작성 (POST)
 	@LoginCheck
 	@RequestMapping(value = "/boardWrite.do", method = RequestMethod.POST)
-	public ModelAndView boardWritePOST(MultipartHttpServletRequest request, HttpServletResponse response, ModelAndView mv) throws Exception {
+	public ModelAndView boardWritePOST(MultipartHttpServletRequest request, HttpServletResponse response,
+			ModelAndView mv) throws Exception {
 		HttpSession session = request.getSession(false);
-		UserMaster userMaster = (UserMaster)session.getAttribute("userInfo");
+		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
 		BoardMaster boardMaster = new BoardMaster();
 		boardMaster.setTitle(request.getParameter("newArticle.title"));
 		boardMaster.setContents(request.getParameter("newArticle.contents"));
@@ -155,7 +152,6 @@ public class BoardController {
 		/////////////////////////////////////////////////
 	}
 
-
 	// 선택된 게시글 조회(GET)
 	@RequestMapping(value = "/boardDetail.do", method = RequestMethod.GET)
 	public ModelAndView getArticle(HttpServletRequest request, ModelAndView mv) throws Exception {
@@ -175,13 +171,14 @@ public class BoardController {
 	@RequestMapping(value = "/downloadBoardFile.do")
 	public void downloadBoardFile(@RequestParam int idx, HttpServletResponse response) throws Exception {
 		FileMaster fileMaster = boardService.downloadFile(idx);
-			byte [] file = fileMaster.getFileBytes();
-			response.setContentType("application/x-msdownload");
-			response.setContentLength(file.length);
-			response.addHeader("Content-Disposition", "attachment;filename=\"" + URLEncoder.encode(fileMaster.getOrgFileName(), "UTF-8") + "\";");
-			response.getOutputStream().write(file);
-			response.getOutputStream().flush();
-			response.getOutputStream().close();
+		byte[] file = fileMaster.getFileBytes();
+		response.setContentType("application/x-msdownload");
+		response.setContentLength(file.length);
+		response.addHeader("Content-Disposition",
+				"attachment;filename=\"" + URLEncoder.encode(fileMaster.getOrgFileName(), "UTF-8") + "\";");
+		response.getOutputStream().write(file);
+		response.getOutputStream().flush();
+		response.getOutputStream().close();
 	}
 
 	// 선택된 게시글 수정(GET)
@@ -189,7 +186,7 @@ public class BoardController {
 	@RequestMapping(value = "/boardModify.do", method = RequestMethod.GET)
 	public ModelAndView modifyArticleGET(HttpServletRequest request, ModelAndView mv) throws Exception {
 		HttpSession session = request.getSession(false);
-		UserMaster userMaster = (UserMaster)session.getAttribute("userInfo");
+		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
 		int boardIdx = Integer.parseInt(request.getParameter("idx"));
 		BoardMaster boardArticle = boardService.getArticle(boardIdx);
 		if (userMaster.getEmpCode().equals(boardArticle.getInsuser())) {
@@ -206,9 +203,10 @@ public class BoardController {
 	// 선택된 게시글 수정(POST)
 	@LoginCheck
 	@RequestMapping(value = "/boardModify.do", method = RequestMethod.POST)
-	public ModelAndView modifyArticlePOST(MultipartHttpServletRequest request, HttpServletResponse response, ModelAndView mv) throws Exception {
+	public ModelAndView modifyArticlePOST(MultipartHttpServletRequest request, HttpServletResponse response,
+			ModelAndView mv) throws Exception {
 		HttpSession session = request.getSession(false);
-		UserMaster userMaster = (UserMaster)session.getAttribute("userInfo");
+		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
 		BoardMaster boardMaster = new BoardMaster();
 		boardMaster.setIdx(Integer.parseInt(request.getParameter("idx")));
 		boardMaster.setTitle(request.getParameter("modifyArticle.title"));
@@ -264,13 +262,12 @@ public class BoardController {
 		return mv;
 	}
 
-
 	// 선택된 게시글 삭제(GET)
 	@LoginCheck
 	@RequestMapping(value = "/boardDelete.do", method = RequestMethod.GET)
 	public ModelAndView deleteArticlePOST(HttpServletRequest request, ModelAndView mv) throws Exception {
 		HttpSession session = request.getSession(false);
-		UserMaster userMaster = (UserMaster)session.getAttribute("userInfo");
+		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
 		int boardIdx = Integer.parseInt(request.getParameter("idx"));
 		BoardMaster boardMaster = boardService.getArticle(boardIdx);
 		if (userMaster.getEmpCode().equals(boardMaster.getInsuser())) {
@@ -285,16 +282,5 @@ public class BoardController {
 		}
 
 	}
-
-
-
-//	@RequestMapping(value = "/getBoardList.do")
-//	public List<BoardMaster> getBoardList(HttpServletRequest request, @RequestBody ParameterWrapper<BoardMaster> param) throws Exception {
-//		logger.debug("=============getBoardList Call =============");
-//		logger.debug("=============getBoardList Call =============");
-//		return boardService.getBoardList();
-//	}
-
-
 
 }
