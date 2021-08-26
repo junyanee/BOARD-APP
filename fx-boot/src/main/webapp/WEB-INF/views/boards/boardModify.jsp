@@ -51,7 +51,7 @@ $(document).ready(function (){
 	<div class = "container">
 		<h3>게시글 수정</h3>
 		<hr />
-		<form method="POST" id="frm" name="frm">
+		<form method="POST" id="frm" name="frm" enctype = "multipart/form-data">
 			<div class="mb-3">
 				<label for="exampleFormControlInput1" class="form-label">제목</label>
 				<input type="text" class="form-control" id="modifyArticle.title"
@@ -63,12 +63,11 @@ $(document).ready(function (){
 					id="modifyArticle.contents" rows="15" cols="200">${modifyArticle.contents }</textarea>
 			</div>
 			<div class="mb-3">
-				<label for="formFileMultiple" class="form-label">파일 업로드</label> <input
-					class="form-control" type="file" id="formFileMultiple" multiple>
+				<label for="formFileMultiple" class="form-label">파일 업로드</label>
+				<input class="form-control fileUpload" type="file" id="formFileMultiple" name = "uploadFile" multiple = "multiple">
 			</div>
 			<div class = "float-right">
 			<button class="btn btn-primary" type="button" id="saveButton">수정하기</button>
-			<button class="btn btn-primary" type="button" id="resetButton">리셋하기</button>
 			</div>
 		</form>
 	</div>

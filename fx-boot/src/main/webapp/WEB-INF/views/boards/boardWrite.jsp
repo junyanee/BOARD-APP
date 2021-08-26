@@ -48,9 +48,10 @@ $(document).ready(function (){
 </head>
 
 <body>
+<div class = "container">
 	<h3>새 게시글 작성</h3>
 	<hr />
-	<form method="POST" id="frm" name="frm" enctype = "multipart/form-data"> <!-- enctype = "multipart/form-data" -->
+	<form method="POST" id="frm" name="frm" enctype = "multipart/form-data">
 		<div class="mb-3">
 			<label for="exampleFormControlInput1" class="form-label">제목</label> <input
 				type="text" class="form-control" id="newArticle.title"
@@ -63,9 +64,10 @@ $(document).ready(function (){
 		</div>
 		<div class="mb-3">
 			<label for="formFileMultiple" class="form-label">파일 업로드</label>
-			<input class="form-control" type="file" id="formFileMultiple" name = "uploadFile" multiple = "multiple">
+			<input class="form-control fileUpload" type="file" id="formFileMultiple" name = "uploadFile" multiple = "multiple">
 		</div>
 		<button class="btn btn-primary" type="button" id="saveButton">글쓰기</button>
 	</form>
+</div>
 </body>
 </html>

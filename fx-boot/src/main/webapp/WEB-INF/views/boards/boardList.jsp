@@ -87,7 +87,7 @@ $(document).on('click', '#btnSearch', function(e) {
 		<div>
 			<!-- 로그인 정보 있을때만 글쓰기 버튼 출력 -->
 			<c:if test = "${sessionScope.userInfo != null }">
-				<a href="/boardWrite.do"><button type = "button" class="btn btn-dark float-right">글쓰기</button></a>
+				<a href="/boardWrite.do"><button type = "button" class="btn btn-primary float-right">글쓰기</button></a>
 			</c:if>
 		</div>
 			<br>
