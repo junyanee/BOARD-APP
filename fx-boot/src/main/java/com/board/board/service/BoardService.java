@@ -32,7 +32,6 @@ public class BoardService {
 
 	public BoardMaster getArticle(int boardIdx) throws Exception {
 		return boardMapper.getArticle(boardIdx);
-
 	}
 
 	public void updateReadCnt(int boardIdx) throws Exception {
@@ -54,7 +53,4 @@ public class BoardService {
 	public FileMaster downloadFile(int idx) throws Exception {
 		return boardMapper.downloadFile(idx);
 	}
-
-
-
 }

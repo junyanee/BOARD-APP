@@ -112,7 +112,7 @@ public class BoardController {
 		boardMaster.setInsuser(userMaster.getEmpCode());
 		boardMaster.setModuser(userMaster.getEmpCode());
 
-		//////////// backend valCheck (x) ///////////////
+		// Validation Check
 		if (boardMaster.getTitle().equals("")) {
 			response.setContentType("text/html; charset=UTF-8");
 			PrintWriter out = response.getWriter();
@@ -149,7 +149,6 @@ public class BoardController {
 		}
 		mv.setViewName("boards/boardWrite");
 		return mv;
-		/////////////////////////////////////////////////
 	}
 
 	// 선택된 게시글 조회(GET)
@@ -197,7 +196,6 @@ public class BoardController {
 			mv.setViewName("redirect:/board-main.do");
 			return mv;
 		}
-
 	}
 
 	// 선택된 게시글 수정(POST)
@@ -213,7 +211,7 @@ public class BoardController {
 		boardMaster.setContents(request.getParameter("modifyArticle.contents"));
 		boardMaster.setModuser(userMaster.getEmpCode());
 
-		//////////// backend valCheck (x) ///////////////
+		// Validation Check
 		if (boardMaster.getTitle().equals("")) {
 			response.setContentType("text/html; charset=UTF-8");
 			PrintWriter out = response.getWriter();
@@ -280,7 +278,5 @@ public class BoardController {
 			mv.setViewName("redirect:/board-main.do");
 			return mv;
 		}
-
 	}
-
 }
