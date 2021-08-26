@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.board.board.model.BoardMaster;
 import com.board.board.model.FileMaster;
 import com.board.utility.Search;
@@ -34,7 +32,6 @@ public class BoardService {
 
 	public BoardMaster getArticle(int boardIdx) throws Exception {
 		return boardMapper.getArticle(boardIdx);
-
 	}
 
 	public void updateReadCnt(int boardIdx) throws Exception {
@@ -56,7 +53,4 @@ public class BoardService {
 	public FileMaster downloadFile(int idx) throws Exception {
 		return boardMapper.downloadFile(idx);
 	}
-
-
-
 }

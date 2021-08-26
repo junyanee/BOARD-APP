@@ -25,17 +25,6 @@
           <li class="nav-item">
             <a class="nav-link" href="Login/Login.do">로그인 페이지</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#">Disabled</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown04">
-              <a class="dropdown-item" href="#">DDL1</a>
-              <a class="dropdown-item" href="#">DDL2</a>
-              <a class="dropdown-item" href="#">DDL3</a>
-            </div>
-          </li>
         </ul>
         <!-- <button type="submit" class="btn btn-login" onclick = 'console.log("눌렀음")'>Login/Logout</button>  -->
 
