@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.board.board.model.BoardMaster;
+import com.board.board.model.FileMaster;
 import com.board.utility.Search;
 
 
@@ -22,8 +24,12 @@ public class BoardService {
 		return boardMapper.getBoardListCnt(search);
 	}
 
-	public void insertArticle(BoardMaster param) throws Exception {
-		boardMapper.insertArticle(param);
+	public void uploadFile(FileMaster file) throws Exception {
+		boardMapper.uploadFile(file);
+	}
+
+	public int insertArticle(BoardMaster param) throws Exception {
+		return boardMapper.insertArticle(param);
 	}
 
 	public BoardMaster getArticle(int boardIdx) throws Exception {
@@ -42,5 +48,15 @@ public class BoardService {
 	public void deleteArticle(BoardMaster param) throws Exception {
 		boardMapper.deleteArticle(param);
 	}
+
+	public List<FileMaster> getFileList(int boardIdx) throws Exception {
+		return boardMapper.getFileList(boardIdx);
+	}
+
+	public FileMaster downloadFile(int idx) throws Exception {
+		return boardMapper.downloadFile(idx);
+	}
+
+
 
 }

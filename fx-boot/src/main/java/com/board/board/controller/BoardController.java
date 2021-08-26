@@ -1,22 +1,27 @@
 package com.board.board.controller;
 
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.board.aop.annotation.LoginCheck;
 import com.board.board.model.BoardMaster;
 import com.board.board.model.CommentMaster;
+import com.board.board.model.FileMaster;
 import com.board.board.service.BoardService;
 import com.board.board.service.CommentService;
 import com.board.common.model.UserMaster;
@@ -101,7 +106,7 @@ public class BoardController {
 	// 새 게시글 작성 (POST)
 	@LoginCheck
 	@RequestMapping(value = "/boardWrite.do", method = RequestMethod.POST)
-	public ModelAndView boardWritePOST(HttpServletRequest request, HttpServletResponse response, ModelAndView mv) throws Exception {
+	public ModelAndView boardWritePOST(MultipartHttpServletRequest request, HttpServletResponse response, ModelAndView mv) throws Exception {
 		HttpSession session = request.getSession(false);
 		UserMaster userMaster = (UserMaster)session.getAttribute("userInfo");
 		BoardMaster boardMaster = new BoardMaster();
@@ -125,7 +130,23 @@ public class BoardController {
 			} else {
 				mv.addObject("boardDetail", boardMaster);
 				mv.setViewName("redirect:/board-main.do");
-				boardService.insertArticle(boardMaster);
+				// 게시글 먼저 삽입하고 이후에 파일 삽입
+				// 게시글 삽입하면서 해당 IDX 가져옴
+				int boardIdx = boardService.insertArticle(boardMaster);
+
+				List<MultipartFile> multiFileList = request.getFiles("uploadFile");
+				FileMaster fileMaster = new FileMaster();
+
+				for (MultipartFile file : multiFileList) {
+					fileMaster.setBoardIdx(boardIdx);
+					fileMaster.setOrgFileName(file.getOriginalFilename()); // 파일 이름
+					fileMaster.setFileBytes(file.getBytes()); //파일 바이너리
+					fileMaster.setFileSize(file.getSize()); // 파일 사이즈
+					fileMaster.setInsuser(userMaster.getEmpCode());
+					fileMaster.setModuser(userMaster.getEmpCode());
+					boardService.uploadFile(fileMaster);
+				}
+				// 가져온 게시글 IDX 에 맞게 파일 삽입
 				return mv;
 			}
 		}
@@ -141,12 +162,27 @@ public class BoardController {
 	public ModelAndView getArticle(HttpServletRequest request, ModelAndView mv) throws Exception {
 		int boardIdx = Integer.parseInt(request.getParameter("idx"));
 		BoardMaster boardArticle = boardService.getArticle(boardIdx);
+		List<FileMaster> fileList = boardService.getFileList(boardIdx);
+		mv.addObject("fileList", fileList);
 		List<CommentMaster> commentList = commentService.getComment(boardIdx);
 		boardService.updateReadCnt(boardIdx);
 		mv.addObject("getArticle", boardArticle);
 		mv.addObject("commentList", commentList);
 		mv.setViewName("boards/boardDetail");
 		return mv;
+	}
+
+	// 파일 다운로드
+	@RequestMapping(value = "/downloadBoardFile.do")
+	public void downloadBoardFile(@RequestParam int idx, HttpServletResponse response) throws Exception {
+		FileMaster fileMaster = boardService.downloadFile(idx);
+			byte [] file = fileMaster.getFileBytes();
+			response.setContentType("application/x-msdownload");
+			response.setContentLength(file.length);
+			response.addHeader("Content-Disposition", "attachment;filename=\"" + URLEncoder.encode(fileMaster.getOrgFileName(), "UTF-8") + "\";");
+			response.getOutputStream().write(file);
+			response.getOutputStream().flush();
+			response.getOutputStream().close();
 	}
 
 	// 선택된 게시글 수정(GET)
@@ -206,6 +242,7 @@ public class BoardController {
 		}
 
 	}
+
 
 
 //	@RequestMapping(value = "/getBoardList.do")

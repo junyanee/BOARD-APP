@@ -17,17 +17,6 @@
 
 <select id = "getBoardListCnt" resultType = "int">
 {
-	call GetBoardCnt
-	(
-		@SearchType = #{searchType, mode = IN, jdbcType = VARCHAR},
-		@Keyword = #{keyword, mode = IN, jdbcType = VARCHAR}
-	)
-}
-
-</select>
-<!--
-<select id = "getBoardListCnt" resultType = "int">
-{
 	call SP_GetBoardCnt
 	(
 		@SearchType = #{searchType, mode = IN, jdbcType = VARCHAR},
@@ -36,8 +25,21 @@
 }
 
 </select>
- -->
-<insert id="insertArticle" parameterType="com.board.board.model.BoardMaster">
+<insert id = "uploadFile" parameterType = "com.board.board.model.FileMaster">
+{
+	call SP_InsertFile
+	(
+		@BoardIdx = #{boardIdx, mode = IN, jdbcType = INTEGER},
+		@OrgFileName = #{orgFileName, mode = IN, jdbcType = VARCHAR},
+		@FileBytes = #{fileBytes, mode = IN, jdbcType = BINARY},
+		@FileSize = #{fileSize, mode = IN, jdbcType = BIGINT},
+		@InsUser = #{insuser, mode = IN, jdbcType = VARCHAR},
+		@ModUser = #{moduser, mode = IN, jdbcType = VARCHAR}
+	)
+}
+</insert>
+
+<select id="insertArticle" parameterType="com.board.board.model.BoardMaster" resultType = "int">
 {
 	call SP_InsertBoard
 	(
@@ -47,7 +49,7 @@
 		@ModUser = #{moduser, mode = IN, jdbcType = VARCHAR}
 	)
 }
-</insert>
+</select>
 
 <select id="getArticle" parameterType="int" resultType="com.board.board.model.BoardMaster">
 {
@@ -88,5 +90,23 @@
 	)
 }
 </update>
+
+<select id = "getFileList" parameterType = "int" resultType = "com.board.board.model.FileMaster">
+{
+	call SP_GetFileList
+	(
+		@BoardIdx = #{boardIdx, mode = IN, jdbcType = INTEGER}
+	)
+}
+</select>
+
+<select id = "downloadFile" parameterType = "map" resultType = "com.board.board.model.FileMaster">
+{
+	call SP_DownloadFile
+	(
+		@Idx = #{fileList, mode = IN, jdbcType = INTEGER}
+	)
+}
+</select>
 
 </mapper>

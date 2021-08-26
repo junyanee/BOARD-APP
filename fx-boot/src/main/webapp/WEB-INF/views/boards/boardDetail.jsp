@@ -11,6 +11,10 @@ function del(idx) {
 		location.href = '/boardDelete.do?idx=' + idx;
 	}
 }
+
+function downloadFile(idx) {
+	location.href = '/downloadBoardFile.do?idx=' + idx;
+}
 </script>
 <meta charset="UTF-8">
 <title>선택된 게시글</title>
@@ -31,6 +35,17 @@ function del(idx) {
 			<label for="getArticle.contents" class="form-label">내용</label>
 			<div class="form-control">
 				<c:out value="${getArticle.contents }" escapeXml="false" />
+			</div>
+		</div>
+		<div class = "mb-3">
+			<label for="fileList" class = "form-label"> 첨부 파일 </label>
+			<div>
+				<c:forEach var = "fileList" items = "${fileList }" varStatus = "status">
+					<c:out value="${status.count }" />
+					<a href = "/downloadBoardFile.do?idx=${fileList.idx }"> <c:out value="${fileList.orgFileName }" /></a>
+					<small>${fileList.fileSize } byte</small>
+					<br/>
+				</c:forEach>
 			</div>
 		</div>
 		<div class="float-right">
