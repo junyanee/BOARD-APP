@@ -5,7 +5,8 @@ spring:
   servlet:
     multipart:
       max-file-size: 50MB
-      max-request-size: 50MB    
+      max-request-size: 50MB
+      location: C:/
   mvc:
     view:
       prefix: /WEB-INF/views/
@@ -33,10 +34,12 @@ login:
 --- #dev
 server:
   port: 8080
+  error:    include-exception: true # 오류  응답에 exception의 내용을 포함할 지 여부
+    include-stacktrace: always # 오류 응답에 stacktrace 내용을 포함할 지 여부
 spring:
   profiles: dev
   datasource:
-    name: a
+    name: Board_DEV
     url: jdbc:sqlserver://syc-app2:1433;databaseName=Board_DEV
     username: syc-app2_admin
     password: "$1Samyang#"

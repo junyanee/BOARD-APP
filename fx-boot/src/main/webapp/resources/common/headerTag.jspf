@@ -1,8 +1,36 @@
 <%@ include file="/resources/common/taglibs.jsp" %>
-<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/bootstrap/bootstrap-responsive.css" />"/>
-<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/bootstrap/bootstrap-responsive.min.css" />"/>
+<!-- css -->
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/bootstrap/bootstrap-grid.css" />"/>
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/bootstrap/bootstrap-grid.min.css" />"/>
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/bootstrap/bootstrap-grid.rtl.css" />"/>
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/bootstrap/bootstrap-grid.rtl.min.css" />"/>
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/bootstrap/bootstrap-reboot.css" />"/>
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/bootstrap/bootstrap-reboot.min.css" />"/>
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/bootstrap/bootstrap-reboot.rtl.css" />"/>
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/bootstrap/bootstrap-reboot.rtl.min.css" />"/>
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/bootstrap/bootstrap-utilities.css" />"/>
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/bootstrap/bootstrap-utilities.min.css" />"/>
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/bootstrap/bootstrap-utilities.rtl.css" />"/>
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/bootstrap/bootstrap-utilities.rtl.min.css" />"/>
 <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/bootstrap/bootstrap.css" />"/>
 <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/bootstrap/bootstrap.min.css" />"/>
 
+<!-- javascript (jQuery) -->
 <script type="text/javascript" src="<c:url value="/resources/js/jquery/jquery-1.9.1.min.js" />"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/jquery/jquery-3.3.1.slim.min.js" />"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/jquery/jquery-3.6.0.min.js" />"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/jquery/jquery-1.11.1.min.js" />"></script>
+
+<!-- javascript -->
 <script type="text/javascript" src="<c:url value="/resources/js/common.js?2" />"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/loginForm/bootstrap.min.js" />"></script>
+
+<!-- commoncss (custom css for jsp)-->
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/commoncss/loginForm.css" />"/>
+
+<!-- layout (fixed navbar, sticky footer)-->
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/commoncss/layout/sticky-footer.css" />"/>
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/commoncss/layout/fixed-navbar.css" />"/>
+<script type="text/javascript" src="<c:url value="/resources/se2/js/service/HuskyEZCreator.js" />" charset="utf-8"></script>
+
+

@@ -21,29 +21,21 @@ public class LoginController {
 	LoginService service;
 	String ticket = "";
 	@RequestMapping(value = "/Login.do")
-	public ModelAndView Login(HttpServletRequest request) {
+	public ModelAndView Login(HttpServletRequest request) throws Exception {
 		ModelAndView mv = new ModelAndView();
+		// HTTPSession 존재하면 세션 반환, 없으면 세션 생성
 		HttpSession session = request.getSession(true);
-		String userId = "";
-		if(session.getAttribute("userId") != null) {
-			userId = session.getAttribute("userId").toString();
+		if(session.getAttribute("userInfo") == null) {
+			ticket = service.ssoLegasy();
+			mv.setViewName("login/ssoLogin");
+			mv.addObject("ticket", ticket);
+			session.setAttribute("ticket", ticket);
+			mv.addObject("url", "'home.do'");
 		}
-		try {
-			if(userId.equals("")) {
-				ticket = service.ssoLegasy();
-				mv.setViewName("login/ssoLogin");
-				mv.addObject("ticket", ticket);
-				session.setAttribute("ticket", ticket);
-				mv.addObject("url", "'home.do'");
-			}
-			else {
-				session.setAttribute("ticket", null);
-				session.setAttribute("userId", null);
-				mv.setViewName("login/loginForm");
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
+		else {
+			mv.setViewName("login/loginForm");
 		}
+
 
 		return mv;
 	}
@@ -58,10 +50,8 @@ public class LoginController {
 			return mv;
 		}
 		else {
-
-
 		}
-		//mv.setViewName("login/login");
+		mv.setViewName("login/login");
 		return mv;
 	}
 
