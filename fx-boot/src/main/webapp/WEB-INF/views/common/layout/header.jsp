@@ -34,6 +34,11 @@
         </form>
 -->
       </div>
+      <div>
+      	<c:if test = "${sessionScope.userInfo != null }">
+      		<span class = "navbar-text"> ${userInfo.userName } 님</span>
+      	</c:if>
+      </div>
     </nav>
 </body>
 </html>
