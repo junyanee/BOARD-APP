@@ -33,6 +33,8 @@ public class LoginController {
 			mv.addObject("url", "'home.do'");
 		}
 		else {
+			session.setAttribute("userInfo", null);
+			session.setAttribute("session", null);
 			mv.setViewName("login/loginForm");
 		}
 
