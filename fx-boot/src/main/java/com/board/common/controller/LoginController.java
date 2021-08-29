@@ -38,6 +38,7 @@ public class LoginController {
 		else {
 			session.setAttribute("ticket", null);
 			session.setAttribute("userInfo", null);
+
 			mv.setViewName("login/loginForm");
 		}
 		return mv;
