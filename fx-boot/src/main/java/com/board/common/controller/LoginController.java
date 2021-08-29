@@ -1,10 +1,12 @@
 package com.board.common.controller;
 
+import java.io.PrintWriter;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ public class LoginController {
 		// HTTPSession 존재하면 세션 반환, 없으면 세션 생성
 		HttpSession session = request.getSession(true);
 		if(session.getAttribute("userInfo") == null) {
+			// sso 서버에서 빈 티켓 발행
 			ticket = service.ssoLegasy();
 			mv.setViewName("login/ssoLogin");
 			mv.addObject("ticket", ticket);
@@ -33,25 +36,29 @@ public class LoginController {
 			mv.addObject("url", "'home.do'");
 		}
 		else {
+			session.setAttribute("ticket", null);
+			session.setAttribute("userInfo", null);
 			mv.setViewName("login/loginForm");
 		}
-
-
 		return mv;
 	}
 
 	@RequestMapping(value = "/LoginProc.do")
-	public ModelAndView LoginProc(HttpServletRequest request) {
+	public ModelAndView LoginProc(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		String userId = request.getParameter("userId");
 		String userPw = request.getParameter("userPw");
-		if(!service.SYADLoginCheck(userId, userPw)) {
-			mv.setViewName("login/login");
-			return mv;
+		if(service.SYADLoginCheck(userId, userPw)) {
+			service.setSessionUserInfo(request, userId);
+			mv.setViewName("redirect:/home.do");
 		}
 		else {
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>alert('ID와 PW를 확인하세요');</script>");
+			out.flush();
+			mv.setViewName("login/loginForm");
 		}
-		mv.setViewName("login/login");
 		return mv;
 	}
 

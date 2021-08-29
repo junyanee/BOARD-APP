@@ -261,7 +261,7 @@ public class BoardController {
 	// 선택된 게시글 삭제(GET)
 	@LoginCheck
 	@RequestMapping(value = "/boardDelete.do", method = RequestMethod.GET)
-	public ModelAndView deleteArticlePOST(HttpServletRequest request, ModelAndView mv) throws Exception {
+	public ModelAndView deleteArticleGET(HttpServletRequest request, ModelAndView mv) throws Exception {
 		HttpSession session = request.getSession(false);
 		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
 		int boardIdx = Integer.parseInt(request.getParameter("idx"));

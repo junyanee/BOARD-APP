@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="ko">
 <head>
@@ -22,13 +23,20 @@
            <li class="nav-item active">
             <a class="nav-link" href="/board-main.do">게시판 <span class="sr-only">(current)</span></a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="Login/Login.do">로그인 페이지</a>
+          <c:if test = "${sessionScope.userInfo != null }">
+          <li class="nav-item active">
+            <a class="nav-link" href="/Login/Login.do">로그아웃</a>
           </li>
+          </c:if>
         </ul>
-        <!-- <button type="submit" class="btn btn-login" onclick = 'console.log("눌렀음")'>Login/Logout</button>  -->
+        <c:if test = "${sessionScope.userInfo != null }">
+           <span class="navbar-text">
+          	${userInfo.empName }님
+          </span>
+        </c:if>
 
 <!--         SEARCH FORM
+
         <form class="form-inline my-2 my-md-0">
           <input class="form-control" type="text" placeholder="Search">
         </form>

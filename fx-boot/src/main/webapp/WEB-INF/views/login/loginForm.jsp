@@ -18,19 +18,19 @@
 	<div class="main">
 		<div class="col-md-6 col-sm-12">
 			<div class="login-form">
-				<form>
+				<form method="post" action="./LoginProc.do">
 				<div>
 					<h2> 로그인 </h2>
 				</div>
 					<div class="form-group">
 						<label>사번</label> <input type="text" class="form-control"
-							placeholder="syc000000" id="userId">
+							placeholder="syc000000" id="userId" name="userId">
 					</div>
 					<div class="form-group">
 						<label>비밀번호</label> <input type="password"
-							class="form-control" placeholder="Password" id="userPw">
+							class="form-control" placeholder="Password" id="userPw" name="userPw">
 					</div>
-					<button type="submit" class="btn btn-login float-right">로그인</button>
+					<button type="submit" class="btn btn-primary float-right">로그인</button>
 				</form>
 			</div>
 		</div>
