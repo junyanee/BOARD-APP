@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +24,8 @@ import com.board.board.model.CommentMaster;
 import com.board.board.model.FileMaster;
 import com.board.board.service.BoardService;
 import com.board.board.service.CommentService;
+import com.board.common.model.ParameterWrapper;
+import com.board.common.model.ParameterWrapper2;
 import com.board.common.model.UserMaster;
 import com.board.common.service.LoginService;
 import com.board.utility.Search;
@@ -98,17 +101,22 @@ public class BoardController {
 	}
 
 	// 새 게시글 작성 (POST)
-	@LoginCheck
+	//@LoginCheck
 	@RequestMapping(value = "/boardWrite.do", method = RequestMethod.POST)
-	public ModelAndView boardWritePOST(MultipartHttpServletRequest request, HttpServletResponse response,
-			ModelAndView mv) throws Exception {
+	public ModelAndView boardWritePOST(HttpServletRequest request, HttpServletResponse response,
+			ModelAndView mv, @RequestBody ParameterWrapper<BoardMaster> params) throws Exception {
 		HttpSession session = request.getSession(false);
 		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
-		BoardMaster boardMaster = new BoardMaster();
-		boardMaster.setTitle(request.getParameter("newArticle.title"));
-		boardMaster.setContents(request.getParameter("newArticle.contents"));
-		boardMaster.setInsuser(userMaster.getEmpCode());
-		boardMaster.setModuser(userMaster.getEmpCode());
+		params.param.setInsertUser(userMaster.getEmpCode());
+		params.param.setModifyUser(userMaster.getEmpCode());
+		boardService.insertArticle(params.param);
+		mv.setViewName("redirect:/board-main.do");
+
+		/*
+		boardMaster.setTitle(request.getParameter("title"));
+		boardMaster.setContents(request.getParameter("contents"));
+		boardMaster.setInsertUser(userMaster.getEmpCode());
+		boardMaster.setModifyUser(userMaster.getEmpCode());
 
 		// Validation Check
 		if (boardMaster.getTitle().equals("")) {
@@ -125,7 +133,7 @@ public class BoardController {
 			} else {
 				mv.addObject("boardDetail", boardMaster);
 				mv.setViewName("redirect:/board-main.do");
-				/* 게시글 먼저 삽입하고 이후에 파일 삽입 */
+				/* 게시글 먼저 삽입하고 이후에 파일 삽입
 				// 게시글 삽입하면서 해당 IDX 가져옴
 				int boardIdx = boardService.insertArticle(boardMaster);
 
@@ -138,14 +146,14 @@ public class BoardController {
 					fileMaster.setOrgFileName(file.getOriginalFilename()); // 파일 이름
 					fileMaster.setFileBytes(file.getBytes()); // 파일 바이너리
 					fileMaster.setFileSize(file.getSize()); // 파일 사이즈
-					fileMaster.setInsuser(userMaster.getEmpCode());
-					fileMaster.setModuser(userMaster.getEmpCode());
+					fileMaster.setInsertUser(userMaster.getEmpCode());
+					fileMaster.setModifyUser(userMaster.getEmpCode());
 					boardService.uploadFile(fileMaster);
 				}
 				return mv;
 			}
-		}
-		mv.setViewName("boards/boardWrite");
+		}*/
+		// mv.setViewName("boards/boardWrite");
 		return mv;
 	}
 
@@ -186,7 +194,7 @@ public class BoardController {
 		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
 		int boardIdx = Integer.parseInt(request.getParameter("idx"));
 		BoardMaster boardArticle = boardService.getArticle(boardIdx);
-		if (userMaster.getEmpCode().equals(boardArticle.getInsuser())) {
+		if (userMaster.getEmpCode().equals(boardArticle.getInsertUser())) {
 			mv.addObject("modifyArticle", boardArticle);
 			mv.setViewName("boards/boardModify");
 			return mv;
@@ -207,7 +215,7 @@ public class BoardController {
 		boardMaster.setIdx(Integer.parseInt(request.getParameter("idx")));
 		boardMaster.setTitle(request.getParameter("modifyArticle.title"));
 		boardMaster.setContents(request.getParameter("modifyArticle.contents"));
-		boardMaster.setModuser(userMaster.getEmpCode());
+		boardMaster.setModifyUser(userMaster.getEmpCode());
 
 		// Validation Check
 		if (boardMaster.getTitle().equals("")) {
@@ -238,8 +246,8 @@ public class BoardController {
 					fileMaster.setOrgFileName(file.getOriginalFilename()); // 파일 이름
 					fileMaster.setFileBytes(file.getBytes()); // 파일 바이너리
 					fileMaster.setFileSize(file.getSize()); // 파일 사이즈
-					fileMaster.setInsuser(userMaster.getEmpCode());
-					fileMaster.setModuser(userMaster.getEmpCode());
+					fileMaster.setInsertUser(userMaster.getEmpCode());
+					fileMaster.setModifyUser(userMaster.getEmpCode());
 
 					// 기존 업로드 파일과 수정 시 업로드 한 파일명 같은지 비교
 					// 같으면 DB에 저장, 다르면 저장 x
@@ -266,9 +274,9 @@ public class BoardController {
 		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
 		int boardIdx = Integer.parseInt(request.getParameter("idx"));
 		BoardMaster boardMaster = boardService.getArticle(boardIdx);
-		if (userMaster.getEmpCode().equals(boardMaster.getInsuser())) {
+		if (userMaster.getEmpCode().equals(boardMaster.getInsertUser())) {
 			boardMaster.setIdx(Integer.parseInt(request.getParameter("idx")));
-			boardMaster.setModuser(userMaster.getEmpCode());
+			boardMaster.setModifyUser(userMaster.getEmpCode());
 			boardService.deleteArticle(boardMaster);
 			mv.setViewName("redirect:/board-main.do");
 			return mv;

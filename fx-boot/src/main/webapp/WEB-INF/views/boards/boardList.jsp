@@ -75,8 +75,8 @@ $(document).on('click', '#btnSearch', function(e) {
 						<tr>
 							<th scope="row"><c:out value="${status.count }" /></th>
 							<td> <a href="/boardDetail.do?idx=${boardList.idx}"><c:out value="${boardList.title }" /> </a> </td>
-							<td><c:out value="${boardList.insuser }" /></td>
-							<td><c:out value="${boardList.insdate }" /></td>
+							<td><c:out value="${boardList.insertUser }" /></td>
+							<td><c:out value="${boardList.insertDate }" /></td>
 							<td><c:out value="${boardList.readCnt }" /></td>
 							<td><c:out value="${boardList.commentCnt }" /></td>
 						</tr>

@@ -33,8 +33,8 @@
 		@OrgFileName = #{orgFileName, mode = IN, jdbcType = VARCHAR},
 		@FileBytes = #{fileBytes, mode = IN, jdbcType = BINARY},
 		@FileSize = #{fileSize, mode = IN, jdbcType = BIGINT},
-		@InsUser = #{insuser, mode = IN, jdbcType = VARCHAR},
-		@ModUser = #{moduser, mode = IN, jdbcType = VARCHAR}
+		@InsUser = #{insertUser, mode = IN, jdbcType = VARCHAR},
+		@ModUser = #{modifyUser, mode = IN, jdbcType = VARCHAR}
 	)
 }
 </insert>
@@ -45,8 +45,8 @@
 	(
 		@Title = #{title, mode = IN, jdbcType = VARCHAR},
 		@Contents = #{contents, mode = IN, jdbcType = VARCHAR},
-		@InsUser = #{insuser, mode = IN, jdbcType = VARCHAR},
-		@ModUser = #{moduser, mode = IN, jdbcType = VARCHAR}
+		@InsUser = #{insertUser, mode = IN, jdbcType = VARCHAR},
+		@ModUser = #{modifyUser, mode = IN, jdbcType = VARCHAR}
 	)
 }
 </select>
@@ -76,7 +76,7 @@
 		@Idx = #{idx, mode = IN, jdbcType = INTEGER},
 		@Title = #{title, mode = IN, jdbcType = VARCHAR},
 		@Contents = #{contents, mode = IN, jdbcType = VARCHAR},
-		@ModUser = #{moduser, mode = IN, jdbcType = VARCHAR}
+		@ModUser = #{modifyUser, mode = IN, jdbcType = VARCHAR}
 	)
 }
 </update>
@@ -86,7 +86,7 @@
 	call SP_DeleteArticle
 	(
 		@Idx = #{idx, mode = IN, jdbcType = INTEGER},
-		@ModUser = #{moduser, mode = IN, jdbcType = VARCHAR}
+		@ModUser = #{modifyUser, mode = IN, jdbcType = VARCHAR}
 	)
 }
 </update>
