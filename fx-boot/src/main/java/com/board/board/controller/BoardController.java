@@ -104,83 +104,35 @@ public class BoardController {
 	// 새 게시글 작성 (POST)
 	//@LoginCheck
 	@RequestMapping(value = "/boardWrite.do", method = RequestMethod.POST)
-	public ModelAndView boardWritePOST(HttpServletRequest request, HttpServletResponse response,
-			ModelAndView mv, @RequestBody ParameterWrapper<BoardMaster> param) throws Exception {
+	public String boardWritePOST(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody ParameterWrapper<BoardMaster> param) throws Exception {
 		HttpSession session = request.getSession(false);
 		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
 
 		param.param.setInsertUser(userMaster.getEmpCode());
 		param.param.setModifyUser(userMaster.getEmpCode());
 		int boardIdx = boardService.insertArticle(param.param);
-		mv.addObject("bid", boardIdx);
-
-		mv.setViewName("redirect:/board-main.do");
-		return mv;
+		String boardIdxToString = Integer.toString(boardIdx);
+		return boardIdxToString;
 	}
-
-
-
-		/*
-		boardMaster.setTitle(request.getParameter("title"));
-		boardMaster.setContents(request.getParameter("contents"));
-		boardMaster.setInsertUser(userMaster.getEmpCode());
-		boardMaster.setModifyUser(userMaster.getEmpCode());
-
-		// Validation Check
-		if (boardMaster.getTitle().equals("")) {
-			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			out.println("<script>alert('제목을 입력해주세요.');</script>");
-			out.flush();
-		} else {
-			if (boardMaster.getContents().equals("")) {
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
-				out.println("<script>alert('내용을 입력해주세요.');</script>");
-				out.flush();
-			} else {
-				mv.addObject("boardDetail", boardMaster);
-				mv.setViewName("redirect:/board-main.do");
-				/* 게시글 먼저 삽입하고 이후에 파일 삽입
-				// 게시글 삽입하면서 해당 IDX 가져옴
-				int boardIdx = boardService.insertArticle(boardMaster);
-
-				// 가져온 게시글 IDX 에 맞게 파일 삽입
-				List<MultipartFile> multiFileList = request.getFiles("uploadFile");
-				FileMaster fileMaster = new FileMaster();
-
-				for (MultipartFile file : multiFileList) {
-					fileMaster.setBoardIdx(boardIdx);
-					fileMaster.setOrgFileName(file.getOriginalFilename()); // 파일 이름
-					fileMaster.setFileBytes(file.getBytes()); // 파일 바이너리
-					fileMaster.setFileSize(file.getSize()); // 파일 사이즈
-					fileMaster.setInsertUser(userMaster.getEmpCode());
-					fileMaster.setModifyUser(userMaster.getEmpCode());
-					boardService.uploadFile(fileMaster);
-				}
-				return mv;
-			}
-		}*/
-		// mv.setViewName("boards/boardWrite");
 
 	// 파일 업로드
 	@RequestMapping(value = "/fileUpload.do", method = RequestMethod.POST)
-	public ModelAndView fileUploadPOST(HttpServletRequest request, ModelAndView mv,
+	public ModelAndView fileUploadPOST(MultipartHttpServletRequest request, ModelAndView mv,
 			@RequestBody ParameterWrapper<FileMaster> param) throws Exception {
 		HttpSession session = request.getSession(false);
 		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
 
-		MultipartRequest mr = (MultipartRequest)request;
-		List<MultipartFile> multiFileList = mr.getFiles("uploadFile");
+		List<MultipartFile> multiFileList = request.getFiles("uploadFile");
 		for (MultipartFile file : multiFileList) {
 			FileMaster fileMaster = new FileMaster();
-				fileMaster.setBoardIdx(boardIdx);
+				//fileMaster.setBoardIdx(boardIdx);
 				fileMaster.setOrgFileName(file.getOriginalFilename());
 				fileMaster.setFileBytes(file.getBytes());
 				fileMaster.setFileSize(file.getSize());
 				fileMaster.setInsertUser(userMaster.getEmpCode());
 				fileMaster.setModifyUser(userMaster.getEmpCode());
-				boardService.uploadFile(param.param);
+				boardService.uploadFile(fileMaster);
 		}
 		// multiFileList = request.getFile("uploadFile");
 		//multiFileList
@@ -196,9 +148,6 @@ public class BoardController {
 //			fileMaster.setFileSize(file.getSize()); // 파일 사이즈
 //			fileMaster.setInsertUser(userMaster.getEmpCode());
 //			fileMaster.setModifyUser(userMaster.getEmpCode());
-		param.param.setInsertUser(userMaster.getEmpCode());
-		param.param.setModifyUser(userMaster.getEmpCode());
-			boardService.uploadFile(param.param);
 //		}
 		mv.setViewName("redirect:/board-main.do");
 		return mv;

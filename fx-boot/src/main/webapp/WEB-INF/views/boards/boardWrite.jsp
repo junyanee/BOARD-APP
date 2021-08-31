@@ -72,14 +72,20 @@ function insertBoard() {
 	var result = confirm("저장하시겠습니까?");
 	var param;
 	param = $(boardForm).serializeObject();
+	var returnedBoardIdx;
 
 	var boardAjaxOptions = {
 			SvcName: "",
 			MethodName: "boardWrite.do",
 			Params: {param: param},
+			async: false,
 			Callback: function(result) {
-				$("#bid").val(result.idx);
+				var idx = JSON.parse(result);
+				$("#bid").val(idx);
 				uploadFile();
+			},
+			ErrorCallback: function() {
+				alert("boardWrite.do FAILED");
 			}
 	};
 	if (result) {
@@ -91,20 +97,24 @@ function uploadFile(){
 	bid = $("#bid").val();
 	// ajax > data : formData > controller > logic > controller > result > front > result.msg == "ok" > alert > movepage
 	// 실패하면 insert 된 bid 찾아서 삭제
-
+	var form = $('#uploadFile')[0].files[0];
 	var formData = new FormData();
+	formData.append('files', form);
 	var fileAjaxOptions = {
 			SvcName: "",
 			MethodName: "fileUpload.do",
-			Params: {param: param},
 			enctype: "multipart/form-data",
 			data: formData,
 			contentType: false,
-			processType: false,
+			processData: false,
 			Callback: (function(result) {
+				console.log("성공");
+				alert("성공");
 				// transaction complete
 			}),
 			ErrorCallback: (function(result) {
+				console.log("실패");
+				alert("실패");
 				// delete inserted board
 			})
 	};
