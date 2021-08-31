@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.board.aop.annotation.LoginCheck;
@@ -104,13 +105,20 @@ public class BoardController {
 	//@LoginCheck
 	@RequestMapping(value = "/boardWrite.do", method = RequestMethod.POST)
 	public ModelAndView boardWritePOST(HttpServletRequest request, HttpServletResponse response,
-			ModelAndView mv, @RequestBody ParameterWrapper<BoardMaster> params) throws Exception {
+			ModelAndView mv, @RequestBody ParameterWrapper<BoardMaster> param) throws Exception {
 		HttpSession session = request.getSession(false);
 		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
-		params.param.setInsertUser(userMaster.getEmpCode());
-		params.param.setModifyUser(userMaster.getEmpCode());
-		boardService.insertArticle(params.param);
+
+		param.param.setInsertUser(userMaster.getEmpCode());
+		param.param.setModifyUser(userMaster.getEmpCode());
+		int boardIdx = boardService.insertArticle(param.param);
+		mv.addObject("bid", boardIdx);
+
 		mv.setViewName("redirect:/board-main.do");
+		return mv;
+	}
+
+
 
 		/*
 		boardMaster.setTitle(request.getParameter("title"));
@@ -154,8 +162,48 @@ public class BoardController {
 			}
 		}*/
 		// mv.setViewName("boards/boardWrite");
+
+	// 파일 업로드
+	@RequestMapping(value = "/fileUpload.do", method = RequestMethod.POST)
+	public ModelAndView fileUploadPOST(HttpServletRequest request, ModelAndView mv,
+			@RequestBody ParameterWrapper<FileMaster> param) throws Exception {
+		HttpSession session = request.getSession(false);
+		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
+
+		MultipartRequest mr = (MultipartRequest)request;
+		List<MultipartFile> multiFileList = mr.getFiles("uploadFile");
+		for (MultipartFile file : multiFileList) {
+			FileMaster fileMaster = new FileMaster();
+				fileMaster.setBoardIdx(boardIdx);
+				fileMaster.setOrgFileName(file.getOriginalFilename());
+				fileMaster.setFileBytes(file.getBytes());
+				fileMaster.setFileSize(file.getSize());
+				fileMaster.setInsertUser(userMaster.getEmpCode());
+				fileMaster.setModifyUser(userMaster.getEmpCode());
+				boardService.uploadFile(param.param);
+		}
+		// multiFileList = request.getFile("uploadFile");
+		//multiFileList
+		// 가져온 게시글 IDX 에 맞게 파일 삽입
+//		List<MultipartFile> multiFileList = null;
+//		FileMaster fileMaster = new FileMaster();
+
+//		for (MultipartFile file : multiFileList) {
+//			param.param.setBoardIdx(boardIdx);
+//			fileMaster.setBoardIdx(boardIdx);
+//			fileMaster.setOrgFileName(file.getOriginalFilename()); // 파일 이름
+//			fileMaster.setFileBytes(file.getBytes()); // 파일 바이너리
+//			fileMaster.setFileSize(file.getSize()); // 파일 사이즈
+//			fileMaster.setInsertUser(userMaster.getEmpCode());
+//			fileMaster.setModifyUser(userMaster.getEmpCode());
+		param.param.setInsertUser(userMaster.getEmpCode());
+		param.param.setModifyUser(userMaster.getEmpCode());
+			boardService.uploadFile(param.param);
+//		}
+		mv.setViewName("redirect:/board-main.do");
 		return mv;
 	}
+
 
 	// 선택된 게시글 조회(GET)
 	@RequestMapping(value = "/boardDetail.do", method = RequestMethod.GET)

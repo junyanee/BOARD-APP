@@ -39,20 +39,18 @@ $(document).ready(function (){
 		var result = confirm("저장하시겠습니까");
 		if(result) {
 			alert("저장완료");
-			document.getElementById('frm').submit();
+			document.getElementById('boardForm').submit();
 		} else {
 			return;
 		}
 
 
-	});*/
+	});
+	*/
 
 
 });
 function insertBoard() {
-
-	var form = $('frm')[0];
-	var formData = new FormData(form);
 
 	oEditors.getById['contents'].exec("UPDATE_CONTENTS_FIELD", []);
 	var title = document.getElementById('title').value;
@@ -73,21 +71,65 @@ function insertBoard() {
 	// 게시글 저장 (Ajax 전송)
 	var result = confirm("저장하시겠습니까?");
 	var param;
-	param = $(frm).serializeObject();
-	var ajaxOptions = {
+	param = $(boardForm).serializeObject();
+
+	var boardAjaxOptions = {
 			SvcName: "",
 			MethodName: "boardWrite.do",
 			Params: {param: param},
-			contentType: false,
 			Callback: function(result) {
-				console.log(result);
-				test = result;
+				$("#bid").val(result.idx);
+				uploadFile();
 			}
 	};
 	if (result) {
-		$.fng_Ajax(ajaxOptions);
+		$.fng_Ajax(boardAjaxOptions);
 	}
 }
+function uploadFile(){
+	var bid = "";
+	bid = $("#bid").val();
+	// ajax > data : formData > controller > logic > controller > result > front > result.msg == "ok" > alert > movepage
+	// 실패하면 insert 된 bid 찾아서 삭제
+
+	var formData = new FormData();
+	var fileAjaxOptions = {
+			SvcName: "",
+			MethodName: "fileUpload.do",
+			Params: {param: param},
+			enctype: "multipart/form-data",
+			data: formData,
+			contentType: false,
+			processType: false,
+			Callback: (function(result) {
+				// transaction complete
+			}),
+			ErrorCallback: (function(result) {
+				// delete inserted board
+			})
+	};
+if(bid != ""){
+
+}
+
+}
+/*
+function uploadFile() {
+	var form = $('uploadForm')[0];
+	var formData = new FormData(form);
+
+	var fileAjaxOptions = {
+			SvcName: "",
+			MethodName: "fileUpload.do",
+			Params: {param: param},
+			enctype: "multipart/form-data",
+			data: formData,
+			contentType: false,
+			processType: false
+	};
+	$.fng_Ajax(fileAjaxOptions);
+}
+*/
 </script>
 </head>
 
@@ -95,7 +137,7 @@ function insertBoard() {
 <div class = "container">
 	<h3>새 게시글 작성</h3>
 	<hr />
-	<form id="frm" name="frm"> <!-- enctype="multipart/form-data" -->
+	<form id="boardForm" name="boardForm"> <!-- enctype="multipart/form-data" -->
 		<div class="mb-3">
 			<label for="exampleFormControlInput1" class="form-label">제목</label> <input
 				type="text" class="form-control" id="title"
@@ -106,12 +148,15 @@ function insertBoard() {
 			<textarea class="form-control" name="contents"
 				id="contents" rows="15" cols="200"></textarea>
 		</div>
+
 		<div class="mb-3">
 			<label for="formFileMultiple" class="form-label">파일 업로드</label>
-			<input class="form-control fileUpload" type="file" id="formFileMultiple" name = "uploadFile" multiple = "multiple">
+			<input class="form-control fileUpload" type="file" id="uploadFile" name = "uploadFile" multiple = "multiple">
 		</div>
+		<input type="hidden" id="bid" name="bid" value=""/>
+		</form>
 
-	</form>
+
 	<button class="btn btn-primary" type="button" id="saveButton" onclick="javascript:insertBoard();">글쓰기</button>
 </div>
 </body>

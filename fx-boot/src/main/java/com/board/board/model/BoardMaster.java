@@ -1,7 +1,5 @@
 package com.board.board.model;
 
-import com.board.common.model.UserMaster;
-
 import lombok.Getter;
 import lombok.Setter;
 
