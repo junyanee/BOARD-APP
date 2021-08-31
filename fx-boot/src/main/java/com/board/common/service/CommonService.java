@@ -5,14 +5,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.board.model.ItemMaster;
+import com.board.common.mapper.CommonMapper;
+import com.board.common.model.ItemMaster;
 
 @Service
 public class CommonService {
 	@Autowired
-	com.board.common.mapper.CommonMapper commonMapper;
+	CommonMapper commonMapper;
 
-	public List<ItemMaster> getItemCode(ItemMaster param) throws Exception{
+	public List<ItemMaster> getItemCode(ItemMaster param) throws Exception {
 		return commonMapper.getItemCode(param);
 	}
+
 }

@@ -8,13 +8,15 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.board.board.model.BoardMaster;
+import com.board.common.model.ItemMaster;
 import com.board.common.model.ParameterWrapper;
 import com.board.common.service.CommonService;
-import com.board.model.ItemMaster;
 
 @RestController
 @RequestMapping(value="/Common")
@@ -31,5 +33,7 @@ public class CommonController {
 		logger.debug("=============getItemCode Call =============");
 		return service.getItemCode(param.param);
 	}
+
+
 }
 
