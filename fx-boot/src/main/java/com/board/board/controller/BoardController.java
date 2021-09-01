@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jackson.JsonObjectSerializer;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.board.aop.annotation.LoginCheck;
@@ -31,7 +29,6 @@ import com.board.board.model.FileMaster;
 import com.board.board.service.BoardService;
 import com.board.board.service.CommentService;
 import com.board.common.model.ParameterWrapper;
-import com.board.common.model.ParameterWrapper2;
 import com.board.common.model.UserMaster;
 import com.board.common.service.LoginService;
 import com.board.utility.Search;
@@ -128,9 +125,11 @@ public class BoardController {
 		HttpSession session = request.getSession(false);
 		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
 		MultipartHttpServletRequest msr = (MultipartHttpServletRequest)request;
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 		String ajaxResult = "";
 
 		List<MultipartFile> multiFileList = msr.getFiles("uploadFile");
+		if (!multiFileList.isEmpty()) {
 		for (MultipartFile file : multiFileList) {
 			FileMaster fileMaster = new FileMaster();
 				fileMaster.setBoardIdx(Integer.parseInt(request.getParameter("boardIdx")));
@@ -139,15 +138,11 @@ public class BoardController {
 				fileMaster.setFileSize(file.getSize());
 				fileMaster.setInsertUser(userMaster.getEmpCode());
 				fileMaster.setModifyUser(userMaster.getEmpCode());
-				boardService.uploadFile(fileMaster);
+				resultMap = boardService.uploadFile(fileMaster);
 				}
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("isSuccess", true);
-		resultMap.put("resultMsg", "정상적으로 처리되었습니다.");
-
+		}
 		ObjectMapper mapper = new ObjectMapper();
 		ajaxResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultMap);
-		//잭슨라이브러리 > 맵 to Json String > return
 		return ajaxResult;
 	}
 
@@ -262,21 +257,22 @@ public class BoardController {
 
 	// 선택된 게시글 삭제(GET)
 	@LoginCheck
-	@RequestMapping(value = "/boardDelete.do", method = RequestMethod.GET)
-	public ModelAndView deleteArticleGET(HttpServletRequest request, ModelAndView mv) throws Exception {
+	@RequestMapping(value = "/boardDelete.do", method = RequestMethod.POST)
+	public String deleteArticleGET(HttpServletRequest request,
+			@RequestBody ParameterWrapper<BoardMaster> param) throws Exception {
 		HttpSession session = request.getSession(false);
 		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
-		int boardIdx = Integer.parseInt(request.getParameter("idx"));
-		BoardMaster boardMaster = boardService.getArticle(boardIdx);
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		String ajaxResult = "";
+
+		BoardMaster boardMaster = boardService.getArticle(param.param.getIdx());
 		if (userMaster.getEmpCode().equals(boardMaster.getInsertUser())) {
-			boardMaster.setIdx(Integer.parseInt(request.getParameter("idx")));
+			boardMaster.setIdx(param.param.getIdx());
 			boardMaster.setModifyUser(userMaster.getEmpCode());
-			boardService.deleteArticle(boardMaster);
-			mv.setViewName("redirect:/board-main.do");
-			return mv;
-		} else {
-			mv.setViewName("redirect:/board-main.do");
-			return mv;
+			resultMap = boardService.deleteArticle(boardMaster);
 		}
+		ObjectMapper mapper = new ObjectMapper();
+		ajaxResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultMap);
+		return ajaxResult;
 	}
 }

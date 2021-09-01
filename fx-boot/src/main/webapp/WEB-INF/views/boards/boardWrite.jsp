@@ -72,7 +72,6 @@ function insertBoard() {
 	var result = confirm("저장하시겠습니까?");
 	var param;
 	param = $(boardForm).serializeObject();
-	var returnedBoardIdx;
 
 	var boardAjaxOptions = {
 			SvcName: "",
@@ -82,7 +81,13 @@ function insertBoard() {
 			Callback: function(result) {
 				var boardIdx = JSON.parse(result);
 				$("#boardIdx").val(boardIdx);
-				fn_FileUpload();
+				if (document.getElementById("uploadFile").files.length != 0) {
+					fn_FileUpload();
+				} else {
+					alert("게시글 등록이 완료되었습니다.");
+					var url = "/board-main.do";
+					location.href = url;
+				}
 			},
 			ErrorCallback: function() {
 				alert("boardWrite.do FAILED");
@@ -109,10 +114,8 @@ function fn_FileUploadResult(result) {
 		alert("게시글 등록이 완료되었습니다.");
 		var url = "/board-main.do";
 		location.href = url;
-
 	}else if(json.isSuccess == false) {
 		alert("게시글 등록이 실패했습니다.");
-		// 게시물 삭제
 		return;
 	}
 }

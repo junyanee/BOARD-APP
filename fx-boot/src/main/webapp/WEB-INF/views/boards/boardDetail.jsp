@@ -8,7 +8,27 @@
 function del(idx) {
 	var delCheck = confirm("정말 삭제하시겠습니까?");
 	if (delCheck) {
-		location.href = '/boardDelete.do?idx=' + idx;
+		var param = new Object();
+		param.idx = idx;
+        var ajaxOptions = {
+                SvcName: "",
+                MethodName: "boardDelete.do",
+                type: 'POST',
+                Params: { param: param },
+                Callback: (function (result) {
+                	if (result.isSuccess == true) {
+                    	alert("게시글 삭제가 완료되었습니다.");
+    					var url = "/board-main.do";
+    					location.href = url;
+                	}
+                }),
+                ErrorCallback: (function (result) {
+                	if (result.isSuccess == false) {
+                    	alert("게시글 삭제에 실패했습니다.");
+                	}
+                })
+            };
+        $.fng_Ajax(ajaxOptions);
 	}
 }
 
