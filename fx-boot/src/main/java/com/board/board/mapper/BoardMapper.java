@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.board.board.model.BoardMaster;
 import com.board.board.model.FileMaster;
+import com.board.common.model.ResultMaster;
 import com.board.utility.Search;
 
 
@@ -19,7 +20,7 @@ public interface BoardMapper {
 
 	public int insertArticle(BoardMaster param) throws Exception;
 
-	public void uploadFile(FileMaster file) throws Exception;
+	public ResultMaster uploadFile(FileMaster file) throws Exception;
 
 	public BoardMaster getArticle(int boardIdx) throws Exception;
 
@@ -27,10 +28,12 @@ public interface BoardMapper {
 
 	public void modifyArticle(BoardMaster param) throws Exception;
 
-	public void deleteArticle(BoardMaster param) throws Exception;
+	public ResultMaster deleteArticle(BoardMaster param) throws Exception;
 
 	public List<FileMaster> getFileList(int boardIdx) throws Exception;
 
 	public FileMaster downloadFile(@Param("fileList") int idx) throws Exception;
+
+	public void cancelInsertArticle(int boardIdx);
 
 }

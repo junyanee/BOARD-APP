@@ -77,59 +77,48 @@ function insertBoard() {
 			SvcName: "",
 			MethodName: "boardWrite.do",
 			Params: {param: param},
+			async: false,
 			Callback: function(result) {
-				$("#bid").val(result.idx);
-				uploadFile();
+				var boardIdx = JSON.parse(result);
+				$("#boardIdx").val(boardIdx);
+				if (document.getElementById("uploadFile").files.length != 0) {
+					fn_FileUpload();
+				} else {
+					alert("게시글 등록이 완료되었습니다.");
+					var url = "/board-main.do";
+					location.href = url;
+				}
+			},
+			ErrorCallback: function() {
+				alert("boardWrite.do FAILED");
 			}
 	};
 	if (result) {
 		$.fng_Ajax(boardAjaxOptions);
 	}
 }
-function uploadFile(){
-	var bid = "";
-	bid = $("#bid").val();
 	// ajax > data : formData > controller > logic > controller > result > front > result.msg == "ok" > alert > movepage
 	// 실패하면 insert 된 bid 찾아서 삭제
 
-	var formData = new FormData();
-	var fileAjaxOptions = {
-			SvcName: "",
-			MethodName: "fileUpload.do",
-			Params: {param: param},
-			enctype: "multipart/form-data",
-			data: formData,
-			contentType: false,
-			processType: false,
-			Callback: (function(result) {
-				// transaction complete
-			}),
-			ErrorCallback: (function(result) {
-				// delete inserted board
-			})
-	};
-if(bid != ""){
-
+function fn_FileUpload() {
+	var boardIdx = "";
+	boardIdx = $("#boardIdx").val();
+	fng_UploadFile("boardForm", "/fileUpload.do", fn_FileUploadResult);
 }
 
+// 파일 업로드 결과 callback
+function fn_FileUploadResult(result) {
+ var string = result;
+ var json = JSON.parse(string);
+	if(json.isSuccess == true) {
+		alert("게시글 등록이 완료되었습니다.");
+		var url = "/board-main.do";
+		location.href = url;
+	}else if(json.isSuccess == false) {
+		alert("게시글 등록이 실패했습니다.");
+		return;
+	}
 }
-/*
-function uploadFile() {
-	var form = $('uploadForm')[0];
-	var formData = new FormData(form);
-
-	var fileAjaxOptions = {
-			SvcName: "",
-			MethodName: "fileUpload.do",
-			Params: {param: param},
-			enctype: "multipart/form-data",
-			data: formData,
-			contentType: false,
-			processType: false
-	};
-	$.fng_Ajax(fileAjaxOptions);
-}
-*/
 </script>
 </head>
 
@@ -153,7 +142,7 @@ function uploadFile() {
 			<label for="formFileMultiple" class="form-label">파일 업로드</label>
 			<input class="form-control fileUpload" type="file" id="uploadFile" name = "uploadFile" multiple = "multiple">
 		</div>
-		<input type="hidden" id="bid" name="bid" value=""/>
+		<input type="hidden" id="boardIdx" name="boardIdx" value=""/>
 		</form>
 
 
