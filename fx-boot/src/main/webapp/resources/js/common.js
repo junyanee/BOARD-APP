@@ -169,6 +169,29 @@ function fng_JsonToUrlParam(JsonData) {
         return jQuery.param(JsonData);
     } catch (ex) { return "" }
 }
+
+////////////////////파일 업로드////////////////////
+
+function fng_UploadFile(formId, url, callback) {
+
+	var form = $('#' + formId)[0];
+
+    var formData = new FormData(form);
+        $.ajax({
+           url: url,
+           processData: false,
+           contentType: false,
+           data: formData,
+           type: 'POST',
+           success: function(result){
+        	   console.log(result);
+               if(callback) callback(result);
+           },
+           error : function(result ) {
+               console.log(result);
+           }
+       });
+}
 /**/
 jQuery.fn.serializeObject = function() {
 

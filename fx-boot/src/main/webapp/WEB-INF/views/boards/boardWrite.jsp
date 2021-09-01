@@ -80,9 +80,9 @@ function insertBoard() {
 			Params: {param: param},
 			async: false,
 			Callback: function(result) {
-				var idx = JSON.parse(result);
-				$("#bid").val(idx);
-				uploadFile();
+				var boardIdx = JSON.parse(result);
+				$("#boardIdx").val(boardIdx);
+				fn_FileUpload();
 			},
 			ErrorCallback: function() {
 				alert("boardWrite.do FAILED");
@@ -92,54 +92,30 @@ function insertBoard() {
 		$.fng_Ajax(boardAjaxOptions);
 	}
 }
-function uploadFile(){
-	var bid = "";
-	bid = $("#bid").val();
 	// ajax > data : formData > controller > logic > controller > result > front > result.msg == "ok" > alert > movepage
 	// 실패하면 insert 된 bid 찾아서 삭제
-	var form = $('#uploadFile')[0].files[0];
-	var formData = new FormData();
-	formData.append('files', form);
-	var fileAjaxOptions = {
-			SvcName: "",
-			MethodName: "fileUpload.do",
-			enctype: "multipart/form-data",
-			data: formData,
-			contentType: false,
-			processData: false,
-			Callback: (function(result) {
-				console.log("성공");
-				alert("성공");
-				// transaction complete
-			}),
-			ErrorCallback: (function(result) {
-				console.log("실패");
-				alert("실패");
-				// delete inserted board
-			})
-	};
-if(bid != ""){
 
+function fn_FileUpload() {
+	var boardIdx = "";
+	boardIdx = $("#boardIdx").val();
+	fng_UploadFile("boardForm", "/fileUpload.do", fn_FileUploadResult);
 }
 
-}
-/*
-function uploadFile() {
-	var form = $('uploadForm')[0];
-	var formData = new FormData(form);
+// 파일 업로드 결과 callback
+function fn_FileUploadResult(result) {
+ var string = result;
+ var json = JSON.parse(string);
+	if(json.isSuccess == true) {
+		alert("게시글 등록이 완료되었습니다.");
+		var url = "/board-main.do";
+		location.href = url;
 
-	var fileAjaxOptions = {
-			SvcName: "",
-			MethodName: "fileUpload.do",
-			Params: {param: param},
-			enctype: "multipart/form-data",
-			data: formData,
-			contentType: false,
-			processType: false
-	};
-	$.fng_Ajax(fileAjaxOptions);
+	}else if(json.isSuccess == false) {
+		alert("게시글 등록이 실패했습니다.");
+		// 게시물 삭제
+		return;
+	}
 }
-*/
 </script>
 </head>
 
@@ -163,7 +139,7 @@ function uploadFile() {
 			<label for="formFileMultiple" class="form-label">파일 업로드</label>
 			<input class="form-control fileUpload" type="file" id="uploadFile" name = "uploadFile" multiple = "multiple">
 		</div>
-		<input type="hidden" id="bid" name="bid" value=""/>
+		<input type="hidden" id="boardIdx" name="boardIdx" value=""/>
 		</form>
 
 

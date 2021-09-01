@@ -2,17 +2,22 @@ package com.board.board.controller;
 
 import java.io.PrintWriter;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jackson.JsonObjectSerializer;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -30,6 +35,7 @@ import com.board.common.model.ParameterWrapper2;
 import com.board.common.model.UserMaster;
 import com.board.common.service.LoginService;
 import com.board.utility.Search;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping(value = "/")
@@ -118,41 +124,32 @@ public class BoardController {
 
 	// 파일 업로드
 	@RequestMapping(value = "/fileUpload.do", method = RequestMethod.POST)
-	public ModelAndView fileUploadPOST(MultipartHttpServletRequest request, ModelAndView mv,
-			@RequestBody ParameterWrapper<FileMaster> param) throws Exception {
+	public @ResponseBody String fileUploadPOST(HttpServletRequest request) throws Exception {
 		HttpSession session = request.getSession(false);
 		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
+		MultipartHttpServletRequest msr = (MultipartHttpServletRequest)request;
+		String ajaxResult = "";
 
-		List<MultipartFile> multiFileList = request.getFiles("uploadFile");
+		List<MultipartFile> multiFileList = msr.getFiles("uploadFile");
 		for (MultipartFile file : multiFileList) {
 			FileMaster fileMaster = new FileMaster();
-				//fileMaster.setBoardIdx(boardIdx);
+				fileMaster.setBoardIdx(Integer.parseInt(request.getParameter("boardIdx")));
 				fileMaster.setOrgFileName(file.getOriginalFilename());
 				fileMaster.setFileBytes(file.getBytes());
 				fileMaster.setFileSize(file.getSize());
 				fileMaster.setInsertUser(userMaster.getEmpCode());
 				fileMaster.setModifyUser(userMaster.getEmpCode());
 				boardService.uploadFile(fileMaster);
-		}
-		// multiFileList = request.getFile("uploadFile");
-		//multiFileList
-		// 가져온 게시글 IDX 에 맞게 파일 삽입
-//		List<MultipartFile> multiFileList = null;
-//		FileMaster fileMaster = new FileMaster();
+				}
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("isSuccess", true);
+		resultMap.put("resultMsg", "정상적으로 처리되었습니다.");
 
-//		for (MultipartFile file : multiFileList) {
-//			param.param.setBoardIdx(boardIdx);
-//			fileMaster.setBoardIdx(boardIdx);
-//			fileMaster.setOrgFileName(file.getOriginalFilename()); // 파일 이름
-//			fileMaster.setFileBytes(file.getBytes()); // 파일 바이너리
-//			fileMaster.setFileSize(file.getSize()); // 파일 사이즈
-//			fileMaster.setInsertUser(userMaster.getEmpCode());
-//			fileMaster.setModifyUser(userMaster.getEmpCode());
-//		}
-		mv.setViewName("redirect:/board-main.do");
-		return mv;
+		ObjectMapper mapper = new ObjectMapper();
+		ajaxResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultMap);
+		//잭슨라이브러리 > 맵 to Json String > return
+		return ajaxResult;
 	}
-
 
 	// 선택된 게시글 조회(GET)
 	@RequestMapping(value = "/boardDetail.do", method = RequestMethod.GET)
