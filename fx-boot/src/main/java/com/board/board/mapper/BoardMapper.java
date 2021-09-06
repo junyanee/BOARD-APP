@@ -26,7 +26,7 @@ public interface BoardMapper {
 
 	public void updateReadCnt(int boardIdx) throws Exception;
 
-	public void modifyArticle(BoardMaster param) throws Exception;
+	public ResultMaster modifyArticle(BoardMaster param) throws Exception;
 
 	public ResultMaster deleteArticle(BoardMaster param) throws Exception;
 
@@ -34,6 +34,8 @@ public interface BoardMapper {
 
 	public FileMaster downloadFile(@Param("fileList") int idx) throws Exception;
 
-	public void cancelInsertArticle(int boardIdx);
+	public void cancelInsertArticle(int boardIdx) throws Exception;
+
+	public void deleteFile(int boardIdx) throws Exception;
 
 }

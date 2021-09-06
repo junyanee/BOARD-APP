@@ -1,6 +1,5 @@
 package com.board.board.controller;
 
-import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
@@ -105,7 +104,7 @@ public class BoardController {
 	}
 
 	// 새 게시글 작성 (POST)
-	//@LoginCheck
+	// @LoginCheck
 	@RequestMapping(value = "/boardWrite.do", method = RequestMethod.POST)
 	public String boardWritePOST(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody ParameterWrapper<BoardMaster> param) throws Exception {
@@ -124,14 +123,22 @@ public class BoardController {
 	public @ResponseBody String fileUploadPOST(HttpServletRequest request) throws Exception {
 		HttpSession session = request.getSession(false);
 		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
-		MultipartHttpServletRequest msr = (MultipartHttpServletRequest)request;
+		MultipartHttpServletRequest msr = (MultipartHttpServletRequest) request;
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		String ajaxResult = "";
 
+		// 기존 글에서 업로드 한 파일 가져옴
+		int boardIdx = Integer.parseInt(request.getParameter("boardIdx"));
+		List<FileMaster> fileList = boardService.getFileList(boardIdx);
 		List<MultipartFile> multiFileList = msr.getFiles("uploadFile");
+		// 기존 파일이 있을 경우 삭제 후 파일 첨부 (게시글 수정)
+		if (fileList != null) {
+			boardService.deleteFile(boardIdx);
+		}
+		// 기존 파일이 없을 경우 (새 게시글 작성)
 		if (!multiFileList.isEmpty()) {
-		for (MultipartFile file : multiFileList) {
-			FileMaster fileMaster = new FileMaster();
+			for (MultipartFile file : multiFileList) {
+				FileMaster fileMaster = new FileMaster();
 				fileMaster.setBoardIdx(Integer.parseInt(request.getParameter("boardIdx")));
 				fileMaster.setOrgFileName(file.getOriginalFilename());
 				fileMaster.setFileBytes(file.getBytes());
@@ -139,7 +146,7 @@ public class BoardController {
 				fileMaster.setInsertUser(userMaster.getEmpCode());
 				fileMaster.setModifyUser(userMaster.getEmpCode());
 				resultMap = boardService.uploadFile(fileMaster);
-				}
+			}
 		}
 		ObjectMapper mapper = new ObjectMapper();
 		ajaxResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultMap);
@@ -196,70 +203,25 @@ public class BoardController {
 	// 선택된 게시글 수정(POST)
 	@LoginCheck
 	@RequestMapping(value = "/boardModify.do", method = RequestMethod.POST)
-	public ModelAndView modifyArticlePOST(MultipartHttpServletRequest request, HttpServletResponse response,
-			ModelAndView mv) throws Exception {
+	public String modifyArticlePOST(HttpServletRequest request, HttpServletResponse response, @RequestBody ParameterWrapper<BoardMaster> param)
+			throws Exception {
 		HttpSession session = request.getSession(false);
 		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
-		BoardMaster boardMaster = new BoardMaster();
-		boardMaster.setIdx(Integer.parseInt(request.getParameter("idx")));
-		boardMaster.setTitle(request.getParameter("modifyArticle.title"));
-		boardMaster.setContents(request.getParameter("modifyArticle.contents"));
-		boardMaster.setModifyUser(userMaster.getEmpCode());
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		String ajaxResult = "";
+		param.param.setModifyUser(userMaster.getEmpCode());
+		resultMap = boardService.modifyArticle(param.param);
 
-		// Validation Check
-		if (boardMaster.getTitle().equals("")) {
-			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			out.println("<script>alert('제목을 입력해주세요.');</script>");
-			out.flush();
-		} else {
-			if (boardMaster.getContents().equals("")) {
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
-				out.println("<script>alert('내용을 입력해주세요.');</script>");
-				out.flush();
-			} else {
-				mv.addObject("boardDetail", boardMaster);
-				mv.setViewName("redirect:/board-main.do");
-
-				// 기존 글에서 업로드 한 파일 가져옴
-				List<FileMaster> fileList = boardService.getFileList(boardMaster.getIdx());
-
-				// 수정 시 업로드 한 파일 가져옴
-				List<MultipartFile> multiFileList = request.getFiles("uploadFile");
-				FileMaster fileMaster = new FileMaster();
-
-				// 수정 시 업로드 한 파일 세팅
-				for (MultipartFile file : multiFileList) {
-					fileMaster.setBoardIdx(boardMaster.getIdx());
-					fileMaster.setOrgFileName(file.getOriginalFilename()); // 파일 이름
-					fileMaster.setFileBytes(file.getBytes()); // 파일 바이너리
-					fileMaster.setFileSize(file.getSize()); // 파일 사이즈
-					fileMaster.setInsertUser(userMaster.getEmpCode());
-					fileMaster.setModifyUser(userMaster.getEmpCode());
-
-					// 기존 업로드 파일과 수정 시 업로드 한 파일명 같은지 비교
-					// 같으면 DB에 저장, 다르면 저장 x
-					for (FileMaster elem : fileList) {
-						if (!elem.getOrgFileName().equals(fileMaster.getOrgFileName())) {
-							boardService.uploadFile(fileMaster);
-						}
-					}
-				}
-				mv.addObject("modifyArticle", boardMaster);
-				mv.setViewName("redirect:/board-main.do");
-				boardService.modifyArticle(boardMaster);
-				return mv;
-			}
-		}
-		return mv;
+		ObjectMapper mapper = new ObjectMapper();
+		ajaxResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultMap);
+		return ajaxResult;
 	}
 
-	// 선택된 게시글 삭제(GET)
+	// 선택된 게시글 삭제(POST)
 	@LoginCheck
 	@RequestMapping(value = "/boardDelete.do", method = RequestMethod.POST)
-	public String deleteArticleGET(HttpServletRequest request,
-			@RequestBody ParameterWrapper<BoardMaster> param) throws Exception {
+	public String deleteArticleGET(HttpServletRequest request, @RequestBody ParameterWrapper<BoardMaster> param)
+			throws Exception {
 		HttpSession session = request.getSession(false);
 		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -276,3 +238,45 @@ public class BoardController {
 		return ajaxResult;
 	}
 }
+
+//// 선택된 게시글 수정(POST)
+//@LoginCheck
+//@RequestMapping(value = "/boardModify.do", method = RequestMethod.POST)
+//public String modifyArticlePOST(HttpServletRequest request, HttpServletResponse response, @RequestBody ParameterWrapper<BoardMaster> param)
+//		throws Exception {
+//	HttpSession session = request.getSession(false);
+//	UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
+//	Map<String, Object> resultMap = new HashMap<String, Object>();
+//	String ajaxResult = "";
+//	param.param.setModifyUser(userMaster.getEmpCode());
+//	resultMap = boardService.modifyArticle(param.param);
+//
+//	ObjectMapper mapper = new ObjectMapper();
+//	ajaxResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultMap);
+//	return ajaxResult;
+//}
+
+//// 기존 글에서 업로드 한 파일 가져옴
+//List<FileMaster> fileList = boardService.getFileList(boardMaster.getIdx());
+//
+//// 수정 시 업로드 한 파일 가져옴
+//List<MultipartFile> multiFileList = request.getFiles("uploadFile");
+//FileMaster fileMaster = new FileMaster();
+//
+//// 수정 시 업로드 한 파일 세팅
+//for (MultipartFile file : multiFileList) {
+//	fileMaster.setBoardIdx(boardMaster.getIdx());
+//	fileMaster.setOrgFileName(file.getOriginalFilename()); // 파일 이름
+//	fileMaster.setFileBytes(file.getBytes()); // 파일 바이너리
+//	fileMaster.setFileSize(file.getSize()); // 파일 사이즈
+//	fileMaster.setInsertUser(userMaster.getEmpCode());
+//	fileMaster.setModifyUser(userMaster.getEmpCode());
+//
+//	// 기존 업로드 파일과 수정 시 업로드 한 파일명 같은지 비교
+//	// 같으면 DB에 저장, 다르면 저장 x
+//	for (FileMaster elem : fileList) {
+//		if (!elem.getOrgFileName().equals(fileMaster.getOrgFileName())) {
+//			boardService.uploadFile(fileMaster);
+//		}
+//	}
+//}

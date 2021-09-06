@@ -52,8 +52,18 @@ public class BoardService {
 		boardMapper.updateReadCnt(boardIdx);
 	}
 
-	public void modifyArticle(BoardMaster param) throws Exception {
-		boardMapper.modifyArticle(param);
+	public Map<String, Object> modifyArticle(BoardMaster param) throws Exception {
+		ResultMaster resultMaster = new ResultMaster();
+		resultMaster = boardMapper.modifyArticle(param);
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		if (resultMaster.getIsSuccess().equals("true")) {
+			resultMap.put("isSuccess", true);
+			resultMap.put("resultMsg", "정상적으로 처리되었습니다.");
+		} else if (resultMaster.getIsSuccess().equals("false")) {
+			resultMap.put("isSuccess", false);
+			resultMap.put("resultMsg", "정상적으로 처리되지 못했습니다.");
+		}
+		return resultMap;
 	}
 
 	public Map<String, Object> deleteArticle(BoardMaster param) throws Exception {
@@ -77,5 +87,9 @@ public class BoardService {
 
 	public FileMaster downloadFile(int idx) throws Exception {
 		return boardMapper.downloadFile(idx);
+	}
+
+	public void deleteFile(int boardIdx) throws Exception {
+		boardMapper.deleteFile(boardIdx);
 	}
 }
