@@ -69,7 +69,7 @@
 }
 </update>
 
-<update id = "modifyArticle" parameterType = "com.board.board.model.BoardMaster">
+<select id = "modifyArticle" parameterType = "com.board.board.model.BoardMaster" resultType = "com.board.common.model.ResultMaster">
 {
 	call SP_UpdateArticle
 	(
@@ -79,7 +79,7 @@
 		@ModUser = #{modifyUser, mode = IN, jdbcType = VARCHAR}
 	)
 }
-</update>
+</select>
 
 <select id = "deleteArticle" parameterType = "com.board.board.model.BoardMaster" resultType = "com.board.common.model.ResultMaster">
 {
@@ -117,4 +117,14 @@
 	)
 }
 </select>
+
+<select id = "deleteFile" parameterType = "int">
+{
+	call SP_DeleteFile
+	(
+		@BoardIdx = #{boardIdx, mode = IN, jdbcType = INTEGER}
+	)
+}
+</select>
+
 </mapper>
