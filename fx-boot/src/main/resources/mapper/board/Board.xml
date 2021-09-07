@@ -127,4 +127,13 @@
 }
 </select>
 
+<select id = "getOneBoard" parameterType = "int" resultType = "com.board.board.model.BoardMaster">
+{
+	call SP_GetOneBoard
+	(
+		@BoardIdx = #{boardIdx, mode = IN, jdbcType = INTEGER}
+	)
+}
+</select>
+
 </mapper>

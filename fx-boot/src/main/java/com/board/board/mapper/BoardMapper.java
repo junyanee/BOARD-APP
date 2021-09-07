@@ -38,4 +38,6 @@ public interface BoardMapper {
 
 	public void deleteFile(int boardIdx) throws Exception;
 
+	public BoardMaster getOneBoard(int boardIdx) throws Exception;
+
 }

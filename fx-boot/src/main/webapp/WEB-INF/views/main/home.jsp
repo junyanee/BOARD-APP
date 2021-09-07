@@ -53,14 +53,49 @@
 		}
 		$.fng_Ajax(ajaxOptions);
 	});
+
+	function run(idx) {
+		var idx = idx;
+			$.ajax({
+				type: "GET",
+				url : "selectAll.do",
+				data : {"idx" : idx},
+				success: function(response) {
+					var result = JSON.stringify(response);
+					console.log("SUCCESS: " + result)
+					},
+				error: function(response) {
+					console.log("ERROR: " + idx);
+				},
+				dataType: 'json',
+				async: true
+			});
+
+	}
+
+	function call() {
+		for (var i = 151; i < 1151; i ++) {
+			run(i);
+		}
+	}
 </script>
 <div>
 	<div class="container">
+	<div>
 		<h1>Home</h1>
+	</div>
 		<hr>
-	<p>
-	게시판 홈 화면
-	</p>
+	<div>
+		<p>
+			게시판 홈 화면
+		</p>
+
+	</div>
+	<div>
+		<button type = "button" onclick = "javascript:call();"> 조회하기</button>
+	</div>
+
+
 
 	</div>
 </div>
