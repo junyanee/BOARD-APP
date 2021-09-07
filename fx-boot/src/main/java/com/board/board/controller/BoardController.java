@@ -33,6 +33,8 @@ import com.board.common.service.LoginService;
 import com.board.utility.Search;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jdk.jfr.internal.Logger;
+
 @RestController
 @RequestMapping(value = "/")
 public class BoardController {
@@ -235,6 +237,20 @@ public class BoardController {
 		}
 		ObjectMapper mapper = new ObjectMapper();
 		ajaxResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultMap);
+		return ajaxResult;
+	}
+
+	@RequestMapping(value = "/selectAll.do")
+	@ResponseBody
+	public String selectAll(@RequestParam(value = "idx") int param) throws Exception {
+		String ajaxResult = "";
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		BoardMaster boardMaster = new BoardMaster();
+		boardMaster = boardService.getOneBoard(param);
+		resultMap.put("boardInfo", boardMaster.getIdx());
+		ObjectMapper mapper = new ObjectMapper();
+		ajaxResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultMap);
+
 		return ajaxResult;
 	}
 }

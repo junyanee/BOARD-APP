@@ -92,4 +92,8 @@ public class BoardService {
 	public void deleteFile(int boardIdx) throws Exception {
 		boardMapper.deleteFile(boardIdx);
 	}
+
+	public BoardMaster getOneBoard(int boardIdx) throws Exception {
+		return boardMapper.getOneBoard(boardIdx);
+	}
 }

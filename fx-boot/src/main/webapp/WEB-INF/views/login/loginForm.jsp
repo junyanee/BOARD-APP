@@ -6,6 +6,45 @@
 <head>
 <meta charset="UTF-8">
 <title>Login</title>
+<script type = text/javascript>
+$(document).ready(function() {
+
+});
+function login() {
+	var param;
+	param = $(loginForm).serializeObject();
+
+	var loginAjaxOptions = {
+			SvcName: "/Login",
+			MethodName: "LoginProc.do",
+			Params: param,
+			async: false,
+			Callback: function(response) {
+				if(response.loginCheck == true) {
+	    			var url = "/home.do";
+	        		location.href = url;
+				} else if (response.loginCheck == false) {
+					alert("로그인 정보를 다시 확인해주세요.");
+					$('#userId').val('');
+					$('#userPw').val('');
+					$('#userId').focus();
+					return;
+				}
+			},
+			ErrorCallback: function() {
+				alert("로그인에 실패했습니다. 다시 시도해주세요.");
+				return;
+			}
+	};
+		$.fng_Ajax(loginAjaxOptions);
+}
+
+function enterKey() {
+	if (window.event.keyCode == 13) {
+		login();
+	}
+}
+</script>
 </head>
 <body>
 	<div class="sidenav">
@@ -18,7 +57,7 @@
 	<div class="main">
 		<div class="col-md-6 col-sm-12">
 			<div class="login-form">
-				<form method="post" action="./LoginProc.do">
+				<form method="POST" action="./LoginProc.do" name = "loginForm" id = "loginForm">
 				<div>
 					<h2> 로그인 </h2>
 				</div>
@@ -28,9 +67,9 @@
 					</div>
 					<div class="form-group">
 						<label>비밀번호</label> <input type="password"
-							class="form-control" placeholder="Password" id="userPw" name="userPw">
+							class="form-control" placeholder="Password" id="userPw" name="userPw" onkeyup = "javascript:enterKey();">
 					</div>
-					<button type="submit" class="btn btn-primary float-right">로그인</button>
+					<button type="button" class="btn btn-primary float-right" onclick = "javascript:login();">로그인</button>
 				</form>
 			</div>
 		</div>
