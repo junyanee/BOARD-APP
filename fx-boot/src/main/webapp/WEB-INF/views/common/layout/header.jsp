@@ -14,9 +14,6 @@
 <body>
      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
       <a class="navbar-brand" href="/home.do">SYDS Boards</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
 
       <div class="collapse navbar-collapse" id="navbarsExample04">
         <ul class="navbar-nav mr-auto">
@@ -29,18 +26,27 @@
           </li>
           </c:if>
         </ul>
-        <c:if test = "${sessionScope.userInfo != null }">
-           <span class="navbar-text">
-          	${userInfo.empName }님
-          </span>
-        </c:if>
-
-<!--         SEARCH FORM
-
-        <form class="form-inline my-2 my-md-0">
-          <input class="form-control" type="text" placeholder="Search">
-        </form>
--->
+			<c:choose>
+        	     	<c:when test ="${sessionScope.userInfo != null}">
+						<c:choose>
+        	     			<c:when test="${sessionScope.adminInfo != null }">
+        	     				<div>
+        	     					<span class = "navbar-text">
+        	     						${adminInfo.adminName } 관리자님
+        	     					</span>
+        	     					<a href = "#">
+        	     						<img src ="/resources/img/common/ic_micro_setting.png" alt = "관리" />
+        	     					</a>
+        	     				</div>
+        	     			</c:when>
+        	     			<c:otherwise>
+        	     				<span class = "navbar-text">
+        	     					${userInfo.empName } ${userInfo.empTypeName }님
+        	     				</span>
+        	     			</c:otherwise>
+        	     		</c:choose>
+        	     	</c:when>
+        	</c:choose>
       </div>
     </nav>
 </body>
