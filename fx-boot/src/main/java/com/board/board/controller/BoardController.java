@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.board.admin.model.AdminMaster;
 import com.board.aop.annotation.LoginCheck;
 import com.board.board.model.BoardMaster;
 import com.board.board.model.CommentMaster;
@@ -58,12 +59,17 @@ public class BoardController {
 		// Home 진입시 Session에 담긴 정보를 가져오기 위함
 		getUser(request);
 		UserMaster userVo = (UserMaster) session.getAttribute("userInfo");
+		AdminMaster adminVo = (AdminMaster) session.getAttribute("adminInfo");
 
 		if (userVo == null) {
 			// ticket정보가 session에 없을 경우(logout, 다른사용자 로그인) loginForm으로 이동시키기 위함
 			mv.setViewName("redirect:/Login/Login.do");
 		} else {
-			mv.setViewName("main/home");
+			if (userVo.isAdmin() == true && userVo.getEmpCode().equals(adminVo.getEmpCode())) {
+				mv.setViewName("redirect:/admin/adminCheck.do");
+			} else {
+				mv.setViewName("main/home");
+			}
 		}
 		return mv;
 	}

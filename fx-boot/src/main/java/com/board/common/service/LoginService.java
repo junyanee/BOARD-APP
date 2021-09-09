@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.board.admin.model.AdminMaster;
+import com.board.admin.service.AdminService;
 import com.board.common.model.UserMaster;
 import com.board.utility.DatabaseConnection;
 
@@ -56,6 +58,8 @@ public class LoginService {
 	UserMasterService userMasterService;
 	@Resource
 	CodeMasterService codeMasterService;
+	@Resource
+	AdminService adminService;
 
 	static class LDAP {
 		static String ATTRIBUTE_FOR_USER = "sAMAccountName";
@@ -179,7 +183,9 @@ public class LoginService {
 	public void setSessionUserInfo(HttpServletRequest request, String userId) throws Exception {
 		HttpSession session = request.getSession(true);
 		UserMaster userMaster = userMasterService.getUserInfo(userId);
+		AdminMaster adminMaster = adminService.getAdminInfo(userId);
 		session.setAttribute("userInfo", userMaster);
+		session.setAttribute("adminInfo", adminMaster);
 	}
 
 }
