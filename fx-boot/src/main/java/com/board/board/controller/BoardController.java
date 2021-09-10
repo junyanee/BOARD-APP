@@ -65,11 +65,7 @@ public class BoardController {
 			// ticket정보가 session에 없을 경우(logout, 다른사용자 로그인) loginForm으로 이동시키기 위함
 			mv.setViewName("redirect:/Login/Login.do");
 		} else {
-			if (userVo.isAdmin() == true && userVo.getEmpCode().equals(adminVo.getEmpCode())) {
-				mv.setViewName("redirect:/admin/adminCheck.do");
-			} else {
-				mv.setViewName("main/home");
-			}
+			mv.setViewName("main/home");
 		}
 		return mv;
 	}

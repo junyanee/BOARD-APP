@@ -9,6 +9,11 @@
 <body>
 	<div class = "container">
 		<h1> 관리자 페이지 </h1>
+
+	<div class="d-grid gap-2 col-2">
+  		<a href="/admin/addAdmin.do"><button class="btn btn-primary" type="button">관리자 권한 설정</button></a>
+  		<button class="btn btn-primary" type="button">Button</button>
+	</div>
 	</div>
 </body>
 </html>
