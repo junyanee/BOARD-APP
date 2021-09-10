@@ -53,7 +53,7 @@
 		}
 		$.fng_Ajax(ajaxOptions);
 	});
-
+var obj = [];
 	function run(idx) {
 		var idx = idx;
 			$.ajax({
@@ -61,8 +61,11 @@
 				url : "selectAll.do",
 				data : {"idx" : idx},
 				success: function(response) {
-					var result = JSON.stringify(response);
-					console.log("SUCCESS: " + result)
+					//var result = JSON.stringify(response);
+					//console.log("SUCCESS: " + result)
+					//obj.push(JSON.parse(result));
+					obj.push(response);
+
 					},
 				error: function(response) {
 					console.log("ERROR: " + idx);
@@ -77,6 +80,7 @@
 		for (var i = 151; i < 1151; i ++) {
 			run(i);
 		}
+		console.log(obj.sort());
 	}
 </script>
 <div>
@@ -93,6 +97,7 @@
 	</div>
 	<div>
 		<button type = "button" onclick = "javascript:call();"> 조회하기</button>
+		<a href = "/Common/insertHome.do"><button type = "button"> ajax 예제</button></a>
 	</div>
 
 
