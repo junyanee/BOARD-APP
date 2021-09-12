@@ -9,10 +9,10 @@ public class CommentMaster {
 
 	int idx;
 	String contents;
-	String insuser;
-	String insdate;
-	String moduser;
-	String moddate;
+	String insertUser;
+	String insertDate;
+	String modifyUser;
+	String modifyDate;
 	int boardIdx;
 	int deleteFg;
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.board.common.mapper.CommonMapper;
 import com.board.common.model.ItemMaster;
+import com.board.common.model.PersonDTO;
 
 @Service
 public class CommonService {
@@ -15,6 +16,14 @@ public class CommonService {
 
 	public List<ItemMaster> getItemCode(ItemMaster param) throws Exception {
 		return commonMapper.getItemCode(param);
+	}
+
+	public void insertPerson(PersonDTO personDto) throws Exception {
+		commonMapper.insertPerson(personDto);
+	}
+
+	public List<PersonDTO> getPersonList() throws Exception {
+		return commonMapper.getPersonList();
 	}
 
 }

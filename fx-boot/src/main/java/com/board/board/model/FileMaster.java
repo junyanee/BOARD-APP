@@ -13,10 +13,10 @@ public class FileMaster {
 	String storedFileName;
 	byte[] fileBytes;
 	long fileSize;
-	String insuser;
-	String insdate;
-	String moduser;
-	String moddate;
+	String insertUser;
+	String insertDate;
+	String modifyUser;
+	String modifyDate;
 	int deleteFg;
 
 }

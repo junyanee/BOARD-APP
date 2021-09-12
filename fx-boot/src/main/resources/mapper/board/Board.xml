@@ -25,7 +25,7 @@
 }
 
 </select>
-<insert id = "uploadFile" parameterType = "com.board.board.model.FileMaster">
+<select id = "uploadFile" parameterType = "com.board.board.model.FileMaster" resultType = "com.board.common.model.ResultMaster">
 {
 	call SP_InsertFile
 	(
@@ -33,11 +33,11 @@
 		@OrgFileName = #{orgFileName, mode = IN, jdbcType = VARCHAR},
 		@FileBytes = #{fileBytes, mode = IN, jdbcType = BINARY},
 		@FileSize = #{fileSize, mode = IN, jdbcType = BIGINT},
-		@InsUser = #{insuser, mode = IN, jdbcType = VARCHAR},
-		@ModUser = #{moduser, mode = IN, jdbcType = VARCHAR}
+		@InsUser = #{insertUser, mode = IN, jdbcType = VARCHAR},
+		@ModUser = #{modifyUser, mode = IN, jdbcType = VARCHAR}
 	)
 }
-</insert>
+</select>
 
 <select id="insertArticle" parameterType="com.board.board.model.BoardMaster" resultType = "int">
 {
@@ -45,8 +45,8 @@
 	(
 		@Title = #{title, mode = IN, jdbcType = VARCHAR},
 		@Contents = #{contents, mode = IN, jdbcType = VARCHAR},
-		@InsUser = #{insuser, mode = IN, jdbcType = VARCHAR},
-		@ModUser = #{moduser, mode = IN, jdbcType = VARCHAR}
+		@InsUser = #{insertUser, mode = IN, jdbcType = VARCHAR},
+		@ModUser = #{modifyUser, mode = IN, jdbcType = VARCHAR}
 	)
 }
 </select>
@@ -69,27 +69,27 @@
 }
 </update>
 
-<update id = "modifyArticle" parameterType = "com.board.board.model.BoardMaster">
+<select id = "modifyArticle" parameterType = "com.board.board.model.BoardMaster" resultType = "com.board.common.model.ResultMaster">
 {
 	call SP_UpdateArticle
 	(
 		@Idx = #{idx, mode = IN, jdbcType = INTEGER},
 		@Title = #{title, mode = IN, jdbcType = VARCHAR},
 		@Contents = #{contents, mode = IN, jdbcType = VARCHAR},
-		@ModUser = #{moduser, mode = IN, jdbcType = VARCHAR}
+		@ModUser = #{modifyUser, mode = IN, jdbcType = VARCHAR}
 	)
 }
-</update>
+</select>
 
-<update id = "deleteArticle" parameterType = "com.board.board.model.BoardMaster">
+<select id = "deleteArticle" parameterType = "com.board.board.model.BoardMaster" resultType = "com.board.common.model.ResultMaster">
 {
 	call SP_DeleteArticle
 	(
 		@Idx = #{idx, mode = IN, jdbcType = INTEGER},
-		@ModUser = #{moduser, mode = IN, jdbcType = VARCHAR}
+		@ModUser = #{modifyUser, mode = IN, jdbcType = VARCHAR}
 	)
 }
-</update>
+</select>
 
 <select id = "getFileList" parameterType = "int" resultType = "com.board.board.model.FileMaster">
 {
@@ -105,6 +105,33 @@
 	call SP_DownloadFile
 	(
 		@Idx = #{fileList, mode = IN, jdbcType = INTEGER}
+	)
+}
+</select>
+
+<select id = "cancelInsertArticle" parameterType = "int">
+{
+	call SP_CancelInsertArticle
+	(
+		@Idx = #{boardIdx, mode = IN, jdbcType = INTEGER}
+	)
+}
+</select>
+
+<select id = "deleteFile" parameterType = "int">
+{
+	call SP_DeleteFile
+	(
+		@BoardIdx = #{boardIdx, mode = IN, jdbcType = INTEGER}
+	)
+}
+</select>
+
+<select id = "getOneBoard" parameterType = "int" resultType = "com.board.board.model.BoardMaster">
+{
+	call SP_GetOneBoard
+	(
+		@BoardIdx = #{boardIdx, mode = IN, jdbcType = INTEGER}
 	)
 }
 </select>

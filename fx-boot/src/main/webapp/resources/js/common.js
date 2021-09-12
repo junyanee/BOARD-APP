@@ -170,6 +170,67 @@ function fng_JsonToUrlParam(JsonData) {
     } catch (ex) { return "" }
 }
 
+////////////////////파일 업로드////////////////////
+
+function fng_UploadFile(formId, url, callback) {
+
+	var form = $('#' + formId)[0];
+
+    var formData = new FormData(form);
+        $.ajax({
+           url: url,
+           processData: false,
+           contentType: false,
+           data: formData,
+           type: 'POST',
+           success: function(result){
+        	   console.log(result);
+               if(callback) callback(result);
+           },
+           error : function(result ) {
+               console.log(result);
+           }
+       });
+}
+/**/
+jQuery.fn.serializeObject = function() {
+
+	var obj = null;
+
+	try {
+
+	// this[0].tagName이 form tag일 경우
+
+	if(this[0].tagName && this[0].tagName.toUpperCase() == "FORM" ) {
+
+	var arr = this.serializeArray();
+
+	if(arr){
+
+	obj = {};
+
+	jQuery.each(arr, function() {
+
+	// obj의 key값은 arr의 name, obj의 value는 value값
+
+	obj[this.name] = this.value;
+
+	});
+
+	}
+
+	}
+
+	}catch(e) {
+
+	alert(e.message);
+
+	}finally  {}
+
+	return obj;
+
+	};
+/**/
 
 //////////////////JQUERY EXTEND////////////////////
 jQuery.extend({

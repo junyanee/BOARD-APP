@@ -21,5 +21,6 @@ public class UserMaster {
 	String empTypeName;
 	String orderValue;
 	String iDate;
+	int isAdmin;
 
 }

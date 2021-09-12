@@ -1,17 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
+<title>관리자 권한 설정</title>
+</head>
 <script type="text/javascript">
 // 이전 버튼
 function fn_prev(page, range, rangeSize, searchType, keyword) {
 	var page = ((range - 2) * rangeSize) + 1;
 	var range = range - 1;
 
-	var url = "${pageContext.request.contextPath}/board-main.do"
+	var url = "${pageContext.request.contextPath}/admin/addAdmin.do"
 		url = url + "?page=" + page;
 		url = url + "&range=" + range;
 		url = url + "&searchType=" + $('#searchType').val();
@@ -21,7 +24,7 @@ function fn_prev(page, range, rangeSize, searchType, keyword) {
 
 // 페이지 번호 클릭
 function fn_pagination(page, range, rangeSize, searchType, keyword) {
-	var url = "${pageContext.request.contextPath}/board-main.do";
+	var url = "${pageContext.request.contextPath}/admin/addAdmin.do";
 		url = url + "?page=" + page;
 		url = url + "&range=" + range;
 		url = url + "&searchType=" + $('#searchType').val();
@@ -34,7 +37,7 @@ function fn_next(page, range, rangeSize, searchType, keyword) {
 	var page = parseInt((range * rangeSize)) + 1;
 	var range = parseInt(range) + 1;
 
-	var url = "${pageContext.request.contextPath}/board-main.do";
+	var url = "${pageContext.request.contextPath}/admin/addAdmin.do";
 		url = url + "?page=" + page;
 		url = url + "&range=" + range;
 		url = url + "&searchType=" + $('#searchType').val();
@@ -44,21 +47,16 @@ function fn_next(page, range, rangeSize, searchType, keyword) {
 // 검색 버튼
 $(document).on('click', '#btnSearch', function(e) {
 	e.preventDefault();
-	var url = "${pageContext.request.contextPath}/board-main.do";
+	var url = "${pageContext.request.contextPath}/admin/addAdmin.do";
 	url = url + "?searchType=" + $('#searchType').val();
 	url = url + "&keyword=" + $('#keyword').val();
 	location.href = encodeURI(url);
 	console.log(url);
 })
 </script>
-<meta charset="UTF-8">
-<title>메인 게시판</title>
-</head>
 <body>
-	<div class="container">
-		<h2>메인 게시판</h2>
-		<hr>
-				<!-- Search  -->
+	<div class = "container">
+		<!-- Search  -->
 		<div class = "form-group row">
 			<div class = "col-1">
 				<select name = "searchType" id = "searchType"
@@ -82,9 +80,8 @@ $(document).on('click', '#btnSearch', function(e) {
                 border: 1px solid;
                 border-radius: 4px;
                 ">
-						<option value = "title">제목</option>
-						<option value = "content">본문</option>
-						<option value = "insuser">사번</option>
+						<option value = "empName">이름</option>
+						<option value = "empCode">사번</option>
 				</select>
 			</div>
 			<div class = "col-10">
@@ -94,40 +91,34 @@ $(document).on('click', '#btnSearch', function(e) {
 				<button class = "btn btn-default btn-primary" type = "button" name = "btnSearch" id = "btnSearch">검색</button>
 			</div>
 		</div>
-		<div class="table-responsive-md">
+		<div class = "table-responsive-md">
 			<table class="table table-hover">
-				<thead class="table-light">
+				<thead class = "table-light">
 					<tr>
-						<th scope="col">#</th>
-						<th scope="col">제목</th>
-						<th scope="col">작성자</th>
-						<th scope="col">날짜</th>
-						<th scope="col">조회수</th>
-						<th scope="col">댓글수</th>
+						<th scope = "col">#</th>
+						<th scope = "col">사번</th>
+						<th scope = "col">이름</th>
+						<th scope = "col">역할</th>
+						<th scope = "col">관리자 여부</th>
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="boardList" items="${boardList}" varStatus="status">
+					<c:forEach var = "userList" items = "${userList }" varStatus = "status">
 						<tr>
-							<th scope="row"><c:out value="${status.count }" /></th>
-							<td> <a href="/boardDetail.do?idx=${boardList.idx}"><c:out value="${boardList.title }" /> </a> </td>
-							<td><c:out value="${boardList.insertUser }" /></td>
-							<td><c:out value="${boardList.insertDate }" /></td>
-							<td><c:out value="${boardList.readCnt }" /></td>
-							<td><c:out value="${boardList.commentCnt }" /></td>
+							<th scope = "row"><c:out value="${status.count }" /></th>
+							<td><c:out value="${userList.empCode }" /></td>
+							<td><c:out value="${userList.empName }" /></td>
+							<td><c:out value="${userList.jobName }" /></td>
+							<td><c:choose>
+									<c:when test = "${userList.isAdmin == 1}"><c:out value= "관리자"/></c:when>
+									<c:otherwise><c:out value="일반" /></c:otherwise>
+								</c:choose>
+							</td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 		</div>
-		<div>
-			<!-- 로그인 정보 있을때만 글쓰기 버튼 출력 -->
-			<c:if test = "${sessionScope.userInfo != null }">
-				<a href="/boardWrite.do"><button type = "button" class="btn btn-primary float-right">글쓰기</button></a>
-			</c:if>
-		</div>
-			<br>
-			<hr>
 		<!-- Pagination -->
 		<div id = "pagination">
 			<ul class="pagination justify-content-center">
@@ -149,7 +140,6 @@ $(document).on('click', '#btnSearch', function(e) {
 			</ul>
 		</div>
 		<br />
-
 	</div>
 </body>
 </html>

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="ko">
 <head>
@@ -11,34 +12,47 @@
 <%@ include file="/resources/common/headerTag.jspf"%>
 </head>
 <body>
-     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="/home.do">SYDS Boards</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+	<div class = "container">
+	     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+	      <a class="navbar-brand" href="/home.do">SYDS Boards</a>
 
-      <div class="collapse navbar-collapse" id="navbarsExample04">
-        <ul class="navbar-nav mr-auto">
-           <li class="nav-item active">
-            <a class="nav-link" href="/board-main.do">게시판 <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="Login/Login.do">로그인 페이지</a>
-          </li>
-        </ul>
-        <!-- <button type="submit" class="btn btn-login" onclick = 'console.log("눌렀음")'>Login/Logout</button>  -->
-
-<!--         SEARCH FORM
-        <form class="form-inline my-2 my-md-0">
-          <input class="form-control" type="text" placeholder="Search">
-        </form>
--->
-      </div>
-      <div>
-      	<c:if test = "${sessionScope.userInfo != null }">
-      		<span class = "navbar-text"> ${userInfo.userName } 님</span>
-      	</c:if>
-      </div>
-    </nav>
+	      <div class="collapse navbar-collapse" id="navbarsExample04">
+	        <ul class="navbar-nav mr-auto">
+	           <li class="nav-item active">
+	            <a class="nav-link" href="/board-main.do">게시판 <span class="sr-only">(current)</span></a>
+	          </li>
+	        </ul>
+			<c:choose>
+	        	<c:when test ="${sessionScope.userInfo != null}">
+					<c:choose>
+	        	     	<c:when test="${sessionScope.adminInfo != null }">
+	        	     		<div>
+	        	     			<span class = "navbar-text">
+	        	     				${adminInfo.adminName } 관리자님
+	        	     			</span>
+	        	     			<a href = "/admin/adminCheck.do">
+	        	     				<img src ="/resources/img/common/ic_micro_setting.png" alt = "관리" />
+	        	     			</a>
+	        	     		</div>
+	        			</c:when>
+	        			<c:otherwise>
+	        				<span class = "navbar-text">
+	        					${userInfo.empName } ${userInfo.jobName }
+	        	    		</span>
+	        			</c:otherwise>
+	        		</c:choose>
+	        	</c:when>
+	        </c:choose>
+	        <c:choose>
+	        	<c:when test = "${sessionScope.userInfo != null }">
+	       			<a class = "nav-link" href = "/Login/Login.do"><button type="button" class="btn btn-outline-light me-2">로그아웃</button></a>
+	        	</c:when>
+	        	<c:otherwise>
+	        		<a class = "nav-link" href = "/Login/Login.do"><button type="button" class="btn btn-outline-light me-2">로그인</button></a>
+	        	</c:otherwise>
+	        </c:choose>
+	      </div>
+	    </nav>
+    </div>
 </body>
 </html>

@@ -1,31 +1,40 @@
 package com.board.board.controller;
 
-import java.io.PrintWriter;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.board.admin.model.AdminMaster;
 import com.board.aop.annotation.LoginCheck;
 import com.board.board.model.BoardMaster;
 import com.board.board.model.CommentMaster;
 import com.board.board.model.FileMaster;
 import com.board.board.service.BoardService;
 import com.board.board.service.CommentService;
+import com.board.common.model.ParameterWrapper;
 import com.board.common.model.UserMaster;
 import com.board.common.service.LoginService;
 import com.board.utility.Search;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jdk.jfr.internal.Logger;
 
 @RestController
 @RequestMapping(value = "/")
@@ -50,6 +59,7 @@ public class BoardController {
 		// Home 진입시 Session에 담긴 정보를 가져오기 위함
 		getUser(request);
 		UserMaster userVo = (UserMaster) session.getAttribute("userInfo");
+		AdminMaster adminVo = (AdminMaster) session.getAttribute("adminInfo");
 
 		if (userVo == null) {
 			// ticket정보가 session에 없을 경우(logout, 다른사용자 로그인) loginForm으로 이동시키기 위함
@@ -98,55 +108,53 @@ public class BoardController {
 	}
 
 	// 새 게시글 작성 (POST)
-	@LoginCheck
+	// @LoginCheck
 	@RequestMapping(value = "/boardWrite.do", method = RequestMethod.POST)
-	public ModelAndView boardWritePOST(MultipartHttpServletRequest request, HttpServletResponse response,
-			ModelAndView mv) throws Exception {
+	public String boardWritePOST(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody ParameterWrapper<BoardMaster> param) throws Exception {
 		HttpSession session = request.getSession(false);
 		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
-		BoardMaster boardMaster = new BoardMaster();
-		boardMaster.setTitle(request.getParameter("newArticle.title"));
-		boardMaster.setContents(request.getParameter("newArticle.contents"));
-		boardMaster.setInsuser(userMaster.getEmpCode());
-		boardMaster.setModuser(userMaster.getEmpCode());
 
-		// Validation Check
-		if (boardMaster.getTitle().equals("")) {
-			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			out.println("<script>alert('제목을 입력해주세요.');</script>");
-			out.flush();
-		} else {
-			if (boardMaster.getContents().equals("")) {
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
-				out.println("<script>alert('내용을 입력해주세요.');</script>");
-				out.flush();
-			} else {
-				mv.addObject("boardDetail", boardMaster);
-				mv.setViewName("redirect:/board-main.do");
-				/* 게시글 먼저 삽입하고 이후에 파일 삽입 */
-				// 게시글 삽입하면서 해당 IDX 가져옴
-				int boardIdx = boardService.insertArticle(boardMaster);
+		param.param.setInsertUser(userMaster.getEmpCode());
+		param.param.setModifyUser(userMaster.getEmpCode());
+		int boardIdx = boardService.insertArticle(param.param);
+		String boardIdxToString = Integer.toString(boardIdx);
+		return boardIdxToString;
+	}
 
-				// 가져온 게시글 IDX 에 맞게 파일 삽입
-				List<MultipartFile> multiFileList = request.getFiles("uploadFile");
+	// 파일 업로드
+	@RequestMapping(value = "/fileUpload.do", method = RequestMethod.POST)
+	public @ResponseBody String fileUploadPOST(HttpServletRequest request) throws Exception {
+		HttpSession session = request.getSession(false);
+		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
+		MultipartHttpServletRequest msr = (MultipartHttpServletRequest) request;
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		String ajaxResult = "";
+
+		// 기존 글에서 업로드 한 파일 가져옴
+		int boardIdx = Integer.parseInt(request.getParameter("boardIdx"));
+		List<FileMaster> fileList = boardService.getFileList(boardIdx);
+		List<MultipartFile> multiFileList = msr.getFiles("uploadFile");
+		// 기존 파일이 있을 경우 삭제 후 파일 첨부 (게시글 수정)
+		if (fileList != null) {
+			boardService.deleteFile(boardIdx);
+		}
+		// 기존 파일이 없을 경우 (새 게시글 작성)
+		if (!multiFileList.isEmpty()) {
+			for (MultipartFile file : multiFileList) {
 				FileMaster fileMaster = new FileMaster();
-
-				for (MultipartFile file : multiFileList) {
-					fileMaster.setBoardIdx(boardIdx);
-					fileMaster.setOrgFileName(file.getOriginalFilename()); // 파일 이름
-					fileMaster.setFileBytes(file.getBytes()); // 파일 바이너리
-					fileMaster.setFileSize(file.getSize()); // 파일 사이즈
-					fileMaster.setInsuser(userMaster.getEmpCode());
-					fileMaster.setModuser(userMaster.getEmpCode());
-					boardService.uploadFile(fileMaster);
-				}
-				return mv;
+				fileMaster.setBoardIdx(Integer.parseInt(request.getParameter("boardIdx")));
+				fileMaster.setOrgFileName(file.getOriginalFilename());
+				fileMaster.setFileBytes(file.getBytes());
+				fileMaster.setFileSize(file.getSize());
+				fileMaster.setInsertUser(userMaster.getEmpCode());
+				fileMaster.setModifyUser(userMaster.getEmpCode());
+				resultMap = boardService.uploadFile(fileMaster);
 			}
 		}
-		mv.setViewName("boards/boardWrite");
-		return mv;
+		ObjectMapper mapper = new ObjectMapper();
+		ajaxResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultMap);
+		return ajaxResult;
 	}
 
 	// 선택된 게시글 조회(GET)
@@ -186,7 +194,7 @@ public class BoardController {
 		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
 		int boardIdx = Integer.parseInt(request.getParameter("idx"));
 		BoardMaster boardArticle = boardService.getArticle(boardIdx);
-		if (userMaster.getEmpCode().equals(boardArticle.getInsuser())) {
+		if (userMaster.getEmpCode().equals(boardArticle.getInsertUser())) {
 			mv.addObject("modifyArticle", boardArticle);
 			mv.setViewName("boards/boardModify");
 			return mv;
@@ -199,82 +207,94 @@ public class BoardController {
 	// 선택된 게시글 수정(POST)
 	@LoginCheck
 	@RequestMapping(value = "/boardModify.do", method = RequestMethod.POST)
-	public ModelAndView modifyArticlePOST(MultipartHttpServletRequest request, HttpServletResponse response,
-			ModelAndView mv) throws Exception {
+	public String modifyArticlePOST(HttpServletRequest request, HttpServletResponse response, @RequestBody ParameterWrapper<BoardMaster> param)
+			throws Exception {
 		HttpSession session = request.getSession(false);
 		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
-		BoardMaster boardMaster = new BoardMaster();
-		boardMaster.setIdx(Integer.parseInt(request.getParameter("idx")));
-		boardMaster.setTitle(request.getParameter("modifyArticle.title"));
-		boardMaster.setContents(request.getParameter("modifyArticle.contents"));
-		boardMaster.setModuser(userMaster.getEmpCode());
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		String ajaxResult = "";
+		param.param.setModifyUser(userMaster.getEmpCode());
+		resultMap = boardService.modifyArticle(param.param);
 
-		// Validation Check
-		if (boardMaster.getTitle().equals("")) {
-			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			out.println("<script>alert('제목을 입력해주세요.');</script>");
-			out.flush();
-		} else {
-			if (boardMaster.getContents().equals("")) {
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
-				out.println("<script>alert('내용을 입력해주세요.');</script>");
-				out.flush();
-			} else {
-				mv.addObject("boardDetail", boardMaster);
-				mv.setViewName("redirect:/board-main.do");
-
-				// 기존 글에서 업로드 한 파일 가져옴
-				List<FileMaster> fileList = boardService.getFileList(boardMaster.getIdx());
-
-				// 수정 시 업로드 한 파일 가져옴
-				List<MultipartFile> multiFileList = request.getFiles("uploadFile");
-				FileMaster fileMaster = new FileMaster();
-
-				// 수정 시 업로드 한 파일 세팅
-				for (MultipartFile file : multiFileList) {
-					fileMaster.setBoardIdx(boardMaster.getIdx());
-					fileMaster.setOrgFileName(file.getOriginalFilename()); // 파일 이름
-					fileMaster.setFileBytes(file.getBytes()); // 파일 바이너리
-					fileMaster.setFileSize(file.getSize()); // 파일 사이즈
-					fileMaster.setInsuser(userMaster.getEmpCode());
-					fileMaster.setModuser(userMaster.getEmpCode());
-
-					// 기존 업로드 파일과 수정 시 업로드 한 파일명 같은지 비교
-					// 같으면 DB에 저장, 다르면 저장 x
-					for (FileMaster elem : fileList) {
-						if (!elem.getOrgFileName().equals(fileMaster.getOrgFileName())) {
-							boardService.uploadFile(fileMaster);
-						}
-					}
-				}
-				mv.addObject("modifyArticle", boardMaster);
-				mv.setViewName("redirect:/board-main.do");
-				boardService.modifyArticle(boardMaster);
-				return mv;
-			}
-		}
-		return mv;
+		ObjectMapper mapper = new ObjectMapper();
+		ajaxResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultMap);
+		return ajaxResult;
 	}
 
-	// 선택된 게시글 삭제(GET)
+	// 선택된 게시글 삭제(POST)
 	@LoginCheck
-	@RequestMapping(value = "/boardDelete.do", method = RequestMethod.GET)
-	public ModelAndView deleteArticlePOST(HttpServletRequest request, ModelAndView mv) throws Exception {
+	@RequestMapping(value = "/boardDelete.do", method = RequestMethod.POST)
+	public String deleteArticleGET(HttpServletRequest request, @RequestBody ParameterWrapper<BoardMaster> param)
+			throws Exception {
 		HttpSession session = request.getSession(false);
 		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
-		int boardIdx = Integer.parseInt(request.getParameter("idx"));
-		BoardMaster boardMaster = boardService.getArticle(boardIdx);
-		if (userMaster.getEmpCode().equals(boardMaster.getInsuser())) {
-			boardMaster.setIdx(Integer.parseInt(request.getParameter("idx")));
-			boardMaster.setModuser(userMaster.getEmpCode());
-			boardService.deleteArticle(boardMaster);
-			mv.setViewName("redirect:/board-main.do");
-			return mv;
-		} else {
-			mv.setViewName("redirect:/board-main.do");
-			return mv;
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		String ajaxResult = "";
+
+		BoardMaster boardMaster = boardService.getArticle(param.param.getIdx());
+		if (userMaster.getEmpCode().equals(boardMaster.getInsertUser())) {
+			boardMaster.setIdx(param.param.getIdx());
+			boardMaster.setModifyUser(userMaster.getEmpCode());
+			resultMap = boardService.deleteArticle(boardMaster);
 		}
+		ObjectMapper mapper = new ObjectMapper();
+		ajaxResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultMap);
+		return ajaxResult;
+	}
+
+	@RequestMapping(value = "/selectAll.do")
+	@ResponseBody
+	public String selectAll(@RequestParam(value = "idx") int param) throws Exception {
+		String ajaxResult = "";
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		BoardMaster boardMaster = new BoardMaster();
+		boardMaster = boardService.getOneBoard(param);
+		resultMap.put("boardInfo", boardMaster.getIdx());
+		ObjectMapper mapper = new ObjectMapper();
+		ajaxResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultMap);
+
+		return ajaxResult;
 	}
 }
+
+//// 선택된 게시글 수정(POST)
+//@LoginCheck
+//@RequestMapping(value = "/boardModify.do", method = RequestMethod.POST)
+//public String modifyArticlePOST(HttpServletRequest request, HttpServletResponse response, @RequestBody ParameterWrapper<BoardMaster> param)
+//		throws Exception {
+//	HttpSession session = request.getSession(false);
+//	UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
+//	Map<String, Object> resultMap = new HashMap<String, Object>();
+//	String ajaxResult = "";
+//	param.param.setModifyUser(userMaster.getEmpCode());
+//	resultMap = boardService.modifyArticle(param.param);
+//
+//	ObjectMapper mapper = new ObjectMapper();
+//	ajaxResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultMap);
+//	return ajaxResult;
+//}
+
+//// 기존 글에서 업로드 한 파일 가져옴
+//List<FileMaster> fileList = boardService.getFileList(boardMaster.getIdx());
+//
+//// 수정 시 업로드 한 파일 가져옴
+//List<MultipartFile> multiFileList = request.getFiles("uploadFile");
+//FileMaster fileMaster = new FileMaster();
+//
+//// 수정 시 업로드 한 파일 세팅
+//for (MultipartFile file : multiFileList) {
+//	fileMaster.setBoardIdx(boardMaster.getIdx());
+//	fileMaster.setOrgFileName(file.getOriginalFilename()); // 파일 이름
+//	fileMaster.setFileBytes(file.getBytes()); // 파일 바이너리
+//	fileMaster.setFileSize(file.getSize()); // 파일 사이즈
+//	fileMaster.setInsertUser(userMaster.getEmpCode());
+//	fileMaster.setModifyUser(userMaster.getEmpCode());
+//
+//	// 기존 업로드 파일과 수정 시 업로드 한 파일명 같은지 비교
+//	// 같으면 DB에 저장, 다르면 저장 x
+//	for (FileMaster elem : fileList) {
+//		if (!elem.getOrgFileName().equals(fileMaster.getOrgFileName())) {
+//			boardService.uploadFile(fileMaster);
+//		}
+//	}
+//}

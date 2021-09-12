@@ -1,11 +1,14 @@
 package com.board.board.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.board.board.model.BoardMaster;
 import com.board.board.model.FileMaster;
+import com.board.common.model.ResultMaster;
 import com.board.utility.Search;
 
 
@@ -22,8 +25,19 @@ public class BoardService {
 		return boardMapper.getBoardListCnt(search);
 	}
 
-	public void uploadFile(FileMaster file) throws Exception {
-		boardMapper.uploadFile(file);
+	public Map<String, Object> uploadFile(FileMaster file) throws Exception {
+		ResultMaster resultMaster = new ResultMaster();
+		resultMaster = boardMapper.uploadFile(file);
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		if (resultMaster.getIsSuccess().equals("true")) {
+			resultMap.put("isSuccess", true);
+			resultMap.put("resultMsg", "정상적으로 처리되었습니다.");
+		} else if (resultMaster.getIsSuccess().equals("false")) {
+			resultMap.put("isSuccess", false);
+			resultMap.put("resultMsg", "정상적으로 처리되지 못했습니다.");
+			boardMapper.cancelInsertArticle(file.getBoardIdx());
+		}
+		return resultMap;
 	}
 
 	public int insertArticle(BoardMaster param) throws Exception {
@@ -38,12 +52,33 @@ public class BoardService {
 		boardMapper.updateReadCnt(boardIdx);
 	}
 
-	public void modifyArticle(BoardMaster param) throws Exception {
-		boardMapper.modifyArticle(param);
+	public Map<String, Object> modifyArticle(BoardMaster param) throws Exception {
+		ResultMaster resultMaster = new ResultMaster();
+		resultMaster = boardMapper.modifyArticle(param);
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		if (resultMaster.getIsSuccess().equals("true")) {
+			resultMap.put("isSuccess", true);
+			resultMap.put("resultMsg", "정상적으로 처리되었습니다.");
+		} else if (resultMaster.getIsSuccess().equals("false")) {
+			resultMap.put("isSuccess", false);
+			resultMap.put("resultMsg", "정상적으로 처리되지 못했습니다.");
+		}
+		return resultMap;
 	}
 
-	public void deleteArticle(BoardMaster param) throws Exception {
-		boardMapper.deleteArticle(param);
+	public Map<String, Object> deleteArticle(BoardMaster param) throws Exception {
+		ResultMaster resultMaster = new ResultMaster();
+		resultMaster = boardMapper.deleteArticle(param);
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		if (resultMaster.getIsSuccess().equals("true")) {
+			resultMap.put("isSuccess", true);
+			resultMap.put("resultMsg", "정상적으로 처리되었습니다.");
+		} else if (resultMaster.getIsSuccess().equals("false")) {
+			resultMap.put("isSuccess", false);
+			resultMap.put("resultMsg", "정상적으로 처리되지 못했습니다.");
+		}
+		return resultMap;
+
 	}
 
 	public List<FileMaster> getFileList(int boardIdx) throws Exception {
@@ -52,5 +87,13 @@ public class BoardService {
 
 	public FileMaster downloadFile(int idx) throws Exception {
 		return boardMapper.downloadFile(idx);
+	}
+
+	public void deleteFile(int boardIdx) throws Exception {
+		boardMapper.deleteFile(boardIdx);
+	}
+
+	public BoardMaster getOneBoard(int boardIdx) throws Exception {
+		return boardMapper.getOneBoard(boardIdx);
 	}
 }

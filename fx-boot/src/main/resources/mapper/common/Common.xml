@@ -18,4 +18,35 @@
 }
 </select>
 
+<select id = "getAllUser" parameterType = "com.board.utility.Search" resultType = "com.board.common.model.UserMaster">
+{
+	call SP_GetAllUser
+	(
+		@Page = #{page, mode = IN, jdbcType = INTEGER},
+		@Range = #{range, mode = IN, jdbcType = INTEGER},
+		@ListSize = #{listSize, mode = IN, jdbcType = INTEGER},
+		@SearchType = #{searchType, mode = IN, jdbcType = VARCHAR},
+		@Keyword = #{keyword, mode = IN, jdbcType = VARCHAR}
+	)
+}
+</select>
+
+<select id = "getUserListCnt" resultType = "int">
+{
+	call SP_GetUserListCnt
+	(
+		@SearchType = #{searchType, mode = IN, jdbcType = VARCHAR},
+		@Keyword = #{keyword, mode = IN, jdbcType = VARCHAR}
+	)
+}
+
+</select>
+
+<insert id = "insertPerson" parameterType = "com.board.common.model.PersonDTO">
+	INSERT INTO TB_Person (NAME, AGE) VALUES (#{name}, #{age})
+</insert>
+
+<select id = "getPersonList" resultType = "com.board.common.model.PersonDTO">
+	SELECT IDX, NAME, AGE FROM TB_Person
+</select>
 </mapper>
