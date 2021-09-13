@@ -86,11 +86,14 @@ public class BoardController {
 
 		// Search
 		mv.addObject("search", search);
+		search.setListSize(10); // 한 페이지당 보여질 리스트 개수
+		search.setRangeSize(5); // 한 페이지 범위에 보여질 페이지의 개수
 		search.setSearchType(searchType);
 		search.setKeyword(keyword);
 
 		// Pagination
 		int listCnt = boardService.getBoardListCnt(search);
+
 		search.pageInfo(page, range, listCnt);
 		List<BoardMaster> boardList = boardService.getBoardList(search);
 		mv.addObject("pagination", search);

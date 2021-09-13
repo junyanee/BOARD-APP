@@ -14,20 +14,20 @@ function fn_prev(page, range, rangeSize, searchType, keyword) {
 	var page = ((range - 2) * rangeSize) + 1;
 	var range = range - 1;
 
-	var url = "${pageContext.request.contextPath}/admin/addAdmin.do"
+	var url = "${pageContext.request.contextPath}/admin/setAdmin.do"
 		url = url + "?page=" + page;
 		url = url + "&range=" + range;
-		url = url + "&searchType=" + $('#searchType').val();
+		url = url + "&searchType=" + $('#searchTypeTop').val();
 		url = url + "&keyword=" + keyword;
 		location.href = url;
 }
 
 // 페이지 번호 클릭
 function fn_pagination(page, range, rangeSize, searchType, keyword) {
-	var url = "${pageContext.request.contextPath}/admin/addAdmin.do";
+	var url = "${pageContext.request.contextPath}/admin/setAdmin.do";
 		url = url + "?page=" + page;
 		url = url + "&range=" + range;
-		url = url + "&searchType=" + $('#searchType').val();
+		url = url + "&searchType=" + $('#searchTypeTop').val();
 		url = url + "&keyword=" + keyword;
 		location.href = url;
 }
@@ -37,96 +37,75 @@ function fn_next(page, range, rangeSize, searchType, keyword) {
 	var page = parseInt((range * rangeSize)) + 1;
 	var range = parseInt(range) + 1;
 
-	var url = "${pageContext.request.contextPath}/admin/addAdmin.do";
+	var url = "${pageContext.request.contextPath}/admin/setAdmin.do";
 		url = url + "?page=" + page;
 		url = url + "&range=" + range;
-		url = url + "&searchType=" + $('#searchType').val();
+		url = url + "&searchType=" + $('#searchTypeTop').val();
 		url = url + "&keyword=" + keyword;
 		location.href = url;
 }
 // 검색 버튼
-$(document).on('click', '#btnSearch', function(e) {
+$(document).on('click', '#btnSearchTop', function(e) {
 	e.preventDefault();
-	var url = "${pageContext.request.contextPath}/admin/addAdmin.do";
-	url = url + "?searchType=" + $('#searchType').val();
-	url = url + "&keyword=" + $('#keyword').val();
+	var url = "${pageContext.request.contextPath}/admin/setAdmin.do";
+	url = url + "?searchType=" + $('#searchTypeTop').val();
+	url = url + "&keyword=" + $('#keywordTop').val();
 	location.href = encodeURI(url);
 	console.log(url);
 })
 
 // 체크 박스
 $(function () {
-	var checkObj = document.getElementsByName("rowCheck");
+	var checkObj = document.getElementsByName("rowCheckTop");
 	var rowCnt = checkObj.length;
 
-	$("input[name = 'allCheck']").click(function() {
-		var checkedList = $("input[name = 'rowCheck']");
+	$("input[name = 'allCheckTop']").click(function() {
+		var checkedList = $("input[name = 'rowCheckTop']");
 		for (var i = 0; i < checkedList.length; i++) {
 			checkedList[i].checked = this.checked;
 		}
 	});
-	$("input[name = 'rowCheck']").click(function() {
-		if($("input[name = 'rowCheck']:checked").length == rowCnt) {
-			$("input[name = 'allCheck']")[0].checked = true;
+	$("input[name = 'rowCheckTop']").click(function() {
+		if($("input[name = 'rowCheckTop']:checked").length == rowCnt) {
+			$("input[name = 'allCheckTop']")[0].checked = true;
 		} else {
-			$("input[name = 'allCheck']")[0].checked = false;
+			$("input[name = 'allCheckTop']")[0].checked = false;
 		}
 	});
 });
-
-function setAdmin(empCode) {
-	var empCode = empCode;
-	// 프로미스 사용하여 컨트롤러로 값 넘기고 값 받아서 db로 세팅
-	// jsp -> js -> controller -> service -> DB -> 결과return -> 사용자에게 표시
-}
 </script>
 <body>
 	<div class = "container">
-
-		<br />
-		<br />
-		<h5>사용자 정보</h5>
-		<div class = "float-right">
-			<button type="button" class="btn btn-primary" id = "setAdmin" name = "setAdmin" onclick = "javascript:setAdmin(empCode);">설정</button>
-			<button type="button" class="btn btn-primary" id = "deleteAdmin" name = "deleteAdmin">삭제</button>
-		</div>
-		<div class = "border" id = "bottomUserListAndFunction">
+		<h5>관리자 정보</h5>
+		<div class = "border" id = "topUserListAndFunction">
 		<!-- Employee Table -->
 		<div class = "table-responsive-md">
 			<table class="table table-hover">
 				<thead class = "table-light">
 					<tr>
-						<th scope = "col"><input id = "allCheck" type = "checkbox" name = "allCheck"></th>
+						<th scope = "col"><input id = "allCheckTop" type = "checkbox" name = "allCheckTop"></th>
 						<th scope = "col">#</th>
 						<th scope = "col">사번</th>
 						<th scope = "col">이름</th>
-						<th scope = "col">역할</th>
-						<th scope = "col">관리자 여부</th>
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var = "userList" items = "${userList }" varStatus = "status">
+					<c:forEach var = "adminList" items = "${adminList }" varStatus = "status">
 						<tr>
-							<td><input name = "rowCheck" type = "checkbox" value="${userList.empCode }"></td>
+							<td><input name = "rowCheckTop" type = "checkbox" value="${adminList.empCode }"></td>
 							<td><c:out value="${status.count }"></c:out></td>
-							<td><c:out value="${userList.empCode }" /></td>
-							<td><c:out value="${userList.empName }" /></td>
-							<td><c:out value="${userList.jobName }" /></td>
-							<td><c:choose>
-									<c:when test = "${userList.isAdmin == 1}"><c:out value= "관리자"/></c:when>
-									<c:otherwise><c:out value="일반" /></c:otherwise>
-								</c:choose>
-							</td>
+							<td><c:out value="${adminList.empCode }" /></td>
+							<td><c:out value="${adminList.adminName }" /></td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 		</div>
-		<div id = "bottomSearchAndPagination" class = "row">
+		<div id = "topSearchAndPagination" class = "row">
 			<!-- Search -->
 			<div class = "col-9 row">
 				<div class = "col-2">
-					<select name = "searchType" id = "searchType"
+					<select name = "searchTypeTop" id = "searchTypeTop"
 					style = "
 					color: #495057;
                 	background-color: #fff;
@@ -147,19 +126,19 @@ function setAdmin(empCode) {
                		border: 1px solid;
                 	border-radius: 4px;
                 	">
-						<option value = "empName">이름</option>
+						<option value = "adminName">이름</option>
 						<option value = "empCode">사번</option>
 					</select>
 				</div>
 				<div class = "col-8">
-					<input type = "text" class = "form-control" name = "keyword" id = "keyword" value = "${pagination.keyword }" placeholder = "검색어를 입력해주세요">
+					<input type = "text" class = "form-control" name = "keywordTop" id = "keywordTop" value = "${pagination.keyword }" placeholder = "검색어를 입력해주세요">
 				</div>
 				<div class = "col-1">
-					<button class = "btn btn-default btn-primary" type = "button" name = "btnSearch" id = "btnSearch">검색</button>
+					<button class = "btn btn-default btn-primary" type = "button" name = "btnSearch" id = "btnSearchTop">검색</button>
 				</div>
 			</div>
 			<!-- Pagination -->
-			<div id = "pagination" class = "col-3">
+			<div id = "paginationTop" class = "col-3">
 				<ul class="pagination pagination-sm">
 					<c:if test = "${pagination.prev }">
 						<li class = "page-item">
@@ -181,6 +160,9 @@ function setAdmin(empCode) {
 		</div>
 		</div>
 		<br />
+		<div>
+		<c:import url="/admin/addAdmin.do" />
+		</div>
 	</div>
 </body>
 </html>
