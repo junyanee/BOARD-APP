@@ -11,4 +11,26 @@
 }
 </select>
 
+<select id = "getAdminUser" parameterType = "com.board.utility.Search" resultType = "com.board.admin.model.AdminMaster">
+{
+	call SP_GetAdminUser
+	(
+		@Page = #{page, mode = IN, jdbcType = INTEGER},
+		@Range = #{range, mode = IN, jdbcType = INTEGER},
+		@ListSize = #{listSize, mode = IN, jdbcType = INTEGER},
+		@SearchType = #{searchType, mode = IN, jdbcType = VARCHAR},
+		@Keyword = #{keyword, mode = IN, jdbcType = VARCHAR}
+	)
+}
+</select>
+
+<select id = "getAdminListCnt" resultType = "int">
+{
+	call SP_GetAdminListCnt
+	(
+		@SearchType = #{searchType, mode = IN, jdbcType = VARCHAR},
+		@Keyword = #{keyword, mode = IN, jdbcType = VARCHAR}
+	)
+}
+</select>
 </mapper>

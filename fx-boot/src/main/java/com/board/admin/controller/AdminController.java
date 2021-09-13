@@ -50,6 +50,14 @@ public class AdminController {
 		return mv;
 	}
 
+	@RequestMapping(value = "/modifyAdmin.do")
+	public ModelAndView modifyAdmin(HttpServletRequest request) throws Exception {
+		ModelAndView mv = new ModelAndView();
+
+		mv.setViewName("admin/modifyAdmin");
+		return mv;
+	}
+
 	@RequestMapping(value = "/addAdmin.do")
 	public ModelAndView addAdmin(HttpServletRequest request,
 			@RequestParam(required = false, defaultValue = "1") int page,
@@ -60,6 +68,8 @@ public class AdminController {
 
 		// Search
 		mv.addObject("search", search);
+		search.setListSize(5); // 한 페이지당 보여질 리스트 개수
+		search.setRangeSize(5); // 한 페이지 범위에 보여질 페이지의 개수
 		search.setSearchType(searchType);
 		search.setKeyword(keyword);
 
@@ -70,6 +80,31 @@ public class AdminController {
 		mv.addObject("pagination", search);
 		mv.addObject("userList", userList);
 		mv.setViewName("admin/addAdmin");
+		return mv;
+	}
+
+	@RequestMapping(value = "/setAdmin.do")
+	public ModelAndView setAdmin(HttpServletRequest request,
+			@RequestParam(required = false, defaultValue = "1") int page,
+			@RequestParam(required = false, defaultValue = "1") int range,
+			@RequestParam(required = false, defaultValue = "adminName") String searchType,
+			@RequestParam(required = false) String keyword, @ModelAttribute("search") Search search) throws Exception {
+		ModelAndView mv = new ModelAndView();
+
+		// Search
+		mv.addObject("search", search);
+		search.setListSize(5); // 한 페이지당 보여질 리스트 개수
+		search.setRangeSize(5); // 한 페이지 범위에 보여질 페이지의 개수
+		search.setSearchType(searchType);
+		search.setKeyword(keyword);
+
+		// Pagination
+		int listCnt = adminService.getAdminListCnt(search);
+		search.pageInfo(page, range, listCnt);
+		List<AdminMaster> adminList = adminService.getAdminUser(search);
+		mv.addObject("pagination", search);
+		mv.addObject("adminList", adminList);
+		mv.setViewName("admin/setAdmin");
 		return mv;
 	}
 }
