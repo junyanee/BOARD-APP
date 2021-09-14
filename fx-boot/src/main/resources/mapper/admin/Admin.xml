@@ -33,4 +33,14 @@
 	)
 }
 </select>
+
+<select id = "modifyAuthLevel" parameterType = "com.board.admin.model.AdminMaster" resultType = "com.board.common.model.ResultMaster">
+{
+	call SP_ModifyAuthLevel
+	(
+		@AdminCode = #{adminCode, mode = IN, jdbcType = INTEGER},
+		@AuthLevel = #{authLevel, mode = IN, jdbcType = INTEGER}
+	)
+}
+</select>
 </mapper>

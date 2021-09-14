@@ -87,8 +87,8 @@ function setAdmin(empCode) {
 		<br />
 		<h5>사용자 정보</h5>
 		<div class = "float-right">
-			<button type="button" class="btn btn-primary" id = "setAdmin" name = "setAdmin" onclick = "javascript:setAdmin(empCode);">설정</button>
-			<button type="button" class="btn btn-primary" id = "deleteAdmin" name = "deleteAdmin">삭제</button>
+			<button type="button" class="btn btn-primary" id = "addAdmin" name = "addAdmin" onclick = "javascript:setAdmin(empCode);">관리자로 설정</button>
+			<button type="button" class="btn btn-primary" id = "deleteAdmin" name = "deleteAdmin" onclick = "deleteAdmin(empCode)">관리자에서 삭제</button>
 		</div>
 		<div class = "border" id = "bottomUserListAndFunction">
 		<!-- Employee Table -->
