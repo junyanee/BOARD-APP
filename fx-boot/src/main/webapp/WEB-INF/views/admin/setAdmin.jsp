@@ -73,10 +73,96 @@ $(function () {
 		}
 	});
 });
+
+// 관리자 권한 변경
+
+function modifyAuthLevel() {
+	var isChecked = $("input[name = 'rowCheckTop']:checked");
+	if (isChecked.length == 0) {
+		alert("관리자를 체크하세요.");
+	} else {
+	var result = confirm("권한을 변경하시겠습니까?");
+	if(result) {
+		var checkedList = $("input[name = 'rowCheckTop']");
+		var selectedList = $("select[name = 'authLevel']")
+	for (var i = 0; i < checkedList.length; i++) {
+		var param1 = checkedList[i].value;
+		var param2 = selectedList[i].value;
+
+		var ajaxOptions = {
+				SvcName: "/admin",
+				MethodName: "modifyAuthLevel.do",
+				Params : { param1 : param1, param2 : param2 },
+				Callback : function(result) {
+					if (result.isSuccess == true) {
+						alert("권한 변경이 완료되었습니다.");
+						location.reload();
+					} else if (result.isSuccess == false) {
+						alert("권한 변경에 실패했습니다.");
+					}
+				},
+				ErrorCallback: function() {
+
+				}
+		};
+		$.fng_Ajax(ajaxOptions);
+	}
+
+	}
+	}
+}
+// 어레이에 넣어서 한번에 보내기 (질문)
+/*
+function modifyAuthLevel() {
+	var isChecked = $("input[name = 'rowCheckTop']:checked");
+	if (isChecked.length == 0) {
+		alert("관리자를 체크하세요.");
+	} else {
+	var result = confirm("권한을 변경하시겠습니까?");
+	if(result) {
+		var checkedList = $("input[name = 'rowCheckTop']");
+		var selectedList = $("select[name = 'authLevel']")
+		var checkedArray = new Array();
+		var selectedArray = new Array();
+	for (var i = 0; i < checkedList.length; i++) {
+		checkedArray.push(checkedList[i].value);
+		selectedArray.push(selectedList[i].value);
+	}
+		var ajaxOptions = {
+				SvcName: "/admin",
+				MethodName: "modifyAuthLevel.do",
+				Params : { param1 : checkedArray, param2 : selectedArray },
+				traditional : true,
+				Callback : function(result) {
+					if (result.isSuccess == true) {
+						alert("권한 변경이 완료되었습니다.");
+						location.reload();
+					} else if (result.isSuccess == false) {
+						alert("권한 변경에 실패했습니다.");
+					}
+				},
+				ErrorCallback: function() {
+
+				}
+		};
+		$.fng_Ajax(ajaxOptions);
+	}
+
+	}
+	}*/
 </script>
 <body>
 	<div class = "container">
+	<br />
+	<br />
 		<h5>관리자 정보</h5>
+		<div class = "float-left">
+		<p>관리자 권한을 설정하세요</p>
+		</div>
+		<div class = "float-right">
+			<button type="button" class="btn btn-primary" id = "modifyAuthLevel" name = "modifyAuthLevel" onclick = "javascript:modifyAuthLevel()">권한 변경</button>
+			<a href = "addAdmin.do"><button type="button" class="btn btn-primary" id = "addAdmin" name = "addAdmin">관리자 추가/삭제</button></a>
+		</div>
 		<div class = "border" id = "topUserListAndFunction">
 		<!-- Employee Table -->
 		<div class = "table-responsive-md">
@@ -87,15 +173,21 @@ $(function () {
 						<th scope = "col">#</th>
 						<th scope = "col">사번</th>
 						<th scope = "col">이름</th>
+						<th scope = "col">권한</th>
 					</tr>
 				</thead>
 				<tbody>
 					<c:forEach var = "adminList" items = "${adminList }" varStatus = "status">
 						<tr>
-							<td><input name = "rowCheckTop" type = "checkbox" value="${adminList.empCode }"></td>
+							<td><input id = "rowCheckTop" name = "rowCheckTop" type = "checkbox" value="${adminList.adminCode }"></td>
 							<td><c:out value="${status.count }"></c:out></td>
 							<td><c:out value="${adminList.empCode }" /></td>
 							<td><c:out value="${adminList.adminName }" /></td>
+							<td>
+								<select id = "authLevel" name = "authLevel">
+									<option value = "0" <c:if test = "${adminList.authLevel == 0 }"> selected </c:if>>관리자</option>
+									<option value = "1" <c:if test = "${adminList.authLevel == 1 }"> selected </c:if>>매니저</option>
+								</select>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -160,9 +252,6 @@ $(function () {
 		</div>
 		</div>
 		<br />
-		<div>
-		<c:import url="/admin/addAdmin.do" />
-		</div>
 	</div>
 </body>
 </html>
