@@ -9,7 +9,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<div class = "container">
+	<div class = "container" id = "container">
 		<br />
 		<h1> 관리자 권한 설정</h1>
 		<hr />

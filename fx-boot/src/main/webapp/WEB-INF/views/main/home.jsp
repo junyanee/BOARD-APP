@@ -84,7 +84,7 @@ var obj = [];
 	}
 </script>
 <div>
-	<div class="container">
+	<div class="container" id = "container">
 	<div>
 		<h1>Home</h1>
 	</div>

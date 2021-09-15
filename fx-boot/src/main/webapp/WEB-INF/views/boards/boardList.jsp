@@ -26,7 +26,7 @@ function fn_pagination(page, range, rangeSize, searchType, keyword) {
 		url = url + "&range=" + range;
 		url = url + "&searchType=" + $('#searchType').val();
 		url = url + "&keyword=" + keyword;
-		location.href = url;
+		movePage(url);
 }
 
 // 다음 버튼
@@ -47,18 +47,17 @@ $(document).on('click', '#btnSearch', function(e) {
 	var url = "${pageContext.request.contextPath}/board-main.do";
 	url = url + "?searchType=" + $('#searchType').val();
 	url = url + "&keyword=" + $('#keyword').val();
-	location.href = encodeURI(url);
-	console.log(url);
+	movePage(url);
 })
 </script>
 <meta charset="UTF-8">
 <title>메인 게시판</title>
 </head>
 <body>
-	<div class="container">
+	<div class="container" id = "container">
 		<h2>메인 게시판</h2>
 		<hr>
-				<!-- Search  -->
+		<!-- Search  -->
 		<div class = "form-group row">
 			<div class = "col-1">
 				<select name = "searchType" id = "searchType"

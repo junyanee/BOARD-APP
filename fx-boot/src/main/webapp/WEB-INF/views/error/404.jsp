@@ -12,7 +12,7 @@
 </head>
 <body style = "background: #dedede;">
 <div class="page-wrap d-flex flex-row align-items-center" style = ".page-wrap {min-height: 100vh;}">
-    <div class="container">
+    <div class="container" id = "container">
         <div class="row justify-content-center">
             <div class="col-md-12 text-center">
             	<img src = "/resources/img/common/not-found.png" width = "200" height = "200">

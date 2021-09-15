@@ -192,6 +192,22 @@ function fng_UploadFile(formId, url, callback) {
            }
        });
 }
+
+//페이지 이동 (모든 페이지 최상위 div id = "container" 로 지정할것)
+function movePage(url) {
+	$.ajax({
+		url : url,
+		type : 'POST',
+		dataType : "html",
+		success : function(data) {
+			$('#container').children().remove();
+			$('#container').html(data);
+		},
+		error : function() {
+			location.href = url;
+		}
+	});
+}
 /**/
 jQuery.fn.serializeObject = function() {
 

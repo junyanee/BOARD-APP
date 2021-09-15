@@ -1,6 +1,7 @@
 package com.board.common.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -23,4 +24,6 @@ public interface CommonMapper {
 	public void insertPerson(PersonDTO personDto);
 
 	public List<PersonDTO> getPersonList();
+
+	public Map<String, Object> setAdmin(UserMaster userMaster) throws Exception;
 }

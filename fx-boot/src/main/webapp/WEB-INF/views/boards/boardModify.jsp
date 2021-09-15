@@ -92,7 +92,7 @@ var idx = document.getElementById('boardIdx').value;
 </head>
 
 <body>
-	<div class = "container">
+	<div class = "container" id = "container">
 		<h3>게시글 수정</h3>
 		<hr />
 		<form method="POST" id="boardForm" name="boardForm">
