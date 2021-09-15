@@ -9,6 +9,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<div class = "container"  id = "container">
 			<div class="table-responsive-md">
 			<table class="table table-hover">
 				<thead class="table-light">
@@ -29,6 +30,6 @@
 				</tbody>
 			</table>
 		</div>
-
+</div>
 </body>
 </html>

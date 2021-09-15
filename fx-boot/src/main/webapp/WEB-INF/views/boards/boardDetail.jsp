@@ -41,7 +41,7 @@ function downloadFile(idx) {
 <title>선택된 게시글</title>
 </head>
 <body>
-	<div class="container">
+	<div class="container" id = "container">
 		<h3>게시글 내용</h3>
 		<hr />
 		<div class="mb-3">

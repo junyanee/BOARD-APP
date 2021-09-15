@@ -123,7 +123,7 @@ function fn_FileUploadResult(result) {
 </head>
 
 <body>
-<div class = "container">
+<div class = "container" id = "container">
 	<h3>새 게시글 작성</h3>
 	<hr />
 	<form id="boardForm" name="boardForm"> <!-- enctype="multipart/form-data" -->

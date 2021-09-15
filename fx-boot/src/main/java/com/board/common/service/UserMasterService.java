@@ -1,6 +1,7 @@
 package com.board.common.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,5 +26,9 @@ public class UserMasterService {
 
 	public int getUserListCnt(Search search) throws Exception {
 		return commonMapper.getUserListCnt(search);
+	}
+
+	public Map<String, Object> setAdmin(UserMaster userMaster) throws Exception {
+		return commonMapper.setAdmin(userMaster);
 	}
 }

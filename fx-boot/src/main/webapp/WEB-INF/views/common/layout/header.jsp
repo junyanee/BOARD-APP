@@ -12,7 +12,7 @@
 <%@ include file="/resources/common/headerTag.jspf"%>
 </head>
 <body>
-	<div class = "container">
+	<div class = "container" id = "container">
 	     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 	      <a class="navbar-brand" href="/home.do">SYDS Boards</a>
 

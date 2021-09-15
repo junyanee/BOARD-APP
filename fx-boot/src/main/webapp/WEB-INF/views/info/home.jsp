@@ -31,7 +31,7 @@ function insert() {
 <title>메인 게시판</title>
 </head>
 <body>
-	<div>
+	<div class = "container" id = "container">
 		<h1>info home</h1>
 	<form id = "insertTestForm" name = "insertTestForm">
 		<div>

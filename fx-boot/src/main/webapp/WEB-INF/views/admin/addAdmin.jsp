@@ -19,7 +19,7 @@ function fn_prev(page, range, rangeSize, searchType, keyword) {
 		url = url + "&range=" + range;
 		url = url + "&searchType=" + $('#searchType').val();
 		url = url + "&keyword=" + keyword;
-		location.href = url;
+		movePage(url);
 }
 
 // 페이지 번호 클릭
@@ -29,7 +29,7 @@ function fn_pagination(page, range, rangeSize, searchType, keyword) {
 		url = url + "&range=" + range;
 		url = url + "&searchType=" + $('#searchType').val();
 		url = url + "&keyword=" + keyword;
-		location.href = url;
+		movePage(url);
 }
 
 // 다음 버튼
@@ -42,7 +42,7 @@ function fn_next(page, range, rangeSize, searchType, keyword) {
 		url = url + "&range=" + range;
 		url = url + "&searchType=" + $('#searchType').val();
 		url = url + "&keyword=" + keyword;
-		location.href = url;
+		movePage(url);
 }
 // 검색 버튼
 $(document).on('click', '#btnSearch', function(e) {
@@ -50,8 +50,7 @@ $(document).on('click', '#btnSearch', function(e) {
 	var url = "${pageContext.request.contextPath}/admin/addAdmin.do";
 	url = url + "?searchType=" + $('#searchType').val();
 	url = url + "&keyword=" + $('#keyword').val();
-	location.href = encodeURI(url);
-	console.log(url);
+	movePage(url);
 })
 
 // 체크 박스
@@ -74,21 +73,54 @@ $(function () {
 	});
 });
 
-function setAdmin(empCode) {
-	var empCode = empCode;
-	// 프로미스 사용하여 컨트롤러로 값 넘기고 값 받아서 db로 세팅
-	// jsp -> js -> controller -> service -> DB -> 결과return -> 사용자에게 표시
+function setAdmin() {
+	var isChecked = $("input[name = 'rowCheck']:checked");
+	if(isChecked.length == 0) {
+		alert("사용자를 체크하세요.");
+	} else {
+		var result = confirm("관리자로 설정하시겠습니까?");
+		if(result) {
+			var checkedList = $("input[name = 'rowCheck']:checked");
+			for(var i = 0; i < checkedList.length; i ++) {
+				var param1 = checkedList.parent().parent().eq(i).children().eq(2).text();
+				var param2 = checkedList.parent().parent().eq(i).children().eq(5).text();
+
+				var ajaxOptions = {
+						SvcName : "admin",
+						MethodName : "setAdmin.do",
+						Params : { param1 : param1, param2 : param2 }
+				};
+				var promise = new Promise(function(resolve, reject) {
+					$.fng_Ajax(ajaxOptions);
+					if(resolve) {
+						resolve("관리자로 지정되었습니다.");
+					} else {
+						reject(Error("관리자로 지정되지 않았습니다."));
+					}
+				});
+			}
+			Promise.all([promise]).then(function (values) {
+				alert(values);
+				location.reload();
+			})
+		}
+	}
+}
+
+function deleteAdmin() {
+
 }
 </script>
 <body>
-	<div class = "container">
+	<div class = "container" id = "container">
 
 		<br />
 		<br />
 		<h5>사용자 정보</h5>
 		<div class = "float-right">
-			<button type="button" class="btn btn-primary" id = "addAdmin" name = "addAdmin" onclick = "javascript:setAdmin(empCode);">관리자로 설정</button>
-			<button type="button" class="btn btn-primary" id = "deleteAdmin" name = "deleteAdmin" onclick = "deleteAdmin(empCode)">관리자에서 삭제</button>
+			<a href = "modifyAdminInfo.do"><button type="button" class="btn btn-primary" >관리자 리스트</button></a>
+			<button type="button" class="btn btn-primary" id = "addAdmin" name = "addAdmin" onclick = "javascript:setAdmin();">관리자로 설정</button>
+			<button type="button" class="btn btn-primary" id = "deleteAdmin" name = "deleteAdmin" onclick = "deleteAdmin()">관리자에서 삭제</button>
 		</div>
 		<div class = "border" id = "bottomUserListAndFunction">
 		<!-- Employee Table -->

@@ -19,7 +19,7 @@ function fn_prev(page, range, rangeSize, searchType, keyword) {
 		url = url + "&range=" + range;
 		url = url + "&searchType=" + $('#searchTypeTop').val();
 		url = url + "&keyword=" + keyword;
-		location.href = url;
+		movePage(url);
 }
 
 // 페이지 번호 클릭
@@ -29,7 +29,7 @@ function fn_pagination(page, range, rangeSize, searchType, keyword) {
 		url = url + "&range=" + range;
 		url = url + "&searchType=" + $('#searchTypeTop').val();
 		url = url + "&keyword=" + keyword;
-		location.href = url;
+		movePage(url);
 }
 
 // 다음 버튼
@@ -42,7 +42,7 @@ function fn_next(page, range, rangeSize, searchType, keyword) {
 		url = url + "&range=" + range;
 		url = url + "&searchType=" + $('#searchTypeTop').val();
 		url = url + "&keyword=" + keyword;
-		location.href = url;
+		movePage(url);
 }
 // 검색 버튼
 $(document).on('click', '#btnSearchTop', function(e) {
@@ -50,8 +50,7 @@ $(document).on('click', '#btnSearchTop', function(e) {
 	var url = "${pageContext.request.contextPath}/admin/setAdmin.do";
 	url = url + "?searchType=" + $('#searchTypeTop').val();
 	url = url + "&keyword=" + $('#keywordTop').val();
-	location.href = encodeURI(url);
-	console.log(url);
+	movePage(url);
 })
 
 // 체크 박스
@@ -83,8 +82,9 @@ function modifyAuthLevel() {
 	} else {
 	var result = confirm("권한을 변경하시겠습니까?");
 	if(result) {
-		var checkedList = $("input[name = 'rowCheckTop']");
-		var selectedList = $("select[name = 'authLevel']")
+		//var checkedList = $("input[name = 'rowCheckTop']");
+		var checkedList = $("input[name = 'rowCheckTop']:checked");
+		var selectedList = $("select[name = 'authLevel']");
 	for (var i = 0; i < checkedList.length; i++) {
 		var param1 = checkedList[i].value;
 		var param2 = selectedList[i].value;
@@ -92,7 +92,9 @@ function modifyAuthLevel() {
 		var ajaxOptions = {
 				SvcName: "/admin",
 				MethodName: "modifyAuthLevel.do",
-				Params : { param1 : param1, param2 : param2 },
+				Params : { param1 : param1, param2 : param2 }
+				/*
+				,
 				Callback : function(result) {
 					if (result.isSuccess == true) {
 						alert("권한 변경이 완료되었습니다.");
@@ -104,9 +106,29 @@ function modifyAuthLevel() {
 				ErrorCallback: function() {
 
 				}
+				*/
+
 		};
-		$.fng_Ajax(ajaxOptions);
+		var promise = new Promise(function(resolve, reject) {
+			$.fng_Ajax(ajaxOptions);
+			if(resolve) {
+				resolve("권한 변경이 완료되었습니다.");
+			} else {
+				reject(Error("권한 변경이 실패했습니다."));
+			}
+		});
+		/*
+		promise.then(
+				result => alert(result),
+				error => alert(error)
+				);
+		*/
 	}
+
+		Promise.all([promise]).then(function (values) {
+		alert(values);
+		location.reload();
+		});
 
 	}
 	}
@@ -152,7 +174,7 @@ function modifyAuthLevel() {
 	}*/
 </script>
 <body>
-	<div class = "container">
+	<div class = "container" id = "container">
 	<br />
 	<br />
 		<h5>관리자 정보</h5>

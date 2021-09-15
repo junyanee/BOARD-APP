@@ -7,6 +7,7 @@
 <title>메인 게시판</title>
 </head>
 <body>
-
+	<div class = "container" id = "container">
+	</div>
 </body>
 </html>

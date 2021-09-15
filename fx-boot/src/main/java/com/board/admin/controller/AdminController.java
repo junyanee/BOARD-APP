@@ -89,8 +89,8 @@ public class AdminController {
 		return mv;
 	}
 
-	@RequestMapping(value = "/setAdmin.do")
-	public ModelAndView setAdmin(HttpServletRequest request,
+	@RequestMapping(value = "/modifyAdminInfo.do")
+	public ModelAndView modifyAdminInfo(HttpServletRequest request,
 			@RequestParam(required = false, defaultValue = "1") int page,
 			@RequestParam(required = false, defaultValue = "1") int range,
 			@RequestParam(required = false, defaultValue = "adminName") String searchType,
@@ -110,7 +110,7 @@ public class AdminController {
 		List<AdminMaster> adminList = adminService.getAdminUser(search);
 		mv.addObject("pagination", search);
 		mv.addObject("adminList", adminList);
-		mv.setViewName("admin/setAdmin");
+		mv.setViewName("admin/modifyAdminInfo");
 		return mv;
 	}
 
@@ -123,6 +123,24 @@ public class AdminController {
 
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap = adminService.modifyAuthLevel(adminMaster);
+
+		ObjectMapper mapper = new ObjectMapper();
+		ajaxResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultMap);
+		return ajaxResult;
+	}
+	
+	@RequestMapping(value = "/setAdmin.do", method = RequestMethod.POST)
+	public String setAdmin(HttpServletRequest request, @RequestBody Map<String,Object> param) throws Exception {
+		String ajaxResult = "";
+		UserMaster userMaster = new UserMaster();
+		userMaster.setEmpCode((String) param.get("param1"));
+		String userType = (String) param.get("param2");
+		if (userType.equals("일반")) {
+			userMaster.setIsAdmin(1);
+		}
+
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = userMasterService.setAdmin(userMaster);
 
 		ObjectMapper mapper = new ObjectMapper();
 		ajaxResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultMap);
