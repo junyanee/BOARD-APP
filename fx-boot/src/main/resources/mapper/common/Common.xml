@@ -42,6 +42,26 @@
 
 </select>
 
+<select id = "setAdmin" parameterType = "com.board.common.model.UserMaster" resultType = "com.board.common.model.ResultMaster">
+{
+	call SP_SetAdmin
+	(
+		@EmpCode = #{empCode, mode = IN, jdbcType = VARCHAR},
+		@IsAdmin = #{isAdmin, mode = IN, jdbcType = INTEGER}
+	)
+}
+</select>
+
+<select id = "deleteAdmin" parameterType = "com.board.common.model.UserMaster" resultType = "com.board.common.model.ResultMaster">
+{
+	call SP_DeleteAdmin
+	(
+		@EmpCode = #{empCode, mode = IN, jdbcType = VARCHAR},
+		@IsAdmin = #{isAdmin, mode = IN, jdbcType = INTEGER}
+	)
+}
+</select>
+
 <insert id = "insertPerson" parameterType = "com.board.common.model.PersonDTO">
 	INSERT INTO TB_Person (NAME, AGE) VALUES (#{name}, #{age})
 </insert>

@@ -128,19 +128,39 @@ public class AdminController {
 		ajaxResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultMap);
 		return ajaxResult;
 	}
-	
+
 	@RequestMapping(value = "/setAdmin.do", method = RequestMethod.POST)
 	public String setAdmin(HttpServletRequest request, @RequestBody Map<String,Object> param) throws Exception {
 		String ajaxResult = "";
 		UserMaster userMaster = new UserMaster();
 		userMaster.setEmpCode((String) param.get("param1"));
 		String userType = (String) param.get("param2");
+		userType = userType.trim();
 		if (userType.equals("일반")) {
 			userMaster.setIsAdmin(1);
 		}
 
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap = userMasterService.setAdmin(userMaster);
+
+		ObjectMapper mapper = new ObjectMapper();
+		ajaxResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultMap);
+		return ajaxResult;
+	}
+
+	@RequestMapping(value = "/deleteAdmin.do", method = RequestMethod.POST)
+	public String deleteAdmin(HttpServletRequest request, @RequestBody Map<String,Object> param) throws Exception {
+		String ajaxResult = "";
+		UserMaster userMaster = new UserMaster();
+		userMaster.setEmpCode((String) param.get("param1"));
+		String userType = (String) param.get("param2");
+		userType = userType.trim();
+		if (userType.equals("관리자")) {
+			userMaster.setIsAdmin(0);
+		}
+
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = userMasterService.deleteAdmin(userMaster);
 
 		ObjectMapper mapper = new ObjectMapper();
 		ajaxResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultMap);
