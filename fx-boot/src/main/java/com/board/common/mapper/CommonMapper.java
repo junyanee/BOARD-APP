@@ -1,12 +1,11 @@
 package com.board.common.mapper;
 
 import java.util.List;
-import java.util.Map;
-
 import org.apache.ibatis.annotations.Mapper;
 
 import com.board.common.model.ItemMaster;
 import com.board.common.model.PersonDTO;
+import com.board.common.model.ResultMaster;
 import com.board.common.model.UserMaster;
 import com.board.utility.Search;
 
@@ -25,5 +24,7 @@ public interface CommonMapper {
 
 	public List<PersonDTO> getPersonList();
 
-	public Map<String, Object> setAdmin(UserMaster userMaster) throws Exception;
+	public ResultMaster setAdmin(UserMaster param) throws Exception;
+
+	public ResultMaster deleteAdmin(UserMaster param) throws Exception;
 }

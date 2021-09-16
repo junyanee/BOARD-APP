@@ -86,10 +86,12 @@ function setAdmin() {
 				var param2 = checkedList.parent().parent().eq(i).children().eq(5).text();
 
 				var ajaxOptions = {
-						SvcName : "admin",
+						SvcName : "/admin",
 						MethodName : "setAdmin.do",
 						Params : { param1 : param1, param2 : param2 }
 				};
+				$.fng_Ajax(ajaxOptions);
+				/*
 				var promise = new Promise(function(resolve, reject) {
 					$.fng_Ajax(ajaxOptions);
 					if(resolve) {
@@ -98,17 +100,51 @@ function setAdmin() {
 						reject(Error("관리자로 지정되지 않았습니다."));
 					}
 				});
+				*/
 			}
+			/*
 			Promise.all([promise]).then(function (values) {
 				alert(values);
 				location.reload();
-			})
+			})*/
 		}
 	}
 }
 
 function deleteAdmin() {
+	var isChecked = $("input[name = 'rowCheck']:checked");
+	if(isChecked.length == 0) {
+		alert("사용자를 체크하세요.");
+	} else {
+		var result = confirm("일반 사용자로 설정하시겠습니까?");
+		if(result) {
+			var checkedList = $("input[name = 'rowCheck']:checked");
+			for(var i = 0; i < checkedList.length; i ++) {
+				var param1 = checkedList.parent().parent().eq(i).children().eq(2).text();
+				var param2 = checkedList.parent().parent().eq(i).children().eq(5).text();
 
+				var ajaxOptions = {
+						SvcName : "/admin",
+						MethodName : "deleteAdmin.do",
+						Params : { param1 : param1, param2 : param2 }
+				};
+				$.fng_Ajax(ajaxOptions);
+				var promise = new Promise(function(resolve, reject) {
+					$.fng_Ajax(ajaxOptions);
+					if(resolve) {
+						resolve("일반 사용자로 지정되었습니다.");
+					} else {
+						reject(Error("일반 사용자로 지정되지 않았습니다."));
+					}
+				});
+			}
+			/*
+			Promise.all([promise]).then(function (values) {
+				alert(values);
+				location.reload();
+			})*/
+		}
+	}
 }
 </script>
 <body>
@@ -120,7 +156,7 @@ function deleteAdmin() {
 		<div class = "float-right">
 			<a href = "modifyAdminInfo.do"><button type="button" class="btn btn-primary" >관리자 리스트</button></a>
 			<button type="button" class="btn btn-primary" id = "addAdmin" name = "addAdmin" onclick = "javascript:setAdmin();">관리자로 설정</button>
-			<button type="button" class="btn btn-primary" id = "deleteAdmin" name = "deleteAdmin" onclick = "deleteAdmin()">관리자에서 삭제</button>
+			<button type="button" class="btn btn-primary" id = "deleteAdmin" name = "deleteAdmin" onclick = "javascript:deleteAdmin();">관리자에서 삭제</button>
 		</div>
 		<div class = "border" id = "bottomUserListAndFunction">
 		<!-- Employee Table -->

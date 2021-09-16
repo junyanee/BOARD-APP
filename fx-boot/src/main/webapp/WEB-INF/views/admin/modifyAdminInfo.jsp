@@ -14,7 +14,7 @@ function fn_prev(page, range, rangeSize, searchType, keyword) {
 	var page = ((range - 2) * rangeSize) + 1;
 	var range = range - 1;
 
-	var url = "${pageContext.request.contextPath}/admin/setAdmin.do"
+	var url = "${pageContext.request.contextPath}/admin/modifyAdminInfo.do"
 		url = url + "?page=" + page;
 		url = url + "&range=" + range;
 		url = url + "&searchType=" + $('#searchTypeTop').val();
@@ -24,7 +24,7 @@ function fn_prev(page, range, rangeSize, searchType, keyword) {
 
 // 페이지 번호 클릭
 function fn_pagination(page, range, rangeSize, searchType, keyword) {
-	var url = "${pageContext.request.contextPath}/admin/setAdmin.do";
+	var url = "${pageContext.request.contextPath}/admin/modifyAdminInfo.do";
 		url = url + "?page=" + page;
 		url = url + "&range=" + range;
 		url = url + "&searchType=" + $('#searchTypeTop').val();
@@ -37,7 +37,7 @@ function fn_next(page, range, rangeSize, searchType, keyword) {
 	var page = parseInt((range * rangeSize)) + 1;
 	var range = parseInt(range) + 1;
 
-	var url = "${pageContext.request.contextPath}/admin/setAdmin.do";
+	var url = "${pageContext.request.contextPath}/admin/modifyAdminInfo.do";
 		url = url + "?page=" + page;
 		url = url + "&range=" + range;
 		url = url + "&searchType=" + $('#searchTypeTop').val();
@@ -47,7 +47,7 @@ function fn_next(page, range, rangeSize, searchType, keyword) {
 // 검색 버튼
 $(document).on('click', '#btnSearchTop', function(e) {
 	e.preventDefault();
-	var url = "${pageContext.request.contextPath}/admin/setAdmin.do";
+	var url = "${pageContext.request.contextPath}/admin/modifyAdminInfo.do";
 	url = url + "?searchType=" + $('#searchTypeTop').val();
 	url = url + "&keyword=" + $('#keywordTop').val();
 	movePage(url);
@@ -82,7 +82,6 @@ function modifyAuthLevel() {
 	} else {
 	var result = confirm("권한을 변경하시겠습니까?");
 	if(result) {
-		//var checkedList = $("input[name = 'rowCheckTop']");
 		var checkedList = $("input[name = 'rowCheckTop']:checked");
 		var selectedList = $("select[name = 'authLevel']");
 	for (var i = 0; i < checkedList.length; i++) {
@@ -93,20 +92,17 @@ function modifyAuthLevel() {
 				SvcName: "/admin",
 				MethodName: "modifyAuthLevel.do",
 				Params : { param1 : param1, param2 : param2 }
-				/*
 				,
 				Callback : function(result) {
 					if (result.isSuccess == true) {
-						alert("권한 변경이 완료되었습니다.");
-						location.reload();
+						console.log("권한 변경이 완료되었습니다.");
 					} else if (result.isSuccess == false) {
-						alert("권한 변경에 실패했습니다.");
+						console.log("권한 변경에 실패했습니다.");
 					}
 				},
 				ErrorCallback: function() {
-
+						console.log("error")
 				}
-				*/
 
 		};
 		var promise = new Promise(function(resolve, reject) {

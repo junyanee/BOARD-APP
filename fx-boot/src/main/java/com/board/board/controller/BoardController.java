@@ -34,8 +34,6 @@ import com.board.common.service.LoginService;
 import com.board.utility.Search;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import jdk.jfr.internal.Logger;
-
 @RestController
 @RequestMapping(value = "/")
 public class BoardController {
