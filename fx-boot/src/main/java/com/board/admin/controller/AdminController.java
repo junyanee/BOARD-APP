@@ -135,8 +135,7 @@ public class AdminController {
 		UserMaster userMaster = new UserMaster();
 		userMaster.setEmpCode((String) param.get("param1"));
 		String userType = (String) param.get("param2");
-		userType = userType.trim();
-		if (userType.equals("일반")) {
+		if(userType.equals("일반")) {
 			userMaster.setIsAdmin(1);
 		}
 

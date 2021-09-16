@@ -78,102 +78,44 @@ $(function () {
 function modifyAuthLevel() {
 	var isChecked = $("input[name = 'rowCheckTop']:checked");
 	if (isChecked.length == 0) {
-		alert("관리자를 체크하세요.");
+		alert("권한을 변경할 관리자를 체크하세요.");
 	} else {
-	var result = confirm("권한을 변경하시겠습니까?");
-	if(result) {
-		var checkedList = $("input[name = 'rowCheckTop']:checked");
-		var selectedList = $("select[name = 'authLevel']");
-	for (var i = 0; i < checkedList.length; i++) {
-		var param1 = checkedList[i].value;
-		var param2 = selectedList[i].value;
-
-		var ajaxOptions = {
-				SvcName: "/admin",
-				MethodName: "modifyAuthLevel.do",
-				Params : { param1 : param1, param2 : param2 }
-				,
-				Callback : function(result) {
-					if (result.isSuccess == true) {
-						console.log("권한 변경이 완료되었습니다.");
-					} else if (result.isSuccess == false) {
-						console.log("권한 변경에 실패했습니다.");
-					}
-				},
-				ErrorCallback: function() {
-						console.log("error")
+		var result = confirm("권한을 변경하시겠습니까?");
+		if(result) {
+			var checkedList = $("input[name = 'rowCheckTop']");
+			var selectedList = $("select[name = 'authLevel']");
+			for (var i = 0; i < checkedList.length; i++) {
+				if (checkedList[i].checked) {
+					var param1 = checkedList[i].value;
+					var param2 = selectedList[i].value;
 				}
-
-		};
-		var promise = new Promise(function(resolve, reject) {
-			$.fng_Ajax(ajaxOptions);
-			if(resolve) {
-				resolve("권한 변경이 완료되었습니다.");
-			} else {
-				reject(Error("권한 변경이 실패했습니다."));
+				var ajaxOptions = {
+					SvcName: "/admin",
+					MethodName: "modifyAuthLevel.do",
+					Params : { param1 : param1, param2 : param2 }
+				};
+				var promise = new Promise(function(resolve, reject) {
+					$.fng_Ajax(ajaxOptions);
+					if(resolve) {
+						resolve("권한 변경이 완료되었습니다.");
+					} else {
+						reject(Error("권한 변경이 실패했습니다."));
+					}
+				});
 			}
-		});
-		/*
-		promise.then(
-				result => alert(result),
-				error => alert(error)
-				);
-		*/
-	}
-
-		Promise.all([promise]).then(function (values) {
-		alert(values);
-		location.reload();
-		});
-
-	}
+			Promise.all([promise]).then(function (values) {
+			alert(values);
+			location.reload();
+			});
+		}
 	}
 }
-// 어레이에 넣어서 한번에 보내기 (질문)
-/*
-function modifyAuthLevel() {
-	var isChecked = $("input[name = 'rowCheckTop']:checked");
-	if (isChecked.length == 0) {
-		alert("관리자를 체크하세요.");
-	} else {
-	var result = confirm("권한을 변경하시겠습니까?");
-	if(result) {
-		var checkedList = $("input[name = 'rowCheckTop']");
-		var selectedList = $("select[name = 'authLevel']")
-		var checkedArray = new Array();
-		var selectedArray = new Array();
-	for (var i = 0; i < checkedList.length; i++) {
-		checkedArray.push(checkedList[i].value);
-		selectedArray.push(selectedList[i].value);
-	}
-		var ajaxOptions = {
-				SvcName: "/admin",
-				MethodName: "modifyAuthLevel.do",
-				Params : { param1 : checkedArray, param2 : selectedArray },
-				traditional : true,
-				Callback : function(result) {
-					if (result.isSuccess == true) {
-						alert("권한 변경이 완료되었습니다.");
-						location.reload();
-					} else if (result.isSuccess == false) {
-						alert("권한 변경에 실패했습니다.");
-					}
-				},
-				ErrorCallback: function() {
-
-				}
-		};
-		$.fng_Ajax(ajaxOptions);
-	}
-
-	}
-	}*/
 </script>
 <body>
 	<div class = "container" id = "container">
 	<br />
 	<br />
-		<h5>관리자 정보</h5>
+		<h5>관리자 권한 설정</h5>
 		<div class = "float-left">
 		<p>관리자 권한을 설정하세요</p>
 		</div>

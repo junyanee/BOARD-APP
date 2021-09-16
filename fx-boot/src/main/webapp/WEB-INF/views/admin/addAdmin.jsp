@@ -83,30 +83,29 @@ function setAdmin() {
 			var checkedList = $("input[name = 'rowCheck']:checked");
 			for(var i = 0; i < checkedList.length; i ++) {
 				var param1 = checkedList.parent().parent().eq(i).children().eq(2).text();
-				var param2 = checkedList.parent().parent().eq(i).children().eq(5).text();
-
-				var ajaxOptions = {
-						SvcName : "/admin",
-						MethodName : "setAdmin.do",
-						Params : { param1 : param1, param2 : param2 }
-				};
-				$.fng_Ajax(ajaxOptions);
-				/*
-				var promise = new Promise(function(resolve, reject) {
-					$.fng_Ajax(ajaxOptions);
-					if(resolve) {
-						resolve("관리자로 지정되었습니다.");
-					} else {
-						reject(Error("관리자로 지정되지 않았습니다."));
-					}
-				});
-				*/
+				var param2 = checkedList.parent().parent().eq(i).children().eq(5).text().trim();
+				if (param2 == '관리자') {
+					alert(param1 + "은 이미 관리자입니다.");
+				} else {
+					var ajaxOptions = {
+							SvcName : "/admin",
+							MethodName : "setAdmin.do",
+							Params : { param1 : param1, param2 : param2 }
+					};
+					var promise = new Promise(function(resolve, reject) {
+						$.fng_Ajax(ajaxOptions);
+						if(resolve) {
+							resolve("관리자로 지정되었습니다.");
+						} else {
+							reject(Error("관리자로 지정되지 않았습니다."));
+						}
+					});
+				}
 			}
-			/*
 			Promise.all([promise]).then(function (values) {
 				alert(values);
 				location.reload();
-			})*/
+			});
 		}
 	}
 }
@@ -121,28 +120,29 @@ function deleteAdmin() {
 			var checkedList = $("input[name = 'rowCheck']:checked");
 			for(var i = 0; i < checkedList.length; i ++) {
 				var param1 = checkedList.parent().parent().eq(i).children().eq(2).text();
-				var param2 = checkedList.parent().parent().eq(i).children().eq(5).text();
-
-				var ajaxOptions = {
-						SvcName : "/admin",
-						MethodName : "deleteAdmin.do",
-						Params : { param1 : param1, param2 : param2 }
-				};
-				$.fng_Ajax(ajaxOptions);
-				var promise = new Promise(function(resolve, reject) {
-					$.fng_Ajax(ajaxOptions);
-					if(resolve) {
-						resolve("일반 사용자로 지정되었습니다.");
-					} else {
-						reject(Error("일반 사용자로 지정되지 않았습니다."));
-					}
-				});
+				var param2 = checkedList.parent().parent().eq(i).children().eq(5).text().trim();
+				if (param2 == '일반') {
+					alert(param2 + "은 이미 일반 사용자입니다.");
+				} else {
+					var ajaxOptions = {
+							SvcName : "/admin",
+							MethodName : "deleteAdmin.do",
+							Params : { param1 : param1, param2 : param2 }
+					};
+					var promise = new Promise(function(resolve, reject) {
+						$.fng_Ajax(ajaxOptions);
+						if(resolve) {
+							resolve("일반 사용자로 지정되었습니다.");
+						} else {
+							reject(Error("일반 사용자로 지정되지 않았습니다."));
+						}
+					});
+				}
 			}
-			/*
 			Promise.all([promise]).then(function (values) {
 				alert(values);
 				location.reload();
-			})*/
+			});
 		}
 	}
 }
