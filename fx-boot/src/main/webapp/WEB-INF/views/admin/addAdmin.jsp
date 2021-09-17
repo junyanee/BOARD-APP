@@ -84,7 +84,11 @@ function setAdmin() {
 			for(var i = 0; i < checkedList.length; i ++) {
 				var param1 = checkedList.parent().parent().eq(i).children().eq(2).text();
 				var param2 = checkedList.parent().parent().eq(i).children().eq(5).text().trim();
-				if (param2 == '관리자') {
+				if (param2 == '루트관리자') {
+					alert(param1 + "은 이미 관리자입니다.");
+				} else if (param2 == '관리자') {
+					alert(param1 + "은 이미 관리자입니다.");
+				} else if (param2 == '매니저') {
 					alert(param1 + "은 이미 관리자입니다.");
 				} else {
 					var ajaxOptions = {
@@ -181,7 +185,9 @@ function deleteAdmin() {
 							<td><c:out value="${userList.empName }" /></td>
 							<td><c:out value="${userList.jobName }" /></td>
 							<td><c:choose>
+									<c:when test = "${userList.isAdmin == 0}"><c:out value= "루트관리자"/></c:when>
 									<c:when test = "${userList.isAdmin == 1}"><c:out value= "관리자"/></c:when>
+									<c:when test = "${userList.isAdmin == 2}"><c:out value= "매니저"/></c:when>
 									<c:otherwise><c:out value="일반" /></c:otherwise>
 								</c:choose>
 							</td>
