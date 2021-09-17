@@ -88,25 +88,41 @@ function modifyAuthLevel() {
 				if (checkedList[i].checked) {
 					var param1 = checkedList[i].value;
 					var param2 = selectedList[i].value;
-				}
-				var ajaxOptions = {
-					SvcName: "/admin",
-					MethodName: "modifyAuthLevel.do",
-					Params : { param1 : param1, param2 : param2 }
-				};
-				var promise = new Promise(function(resolve, reject) {
+
+					var ajaxOptions = {
+							SvcName: "/admin",
+							MethodName: "modifyAuthLevel.do",
+							Params : { param1 : param1, param2 : param2 },
+							Callback : function(result) {
+								if(result.isSuccess = 'true') {
+									alert(result.resultMsg);
+									location.reload();
+								} else {
+									alert(result.resultMsg);
+								}
+							}
+						};
 					$.fng_Ajax(ajaxOptions);
-					if(resolve) {
-						resolve("권한 변경이 완료되었습니다.");
-					} else {
-						reject(Error("권한 변경이 실패했습니다."));
-					}
-				});
+
+					/*
+					var promise = new Promise(function(resolve, reject) {
+						$.fng_Ajax(ajaxOptions);
+						if(resolve) {
+							resolve("권한 변경이 완료되었습니다.");
+						} else {
+							reject(Error("권한이 변경되지 않았습니다."));
+						}
+					});
+					*/
+				}
+
 			}
+			/*
 			Promise.all([promise]).then(function (values) {
-			alert(values);
-			location.reload();
+				alert(values);
+				location.reload();
 			});
+			*/
 		}
 	}
 }
@@ -145,8 +161,9 @@ function modifyAuthLevel() {
 							<td><c:out value="${adminList.adminName }" /></td>
 							<td>
 								<select id = "authLevel" name = "authLevel">
-									<option value = "0" <c:if test = "${adminList.authLevel == 0 }"> selected </c:if>>관리자</option>
-									<option value = "1" <c:if test = "${adminList.authLevel == 1 }"> selected </c:if>>매니저</option>
+									<option value = "0" disabled <c:if test = "${adminList.authLevel == 0 }"> selected </c:if>>루트관리자</option>
+									<option value = "1" <c:if test = "${adminList.authLevel == 1 }"> selected </c:if>>관리자</option>
+									<option value = "2" <c:if test = "${adminList.authLevel == 2 }"> selected </c:if>>매니저</option>
 								</select>
 						</tr>
 					</c:forEach>

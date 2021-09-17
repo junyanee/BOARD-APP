@@ -14,9 +14,13 @@ public interface AdminMapper {
 
 	public AdminMaster getAdminInfo(String userId) throws Exception;
 
+	public AdminMaster getAdminInfoByAdminCode(int adminCode) throws Exception;
+
 	public List<AdminMaster> getAdminUser(Search search) throws Exception;
 
 	public int getAdminListCnt(Search search) throws Exception;
 
 	public ResultMaster modifyAuthLevel(AdminMaster param) throws Exception;
+
+
 }

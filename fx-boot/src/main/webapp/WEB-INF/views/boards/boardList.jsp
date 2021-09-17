@@ -26,7 +26,7 @@ function fn_pagination(page, range, rangeSize, searchType, keyword) {
 		url = url + "&range=" + range;
 		url = url + "&searchType=" + $('#searchType').val();
 		url = url + "&keyword=" + keyword;
-		movePage(url);
+		location.href = url;
 }
 
 // 다음 버튼
@@ -47,8 +47,67 @@ $(document).on('click', '#btnSearch', function(e) {
 	var url = "${pageContext.request.contextPath}/board-main.do";
 	url = url + "?searchType=" + $('#searchType').val();
 	url = url + "&keyword=" + $('#keyword').val();
-	movePage(url);
+	// movePage(url);
+	location.href = url;
 })
+
+// 체크 박스
+$(function () {
+	var checkObj = document.getElementsByName("rowCheck");
+	var rowCnt = checkObj.length;
+
+	$("input[name = 'allCheck']").click(function() {
+		var checkedList = $("input[name = 'rowCheck']");
+		for (var i = 0; i < checkedList.length; i++) {
+			checkedList[i].checked = this.checked;
+		}
+	});
+	$("input[name = 'rowCheck']").click(function() {
+		if($("input[name = 'rowCheck']:checked").length == rowCnt) {
+			$("input[name = 'allCheck']")[0].checked = true;
+		} else {
+			$("input[name = 'allCheck']")[0].checked = false;
+		}
+	});
+});
+
+// 선택 삭제
+function deleteChecked() {
+	var isChecked = $("input[name = 'rowCheck']:checked");
+	if(isChecked.length == 0) {
+		alert("게시물을 선택하세요.");
+	} else {
+		var result = confirm("선택된 게시물을 삭제하시겠습니까?");
+		if(result) {
+			var checkedList = $("input[name = 'rowCheck']");
+			for (var i = 0; i < checkedList.length; i++) {
+				if (checkedList[i].checked) {
+					var param = checkedList[i].value;
+
+					var ajaxOptions = {
+							SvcName : "",
+							MethodName : "deleteChecked.do",
+							Params : { param : param }
+					};
+
+					var promise = new Promise(function (resolve, reject) {
+						$.fng_Ajax(ajaxOptions);
+						if(resolve) {
+							resolve("정상적으로 삭제되었습니다.");
+						} else {
+							reject(Error("정상적으로 삭제되지 못했습니다."))
+						}
+					});
+				}
+			}
+			Promise.all([promise]).then(function (values) {
+				alert(values);
+				location.reload();
+			});
+		}
+	}
+}
+
 </script>
 <meta charset="UTF-8">
 <title>메인 게시판</title>
@@ -97,6 +156,9 @@ $(document).on('click', '#btnSearch', function(e) {
 			<table class="table table-hover">
 				<thead class="table-light">
 					<tr>
+						<c:if test="${sessionScope.adminInfo != null }">
+						<th scope = "col"><input id = "allCheck" type = "checkbox" name = "allCheck"></th>
+						</c:if>
 						<th scope="col">#</th>
 						<th scope="col">제목</th>
 						<th scope="col">작성자</th>
@@ -108,6 +170,9 @@ $(document).on('click', '#btnSearch', function(e) {
 				<tbody>
 					<c:forEach var="boardList" items="${boardList}" varStatus="status">
 						<tr>
+							<c:if test="${sessionScope.adminInfo != null }">
+							<td scope = "col"><input id = "rowCheck" type = "checkbox" name = "rowCheck" value = "${boardList.idx }"></td>
+							</c:if>
 							<th scope="row"><c:out value="${status.count }" /></th>
 							<td> <a href="/boardDetail.do?idx=${boardList.idx}"><c:out value="${boardList.title }" /> </a> </td>
 							<td><c:out value="${boardList.insertUser }" /></td>
@@ -119,11 +184,18 @@ $(document).on('click', '#btnSearch', function(e) {
 				</tbody>
 			</table>
 		</div>
-		<div>
+		<div class = "float-right">
 			<!-- 로그인 정보 있을때만 글쓰기 버튼 출력 -->
-			<c:if test = "${sessionScope.userInfo != null }">
-				<a href="/boardWrite.do"><button type = "button" class="btn btn-primary float-right">글쓰기</button></a>
-			</c:if>
+			<c:choose>
+				<c:when test = "${sessionScope.userInfo != null }">
+					<a href="/boardWrite.do"><button type = "button" class="btn btn-primary">글쓰기</button></a>
+					<c:choose>
+						<c:when test="${sessionScope.adminInfo != null }">
+							<button type = "button" class = "btn btn-primary" onclick = "javascript:deleteChecked();">선택 삭제</button>
+						</c:when>
+					</c:choose>
+				</c:when>
+			</c:choose>
 		</div>
 			<br>
 			<hr>
