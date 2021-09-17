@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.board.admin.model.AdminMaster;
 import com.board.admin.service.AdminService;
+import com.board.aop.annotation.LoginCheck;
 import com.board.common.model.ParameterWrapper;
 import com.board.common.model.UserMaster;
 import com.board.common.service.UserMasterService;
@@ -140,6 +141,7 @@ public class AdminController {
 		return ajaxResult;
 	}
 
+
 	@RequestMapping(value = "/setAdmin.do", method = RequestMethod.POST)
 	public String setAdmin(HttpServletRequest request, @RequestBody Map<String,Object> param) throws Exception {
 		String ajaxResult = "";
@@ -147,7 +149,7 @@ public class AdminController {
 		userMaster.setEmpCode((String) param.get("param1"));
 		String userType = (String) param.get("param2");
 		if(userType.equals("일반")) {
-			userMaster.setIsAdmin(1);
+			userMaster.setIsAdmin(2);
 		}
 
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -158,6 +160,7 @@ public class AdminController {
 		return ajaxResult;
 	}
 
+
 	@RequestMapping(value = "/deleteAdmin.do", method = RequestMethod.POST)
 	public String deleteAdmin(HttpServletRequest request, @RequestBody Map<String,Object> param) throws Exception {
 		String ajaxResult = "";
@@ -165,8 +168,8 @@ public class AdminController {
 		userMaster.setEmpCode((String) param.get("param1"));
 		String userType = (String) param.get("param2");
 		userType = userType.trim();
-		if (userType.equals("관리자")) {
-			userMaster.setIsAdmin(0);
+		if (userType.equals("관리자") || userType.equals("매니저")) {
+			userMaster.setIsAdmin(3);
 		}
 
 		Map<String, Object> resultMap = new HashMap<String, Object>();
