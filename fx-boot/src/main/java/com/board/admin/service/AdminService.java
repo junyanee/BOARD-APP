@@ -18,7 +18,10 @@ public class AdminService {
 
 	public AdminMaster getAdminInfo(String userId) throws Exception {
 		return adminMapper.getAdminInfo(userId);
+	}
 
+	public AdminMaster getAdminInfoByAdminCode(int adminCode) throws Exception {
+		return adminMapper.getAdminInfoByAdminCode(adminCode);
 	}
 
 	public List<AdminMaster> getAdminUser(Search search) throws Exception {

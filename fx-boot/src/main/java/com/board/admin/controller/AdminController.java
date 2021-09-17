@@ -49,7 +49,7 @@ public class AdminController {
 
 		HttpSession session = request.getSession(true);
 		AdminMaster adminMaster = (AdminMaster)session.getAttribute("adminInfo");
-		if (adminMaster.getAuthLevel() == 0) {
+		if (adminMaster.getAuthLevel() <= 2) {
 			mv.setViewName("admin/adminMain");
 		}
 
@@ -117,12 +117,23 @@ public class AdminController {
 	@RequestMapping(value = "/modifyAuthLevel.do", method = RequestMethod.POST)
 	public String modifyAuthLevel(HttpServletRequest request, @RequestBody Map<String,Object> param) throws Exception {
 		String ajaxResult = "";
+		HttpSession session = request.getSession();
+		AdminMaster adminInfo = (AdminMaster) session.getAttribute("adminInfo");
+
 		AdminMaster adminMaster = new AdminMaster();
 		adminMaster.setAdminCode(Integer.parseInt((String) param.get("param1")));
 		adminMaster.setAuthLevel(Integer.parseInt((String) param.get("param2")));
 
+		AdminMaster selectedUserInfo = adminService.getAdminInfoByAdminCode(adminMaster.getAdminCode());
+		int currentUserAuth = adminInfo.getAuthLevel();
+
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap = adminService.modifyAuthLevel(adminMaster);
+		if (currentUserAuth < selectedUserInfo.getAuthLevel()) {
+			resultMap = adminService.modifyAuthLevel(adminMaster);
+		} else {
+			resultMap.put("isSuccess", false);
+			resultMap.put("resultMsg", "상위 권한은 수정할 수 없습니다.");
+		}
 
 		ObjectMapper mapper = new ObjectMapper();
 		ajaxResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultMap);

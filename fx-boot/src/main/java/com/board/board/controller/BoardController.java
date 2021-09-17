@@ -82,6 +82,7 @@ public class BoardController {
 			@RequestParam(required = false) String keyword, @ModelAttribute("search") Search search) throws Exception {
 		ModelAndView mv = new ModelAndView();
 
+
 		// Search
 		mv.addObject("search", search);
 		search.setListSize(10); // 한 페이지당 보여질 리스트 개수
@@ -238,6 +239,27 @@ public class BoardController {
 			boardMaster.setModifyUser(userMaster.getEmpCode());
 			resultMap = boardService.deleteArticle(boardMaster);
 		}
+		ObjectMapper mapper = new ObjectMapper();
+		ajaxResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultMap);
+		return ajaxResult;
+	}
+
+	// 체크 박스 게시글 일괄 삭제(POST)
+	@LoginCheck
+	@RequestMapping(value = "/deleteChecked.do", method = RequestMethod.POST)
+	public String deleteChecked(HttpServletRequest request, @RequestBody Map<String, Object> param)
+			throws Exception {
+		HttpSession session = request.getSession(false);
+		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
+		AdminMaster adminMaster = (AdminMaster) session.getAttribute("adminInfo");
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		String ajaxResult = "";
+
+		BoardMaster boardMaster = new BoardMaster();
+		boardMaster.setIdx(Integer.parseInt((String) param.get("param")));
+		boardMaster.setModifyUser(adminMaster.getEmpCode());
+
+		resultMap = boardService.deleteArticle(boardMaster);
 		ObjectMapper mapper = new ObjectMapper();
 		ajaxResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultMap);
 		return ajaxResult;

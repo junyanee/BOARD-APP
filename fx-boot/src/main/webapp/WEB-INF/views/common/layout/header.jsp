@@ -28,7 +28,9 @@
 	        	     	<c:when test="${sessionScope.adminInfo != null }">
 	        	     		<div>
 	        	     			<span class = "navbar-text">
-	        	     				${adminInfo.adminName } 관리자님
+	        	     				<c:if test="${adminInfo.authLevel == 0 }">${adminInfo.adminName } 루트관리자님</c:if>
+	        	     				<c:if test="${adminInfo.authLevel == 1 }">${adminInfo.adminName } 관리자님</c:if>
+	        	     				<c:if test="${adminInfo.authLevel == 2 }">${adminInfo.adminName } 매니저님</c:if>
 	        	     			</span>
 	        	     			<a href = "/admin/adminCheck.do">
 	        	     				<img src ="/resources/img/common/ic_micro_setting.png" alt = "관리" />

@@ -11,6 +11,15 @@
 }
 </select>
 
+<select id="getAdminInfoByAdminCode" parameterType="int" resultType="com.board.admin.model.AdminMaster">
+{
+	call SP_GetAdminInfoByAdminCode
+	(
+		@adminCode = #{adminCode, mode=IN, jdbcType=INTEGER}
+	)
+}
+</select>
+
 <select id = "getAdminUser" parameterType = "com.board.utility.Search" resultType = "com.board.admin.model.AdminMaster">
 {
 	call SP_GetAdminUser
