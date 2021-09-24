@@ -46,7 +46,9 @@
 		@Title = #{title, mode = IN, jdbcType = VARCHAR},
 		@Contents = #{contents, mode = IN, jdbcType = VARCHAR},
 		@InsUser = #{insertUser, mode = IN, jdbcType = VARCHAR},
-		@ModUser = #{modifyUser, mode = IN, jdbcType = VARCHAR}
+		@ModUser = #{modifyUser, mode = IN, jdbcType = VARCHAR},
+		@isNotice = #{isNotice, mode = IN, jdbcType = INTEGER},
+		@isPublic = #{isPublic, mode = IN, jdbcType = INTEGER}
 	)
 }
 </select>
@@ -76,7 +78,9 @@
 		@Idx = #{idx, mode = IN, jdbcType = INTEGER},
 		@Title = #{title, mode = IN, jdbcType = VARCHAR},
 		@Contents = #{contents, mode = IN, jdbcType = VARCHAR},
-		@ModUser = #{modifyUser, mode = IN, jdbcType = VARCHAR}
+		@ModUser = #{modifyUser, mode = IN, jdbcType = VARCHAR},
+		@isNotice = #{isNotice, mode = IN, jdbcType = INTEGER},
+		@isPublic = #{isPublic, mode = IN, jdbcType = INTEGER}
 	)
 }
 </select>

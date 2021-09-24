@@ -82,7 +82,6 @@ public class BoardController {
 			@RequestParam(required = false) String keyword, @ModelAttribute("search") Search search) throws Exception {
 		ModelAndView mv = new ModelAndView();
 
-
 		// Search
 		mv.addObject("search", search);
 		search.setListSize(10); // 한 페이지당 보여질 리스트 개수
@@ -196,7 +195,7 @@ public class BoardController {
 		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
 		int boardIdx = Integer.parseInt(request.getParameter("idx"));
 		BoardMaster boardArticle = boardService.getArticle(boardIdx);
-		if (userMaster.getEmpCode().equals(boardArticle.getInsertUser())) {
+		if (userMaster.getEmpCode().equals(boardArticle.getInsertUser()) || userMaster.getIsAdmin() < 3) {
 			mv.addObject("modifyArticle", boardArticle);
 			mv.setViewName("boards/boardModify");
 			return mv;

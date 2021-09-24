@@ -44,6 +44,13 @@ function downloadFile(idx) {
 	<div class="container" id = "container">
 		<h3>게시글 내용</h3>
 		<hr />
+		<div class = "float-right">
+			<input id = "isNotice" name = "isNotice" type = "checkbox" <c:if test = "${getArticle.isNotice == 1}">checked</c:if> disabled>
+			<label for = "isNotice">게시판 공지</label>
+			&nbsp;&nbsp;&nbsp;
+			<input id = "isPublic" name = "isPublic" type = "checkbox" <c:if test = "${getArticle.isPublic == 0}">checked</c:if> disabled>
+			<label for = "isPublic">비밀글</label>
+		</div>
 		<div class="mb-3">
 			<input type="hidden" name="getArticle.idx" value="${getArticle.idx }"></input>
 			<input type = "hidden" name = "getArticle.insertUser" value = "${getArticle.insertUser }"></input>
@@ -71,7 +78,7 @@ function downloadFile(idx) {
 		</div>
 		<div class="float-right">
 			<!-- 게시글 등록한 사람에게만 수정, 삭제 버튼 출력 -->
-			<c:if test = "${sessionScope.userInfo.empCode == getArticle.insertUser }">
+			<c:if test = "${sessionScope.userInfo.empCode == getArticle.insertUser || sessionScope.userInfo.isAdmin < 3}">
 				<a href ="/boardModify.do?idx=${getArticle.idx }"><button type ="button" class="btn btn-primary"> 수정 </button></a>
 				<button type="button" id = "deleteButton" class="btn btn-primary" onclick = "del(${getArticle.idx})"> 삭제 </button>
 			</c:if>

@@ -8,7 +8,6 @@
 <title>게시글 수정</title>
 <script type="text/javascript">
 var oEditors = [];
-
 $(document).ready(function (){
 	// SmartEditor2 사용 선언
 
@@ -20,6 +19,19 @@ $(document).ready(function (){
 	});
 });
 function modifyArticle() {
+	// 공지사항 체크
+	if ($("#isNotice").is(":checked")) {
+		$("#isNotice").val(1);
+	} else {
+		$("#isNotice").val(0);
+	}
+	// 비밀글 체크
+	if ($("#isPublic").is(":checked")) {
+		$("#isPublic").val(0);
+	} else {
+		$("#isPublic").val(1);
+	}
+
 	var idx = document.getElementById('boardIdx').value;
 	oEditors.getById['contents'].exec("UPDATE_CONTENTS_FIELD", []);
 	var title = document.getElementById('title').value;
@@ -96,6 +108,13 @@ var idx = document.getElementById('boardIdx').value;
 		<h3>게시글 수정</h3>
 		<hr />
 		<form method="POST" id="boardForm" name="boardForm">
+			<div class = "float-right">
+				<input id = "isNotice" name = "isNotice" type = "checkbox" <c:if test = "${modifyArticle.isNotice == 1}">checked</c:if>>
+				<label for = "isNotice">게시판 공지</label>
+				&nbsp;&nbsp;&nbsp;
+				<input id = "isPublic" name = "isPublic" type = "checkbox" <c:if test = "${modifyArticle.isPublic == 0}">checked</c:if>>
+				<label for = "isPublic">비밀글</label>
+			</div>
 			<div class="mb-3">
 				<label for="exampleFormControlInput1" class="form-label">제목</label>
 				<input type="text" class="form-control" id="title"
@@ -114,6 +133,7 @@ var idx = document.getElementById('boardIdx').value;
 				<button class="btn btn-primary" type="button" id="saveButton" onclick = "javascript:modifyArticle();">수정하기</button>
 			</div>
 			<input type="hidden" id="boardIdx" name="boardIdx" value="${modifyArticle.idx }"/>
+			<input type="hidden" id = "idx" name = "idx" value = "${modifyArticle.idx }" />
 		</form>
 	</div>
 </body>
