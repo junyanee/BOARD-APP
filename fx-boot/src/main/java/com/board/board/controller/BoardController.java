@@ -82,6 +82,7 @@ public class BoardController {
 			@RequestParam(required = false) String keyword, @ModelAttribute("search") Search search) throws Exception {
 		ModelAndView mv = new ModelAndView();
 
+
 		// Search
 		mv.addObject("search", search);
 		search.setListSize(10); // 한 페이지당 보여질 리스트 개수
