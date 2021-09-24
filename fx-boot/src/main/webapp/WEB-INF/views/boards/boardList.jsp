@@ -159,7 +159,7 @@ function deleteChecked() {
 						<c:if test="${sessionScope.adminInfo != null }">
 						<th scope = "col"><input id = "allCheck" type = "checkbox" name = "allCheck"></th>
 						</c:if>
-						<th scope="col">#</th>
+						<th scope="col">번호</th>
 						<th scope="col">제목</th>
 						<th scope="col">작성자</th>
 						<th scope="col">날짜</th>
@@ -169,17 +169,41 @@ function deleteChecked() {
 				</thead>
 				<tbody>
 					<c:forEach var="boardList" items="${boardList}" varStatus="status">
-						<tr>
-							<c:if test="${sessionScope.adminInfo != null }">
-							<td scope = "col"><input id = "rowCheck" type = "checkbox" name = "rowCheck" value = "${boardList.idx }"></td>
-							</c:if>
-							<th scope="row"><c:out value="${status.count }" /></th>
-							<td> <a href="/boardDetail.do?idx=${boardList.idx}"><c:out value="${boardList.title }" /> </a> </td>
-							<td><c:out value="${boardList.insertUser }" /></td>
-							<td><c:out value="${boardList.insertDate }" /></td>
-							<td><c:out value="${boardList.readCnt }" /></td>
-							<td><c:out value="${boardList.commentCnt }" /></td>
-						</tr>
+						<c:choose>
+							<c:when test="${boardList.isNotice == 1}">
+								<tr>
+									<c:if test="${sessionScope.adminInfo != null }">
+										<td scope = "col"><input id = "rowCheck" type = "checkbox" name = "rowCheck" value = "${boardList.idx }"></td>
+									</c:if>
+										<td><c:out value="<strong>[공지]</strong>" escapeXml = "false"></c:out></td>
+										<td> <a href="/boardDetail.do?idx=${boardList.idx}"><c:out value="<strong>${boardList.title }</strong>" escapeXml = "false"/> </a> </td>
+										<td><c:out value="<strong>${boardList.insertUser }</strong>" escapeXml = "false"/></td>
+										<td><c:out value="<strong>${boardList.insertDate }</strong>" escapeXml = "false"/></td>
+										<td><c:out value="<strong>${boardList.readCnt }</strong>" escapeXml = "false"/></td>
+										<td><c:out value="<strong>${boardList.commentCnt }</strong>" escapeXml = "false"/></td>
+								</tr>
+							</c:when>
+							<c:otherwise>
+								<tr>
+									<c:if test="${sessionScope.adminInfo != null }">
+										<td scope = "col"><input id = "rowCheck" type = "checkbox" name = "rowCheck" value = "${boardList.idx }"></td>
+									</c:if>
+									<c:choose>
+										<c:when test="${boardList.isNotice == 1}">
+											<td><c:out value="<strong>[공지]</strong>" escapeXml = "false"></c:out></td>
+										</c:when>
+										<c:otherwise>
+											<td><c:out value="${boardList.idx }" /></td>
+										</c:otherwise>
+									</c:choose>
+										<td> <a href="/boardDetail.do?idx=${boardList.idx}"><c:out value="${boardList.title }" /> </a> </td>
+										<td><c:out value="${boardList.insertUser }" /></td>
+										<td><c:out value="${boardList.insertDate }" /></td>
+										<td><c:out value="${boardList.readCnt }" /></td>
+										<td><c:out value="${boardList.commentCnt }" /></td>
+								</tr>
+							</c:otherwise>
+						</c:choose>
 					</c:forEach>
 				</tbody>
 			</table>

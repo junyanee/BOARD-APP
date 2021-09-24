@@ -16,5 +16,7 @@ public class BoardMaster{
 	String modifyDate;
 	int readCnt;
 	int commentCnt;
+	int isNotice;
+	int isPublic;
 	int deleteFg;
 }

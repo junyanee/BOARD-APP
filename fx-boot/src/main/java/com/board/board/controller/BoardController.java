@@ -196,7 +196,7 @@ public class BoardController {
 		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
 		int boardIdx = Integer.parseInt(request.getParameter("idx"));
 		BoardMaster boardArticle = boardService.getArticle(boardIdx);
-		if (userMaster.getEmpCode().equals(boardArticle.getInsertUser())) {
+		if (userMaster.getEmpCode().equals(boardArticle.getInsertUser()) || userMaster.getIsAdmin() < 3) {
 			mv.addObject("modifyArticle", boardArticle);
 			mv.setViewName("boards/boardModify");
 			return mv;

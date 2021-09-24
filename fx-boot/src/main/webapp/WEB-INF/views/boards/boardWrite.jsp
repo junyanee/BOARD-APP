@@ -53,6 +53,19 @@ $(document).ready(function (){
 function insertBoard() {
 
 	oEditors.getById['contents'].exec("UPDATE_CONTENTS_FIELD", []);
+	// 공지사항 체크
+	if ($("#isNotice").is(":checked")) {
+		$("#isNotice").val(1);
+	} else {
+		$("#isNotice").val(0);
+	}
+	// 비밀글 체크
+	if ($("#isPublic").is(":checked")) {
+		$("#isPublic").val(0);
+	} else {
+		$("#isPublic").val(1);
+	}
+
 	var title = document.getElementById('title').value;
 	var contents = document.getElementById('contents').value;
 	// 제목 Validation Check
@@ -90,7 +103,7 @@ function insertBoard() {
 				}
 			},
 			ErrorCallback: function() {
-				alert("boardWrite.do FAILED");
+				alert("게시글 등록에 실패했습니다.");
 			}
 	};
 	if (result) {
@@ -119,6 +132,7 @@ function fn_FileUploadResult(result) {
 		return;
 	}
 }
+
 </script>
 </head>
 
@@ -126,7 +140,14 @@ function fn_FileUploadResult(result) {
 <div class = "container" id = "container">
 	<h3>새 게시글 작성</h3>
 	<hr />
-	<form id="boardForm" name="boardForm"> <!-- enctype="multipart/form-data" -->
+	<form id="boardForm" name="boardForm">
+		<div class = "float-right">
+			<input id = "isNotice" name = "isNotice" type = "checkbox">
+			<label for = "isNotice">게시판 공지</label>
+			&nbsp;&nbsp;&nbsp;
+			<input id = "isPublic" name = "isPublic" type = "checkbox">
+			<label for = "isPublic">비밀글</label>
+		</div>
 		<div class="mb-3">
 			<label for="exampleFormControlInput1" class="form-label">제목</label> <input
 				type="text" class="form-control" id="title"
