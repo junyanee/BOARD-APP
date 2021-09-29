@@ -1,5 +1,6 @@
 package com.board.board.controller;
 
+import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +32,7 @@ import com.board.board.service.CommentService;
 import com.board.common.model.ParameterWrapper;
 import com.board.common.model.UserMaster;
 import com.board.common.service.LoginService;
+import com.board.utility.ScriptUtils;
 import com.board.utility.Search;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -81,6 +83,7 @@ public class BoardController {
 			@RequestParam(required = false, defaultValue = "title") String searchType,
 			@RequestParam(required = false) String keyword, @ModelAttribute("search") Search search) throws Exception {
 		ModelAndView mv = new ModelAndView();
+
 
 		// Search
 		mv.addObject("search", search);
@@ -160,17 +163,35 @@ public class BoardController {
 
 	// 선택된 게시글 조회(GET)
 	@RequestMapping(value = "/boardDetail.do", method = RequestMethod.GET)
-	public ModelAndView getArticle(HttpServletRequest request, ModelAndView mv) throws Exception {
+	public ModelAndView getArticle(HttpServletRequest request, HttpServletResponse response, ModelAndView mv) throws Exception {
+		HttpSession session = request.getSession(false);
+		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
+
 		int boardIdx = Integer.parseInt(request.getParameter("idx"));
 		BoardMaster boardArticle = boardService.getArticle(boardIdx);
 		List<FileMaster> fileList = boardService.getFileList(boardIdx);
 		mv.addObject("fileList", fileList);
 		List<CommentMaster> commentList = commentService.getComment(boardIdx);
-		boardService.updateReadCnt(boardIdx);
-		mv.addObject("getArticle", boardArticle);
-		mv.addObject("commentList", commentList);
-		mv.setViewName("boards/boardDetail");
-		return mv;
+
+		if(boardArticle.getIsSecret() == 1) {
+			if(boardArticle.getInsertUser().equals(userMaster.getEmpCode()) || userMaster.getIsAdmin() < 3) {
+				boardService.updateReadCnt(boardIdx);
+				mv.addObject("getArticle", boardArticle);
+				mv.addObject("commentList", commentList);
+				mv.setViewName("boards/boardDetail");
+				return mv;
+			} else {
+				ScriptUtils.alertAndMovePage(response, "비밀게시글에 대한 권한이 없습니다.", "board-main.do");
+				mv.setViewName("redirect:/board-main.do");
+				return mv;
+			}
+		} else {
+			boardService.updateReadCnt(boardIdx);
+			mv.addObject("getArticle", boardArticle);
+			mv.addObject("commentList", commentList);
+			mv.setViewName("boards/boardDetail");
+			return mv;
+		}
 	}
 
 	// 파일 다운로드

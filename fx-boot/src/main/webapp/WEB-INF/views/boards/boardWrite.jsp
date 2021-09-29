@@ -60,10 +60,11 @@ function insertBoard() {
 		$("#isNotice").val(0);
 	}
 	// 비밀글 체크
-	if ($("#isPublic").is(":checked")) {
-		$("#isPublic").val(0);
+	if ($("#isSecret").is(":checked")) {
+		$("#isSecret").val(1);
 	} else {
-		$("#isPublic").val(1);
+		$("#isSecret").val(0);
+
 	}
 
 	var title = document.getElementById('title').value;
@@ -144,9 +145,8 @@ function fn_FileUploadResult(result) {
 		<div class = "float-right">
 			<input id = "isNotice" name = "isNotice" type = "checkbox">
 			<label for = "isNotice">게시판 공지</label>
-			&nbsp;&nbsp;&nbsp;
-			<input id = "isPublic" name = "isPublic" type = "checkbox">
-			<label for = "isPublic">비밀글</label>
+			<input id = "isSecret" name = "isSecret" type = "checkbox">
+			<label for = "isSecret">비밀글</label>
 		</div>
 		<div class="mb-3">
 			<label for="exampleFormControlInput1" class="form-label">제목</label> <input
