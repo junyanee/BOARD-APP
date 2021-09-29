@@ -48,7 +48,7 @@
 		@InsUser = #{insertUser, mode = IN, jdbcType = VARCHAR},
 		@ModUser = #{modifyUser, mode = IN, jdbcType = VARCHAR},
 		@isNotice = #{isNotice, mode = IN, jdbcType = INTEGER},
-		@isPublic = #{isPublic, mode = IN, jdbcType = INTEGER}
+		@isSecret = #{isSecret, mode = IN, jdbcType = INTEGER}
 	)
 }
 </select>
@@ -80,7 +80,7 @@
 		@Contents = #{contents, mode = IN, jdbcType = VARCHAR},
 		@ModUser = #{modifyUser, mode = IN, jdbcType = VARCHAR},
 		@isNotice = #{isNotice, mode = IN, jdbcType = INTEGER},
-		@isPublic = #{isPublic, mode = IN, jdbcType = INTEGER}
+		@isSecret = #{isSecret, mode = IN, jdbcType = INTEGER}
 	)
 }
 </select>

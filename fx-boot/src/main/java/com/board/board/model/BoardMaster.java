@@ -17,6 +17,6 @@ public class BoardMaster{
 	int readCnt;
 	int commentCnt;
 	int isNotice;
-	int isPublic;
+	int isSecret;
 	int deleteFg;
 }

@@ -47,7 +47,6 @@ $(document).on('click', '#btnSearch', function(e) {
 	var url = "${pageContext.request.contextPath}/board-main.do";
 	url = url + "?searchType=" + $('#searchType').val();
 	url = url + "&keyword=" + $('#keyword').val();
-	// movePage(url);
 	location.href = url;
 })
 
@@ -183,19 +182,37 @@ function deleteChecked() {
 										<td><c:out value="<strong>${boardList.commentCnt }</strong>" escapeXml = "false"/></td>
 								</tr>
 							</c:when>
-							<c:otherwise>
+							<c:when test = "${boardList.isSecret == 1}">
 								<tr>
 									<c:if test="${sessionScope.adminInfo != null }">
 										<td scope = "col"><input id = "rowCheck" type = "checkbox" name = "rowCheck" value = "${boardList.idx }"></td>
 									</c:if>
 									<c:choose>
-										<c:when test="${boardList.isNotice == 1}">
-											<td><c:out value="<strong>[공지]</strong>" escapeXml = "false"></c:out></td>
+										<c:when test = "${sessionScope.userInfo.empCode == boardList.insertUser || sessionScope.userInfo.isAdmin < 3}">
+											<td><c:out value="${boardList.idx }" /></td>
+											<td> <a href="/boardDetail.do?idx=${boardList.idx}"><c:out value="${boardList.title } (비공개 처리됨)" /> </a> </td>
+											<td><c:out value="${boardList.insertUser }"/></td>
+											<td><c:out value="${boardList.insertDate }"/></td>
+											<td><c:out value="${boardList.readCnt }"/></td>
+											<td><c:out value="${boardList.commentCnt }"/></td>
 										</c:when>
 										<c:otherwise>
-											<td><c:out value="${boardList.idx }" /></td>
+											<td><c:out value="${boardList.idx }"></c:out></td>
+											<td><c:out value="비공개 게시글입니다." /></td>
+											<td><c:out value="익명사용자"/></td>
+											<td><c:out value="${boardList.insertDate }"/></td>
+											<td><c:out value="${boardList.readCnt }"/></td>
+											<td><c:out value="${boardList.commentCnt }"/></td>
 										</c:otherwise>
 									</c:choose>
+								</tr>
+							</c:when>
+							<c:otherwise>
+								<tr>
+									<c:if test="${sessionScope.adminInfo != null }">
+										<td scope = "col"><input id = "rowCheck" type = "checkbox" name = "rowCheck" value = "${boardList.idx }"></td>
+									</c:if>
+										<td><c:out value="${boardList.idx }" /></td>
 										<td> <a href="/boardDetail.do?idx=${boardList.idx}"><c:out value="${boardList.title }" /> </a> </td>
 										<td><c:out value="${boardList.insertUser }" /></td>
 										<td><c:out value="${boardList.insertDate }" /></td>

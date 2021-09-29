@@ -26,10 +26,10 @@ function modifyArticle() {
 		$("#isNotice").val(0);
 	}
 	// 비밀글 체크
-	if ($("#isPublic").is(":checked")) {
-		$("#isPublic").val(0);
+	if ($("#isSecret").is(":checked")) {
+		$("#isSecret").val(1);
 	} else {
-		$("#isPublic").val(1);
+		$("#isSecret").val(0);
 	}
 
 	var idx = document.getElementById('boardIdx').value;
@@ -112,8 +112,8 @@ var idx = document.getElementById('boardIdx').value;
 				<input id = "isNotice" name = "isNotice" type = "checkbox" <c:if test = "${modifyArticle.isNotice == 1}">checked</c:if>>
 				<label for = "isNotice">게시판 공지</label>
 				&nbsp;&nbsp;&nbsp;
-				<input id = "isPublic" name = "isPublic" type = "checkbox" <c:if test = "${modifyArticle.isPublic == 0}">checked</c:if>>
-				<label for = "isPublic">비밀글</label>
+				<input id = "isSecret" name = "isSecret" type = "checkbox" <c:if test = "${modifyArticle.isSecret == 1}">checked</c:if>>
+				<label for = "isSecret">비밀글</label>
 			</div>
 			<div class="mb-3">
 				<label for="exampleFormControlInput1" class="form-label">제목</label>

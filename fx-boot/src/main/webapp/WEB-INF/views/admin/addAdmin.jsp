@@ -19,7 +19,7 @@ function fn_prev(page, range, rangeSize, searchType, keyword) {
 		url = url + "&range=" + range;
 		url = url + "&searchType=" + $('#searchType').val();
 		url = url + "&keyword=" + keyword;
-		movePage(url);
+		location.href = url;
 }
 
 // 페이지 번호 클릭
@@ -29,7 +29,7 @@ function fn_pagination(page, range, rangeSize, searchType, keyword) {
 		url = url + "&range=" + range;
 		url = url + "&searchType=" + $('#searchType').val();
 		url = url + "&keyword=" + keyword;
-		movePage(url);
+		location.href = url;
 }
 
 // 다음 버튼
@@ -42,7 +42,7 @@ function fn_next(page, range, rangeSize, searchType, keyword) {
 		url = url + "&range=" + range;
 		url = url + "&searchType=" + $('#searchType').val();
 		url = url + "&keyword=" + keyword;
-		movePage(url);
+		location.href = url;
 }
 // 검색 버튼
 $(document).on('click', '#btnSearch', function(e) {
@@ -50,7 +50,7 @@ $(document).on('click', '#btnSearch', function(e) {
 	var url = "${pageContext.request.contextPath}/admin/addAdmin.do";
 	url = url + "?searchType=" + $('#searchType').val();
 	url = url + "&keyword=" + $('#keyword').val();
-	movePage(url);
+	location.href = url;
 })
 
 // 체크 박스

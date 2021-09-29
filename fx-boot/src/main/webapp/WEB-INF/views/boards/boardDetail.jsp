@@ -48,8 +48,8 @@ function downloadFile(idx) {
 			<input id = "isNotice" name = "isNotice" type = "checkbox" <c:if test = "${getArticle.isNotice == 1}">checked</c:if> disabled>
 			<label for = "isNotice">게시판 공지</label>
 			&nbsp;&nbsp;&nbsp;
-			<input id = "isPublic" name = "isPublic" type = "checkbox" <c:if test = "${getArticle.isPublic == 0}">checked</c:if> disabled>
-			<label for = "isPublic">비밀글</label>
+			<input id = "isSecret" name = "isSecret" type = "checkbox" <c:if test = "${getArticle.isSecret == 1}">checked</c:if> disabled>
+			<label for = "isSecret">비밀글</label>
 		</div>
 		<div class="mb-3">
 			<input type="hidden" name="getArticle.idx" value="${getArticle.idx }"></input>

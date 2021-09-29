@@ -5,6 +5,30 @@
 <head>
 <script type="text/javascript">
 function insert() {
+	var name = document.getElementById('name').value;
+	var age = document.getElementById('age').value;
+
+	if(name != null && typeof name != "string") {
+		alert("이름을 제대로 입력해주세요.");
+		document.getElementById('name').focus();
+		return;
+	}
+	if(name == null || name == "") {
+		alert("이름을 입력해주세요.");
+		document.getElementById('name').focus();
+		return;
+	}
+	if(age != null && typeof age != "number") {
+		alert("숫자를 입력해주세요");
+		document.getElementById('age').focus();
+		return;
+	}
+	if(age == null || age == "") {
+		alert("나이를 입력해주세요.");
+		document.getElementById('age').focus();
+		return;
+	}
+
 	var result = confirm("제출하시겠습니까?");
 	var formData = $(insertTestForm).serializeObject();
 	if(result) {
