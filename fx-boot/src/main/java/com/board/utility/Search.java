@@ -9,4 +9,5 @@ public class Search extends Pagination {
 
 	String searchType;
 	String keyword;
+	String empCode;
 }

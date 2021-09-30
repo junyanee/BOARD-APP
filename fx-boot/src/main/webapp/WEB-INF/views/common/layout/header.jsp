@@ -45,6 +45,13 @@
 	        		</c:choose>
 	        	</c:when>
 	        </c:choose>
+	        <div>
+	        	<ul class="navbar-nav mr-auto">
+	        		<li class="nav-item active">
+	           			<a class="nav-link" href="/Info/myPage.do">마이페이지</a>
+	          		</li>
+	        	</ul>
+	        </div>
 	        <c:choose>
 	        	<c:when test = "${sessionScope.userInfo != null }">
 	       			<a class = "nav-link" href = "/Login/Login.do"><button type="button" class="btn btn-outline-light me-2">로그아웃</button></a>
