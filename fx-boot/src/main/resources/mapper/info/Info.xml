@@ -7,4 +7,39 @@
 }
 </select>
 
+<select id="getMyBoardList" parameterType = "String" resultType="com.board.board.model.BoardMaster">
+{
+	call SP_GetMyBoardList
+	(
+		@empCode = #{empCode, mode = IN, jdbcType = VARCHAR}
+	)
+}
+</select>
+
+<select id = "getMyBoardListCnt" resultType = "int" parameterType = "com.board.utility.Search">
+{
+	call SP_GetMyBoardListCnt
+	(
+		@SearchType = #{searchType, mode = IN, jdbcType = VARCHAR},
+		@Keyword = #{keyword, mode = IN, jdbcType = VARCHAR},
+		@empCode = ${empCode, mode = IN, jdbcType = VARCHAR}
+	)
+}
+
+</select>
+
+<select id="getMyBoardListAll" parameterType = "com.board.utility.Search" resultType="com.board.board.model.BoardMaster">
+{
+	call SP_GetMyBoardListAll
+	(
+		@Page = #{page, mode = IN, jdbcType = INTEGER},
+		@Range = #{range, mode = IN, jdbcType = INTEGER},
+		@ListSize = #{listSize, mode = IN, jdbcType = INTEGER},
+		@SearchType = #{searchType, mode = IN, jdbcType = VARCHAR},
+		@Keyword = #{keyword, mode = IN, jdbcType = VARCHAR},
+		@empCode = #{empCode, mode = IN, jdbcType = VARCHAR}
+	)
+}
+</select>
+
 </mapper>
