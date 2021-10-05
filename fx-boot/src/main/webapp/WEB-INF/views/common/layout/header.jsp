@@ -47,9 +47,11 @@
 	        </c:choose>
 	        <div>
 	        	<ul class="navbar-nav mr-auto">
-	        		<li class="nav-item active">
-	           			<a class="nav-link" href="/Info/myPage.do">마이페이지</a>
-	          		</li>
+	        		<c:if test="${sessionScope.userInfo != null }">
+	        			<li class="nav-item active">
+	           				<a class="nav-link" href="/Info/myPage.do">마이페이지</a>
+	          			</li>
+	          		</c:if>
 	        	</ul>
 	        </div>
 	        <c:choose>
