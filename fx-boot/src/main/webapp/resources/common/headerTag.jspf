@@ -27,6 +27,7 @@
 
 <!-- commoncss (custom css for jsp)-->
 <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/commoncss/loginForm.css" />"/>
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/commoncss/myBoardListAll.css" />"/>
 
 <!-- layout (fixed navbar, sticky footer)-->
 <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/commoncss/layout/sticky-footer.css" />"/>

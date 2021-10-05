@@ -16,16 +16,15 @@
 }
 </select>
 
-<select id = "getMyBoardListCnt" resultType = "int" parameterType = "com.board.utility.Search">
+<select id = "getMyBoardListCnt" resultType = "int" >
 {
 	call SP_GetMyBoardListCnt
 	(
 		@SearchType = #{searchType, mode = IN, jdbcType = VARCHAR},
 		@Keyword = #{keyword, mode = IN, jdbcType = VARCHAR},
-		@empCode = ${empCode, mode = IN, jdbcType = VARCHAR}
+		@EmpCode = #{empCode, mode = IN, jdbcType = VARCHAR}
 	)
 }
-
 </select>
 
 <select id="getMyBoardListAll" parameterType = "com.board.utility.Search" resultType="com.board.board.model.BoardMaster">
@@ -37,7 +36,7 @@
 		@ListSize = #{listSize, mode = IN, jdbcType = INTEGER},
 		@SearchType = #{searchType, mode = IN, jdbcType = VARCHAR},
 		@Keyword = #{keyword, mode = IN, jdbcType = VARCHAR},
-		@empCode = #{empCode, mode = IN, jdbcType = VARCHAR}
+		@EmpCode = #{empCode, mode = IN, jdbcType = VARCHAR}
 	)
 }
 </select>
