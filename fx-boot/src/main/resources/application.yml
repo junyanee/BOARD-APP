@@ -36,6 +36,7 @@ server:
   port: 8080
   error:    include-exception: true # 오류  응답에 exception의 내용을 포함할 지 여부
     include-stacktrace: always # 오류 응답에 stacktrace 내용을 포함할 지 여부
+  servlet:    context-path:
 spring:
   profiles: dev
   datasource:
@@ -49,3 +50,9 @@ logging:
   level:
     org.springframework: DEBUG
     org.springframework.web: DEBUG
+    
+custom:
+  config:
+    upload:
+      profile-image:
+        path: C:\\Side-FileStorage\\Employee-ProfileImage

@@ -50,7 +50,8 @@ public class BoardController {
 	/*
 	 * Login Check 필요한 페이지의 경우 @RequestMapping 위에 @LoginCheck 어노테이션을 추가해줄것.
 	 */
-	@RequestMapping(value = "/home.do")
+
+	@RequestMapping(value = {"", "/home.do"})
 	public ModelAndView home(HttpServletRequest request) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		// 최초 홈 접근시 세션이 없을 경우 세션 객체 생성함.

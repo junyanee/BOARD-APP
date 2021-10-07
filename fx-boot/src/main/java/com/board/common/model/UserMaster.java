@@ -22,5 +22,6 @@ public class UserMaster {
 	String orderValue;
 	String iDate;
 	int isAdmin;
+	String profileImagePath;
 
 }
