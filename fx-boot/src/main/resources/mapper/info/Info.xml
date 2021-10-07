@@ -41,4 +41,26 @@
 }
 </select>
 
+<select id = "saveProfileImage" parameterType = "Map" resultType = "com.board.common.model.ResultMaster">
+{
+	call SP_SaveProfileImage
+	(
+		@EmpCode = #{empCode, mode = IN, jdbcType = VARCHAR},
+		@Path = #{uploadPath, mode = IN, jdbcType = VARCHAR}
+	)
+}
+</select>
+
+<select id = "saveProfileInput" parameterType = "com.board.common.model.UserMaster" resultType = "com.board.common.model.ResultMaster">
+{
+	call SP_SaveProfileInput
+	(
+		@EmpCode = #{empCode, mode = IN, jdbcType = VARCHAR},
+		@Email = #{email, mode = IN, jdbcType = VARCHAR},
+		@MobileTelNum = #{mobileTelNum, mode = IN, jdbcType = VARCHAR},
+		@OfficeTelNum = #{officeTelNum, mode = IN, jdbcType = VARCHAR}
+	)
+}
+</select>
+
 </mapper>

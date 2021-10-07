@@ -59,7 +59,7 @@
 	       			<a class = "nav-link" href = "/Login/Login.do"><button type="button" class="btn btn-outline-light me-2">로그아웃</button></a>
 	        	</c:when>
 	        	<c:otherwise>
-	        		<a class = "nav-link" href = "/Login/Login.do"><button type="button" class="btn btn-outline-light me-2">로그인</button></a>
+	        		<a class = "nav-link" href = "/Login/Login.do"><button type="button" class="btn btn-outline-light me-2">AD 로그인</button></a>
 	        	</c:otherwise>
 	        </c:choose>
 	      </div>
