@@ -13,9 +13,9 @@
     <section class="content">
 
       <tiles:insertAttribute name="header"/> <!--  /WEB-INF/views/common/layout/header.jsp -->
-      <div style="width:100%;height: 850px;">
-      <tiles:insertAttribute name="body"/>
-		</div>
+      <div>
+      	<tiles:insertAttribute name="body"/>
+	  </div>
       <tiles:insertAttribute name="footer"/> <!--  /WEB-INF/views/common/layout/footer.jsp -->
 
     </section>

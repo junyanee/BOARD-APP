@@ -104,6 +104,7 @@ var idx = document.getElementById('boardIdx').value;
 </head>
 
 <body>
+	<div class = "header-divider"></div>
 	<div class = "container" id = "container">
 		<h3>게시글 수정</h3>
 		<hr />

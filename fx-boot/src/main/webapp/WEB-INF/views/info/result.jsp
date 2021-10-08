@@ -9,6 +9,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<div class = "header-divider"></div>
 <div class = "container"  id = "container">
 			<div class="table-responsive-md">
 			<table class="table table-hover">

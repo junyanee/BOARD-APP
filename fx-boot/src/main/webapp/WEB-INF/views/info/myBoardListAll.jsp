@@ -161,8 +161,8 @@ $(document).ready(function(){
 <title>Insert title here</title>
 </head>
 <body>
+<div class = "header-divider"></div>
 	<div class = "container">
-		<br />
 		<h2>내가 쓴 글</h2>
 		<!-- Search  -->
 		<div class = "form-group row">

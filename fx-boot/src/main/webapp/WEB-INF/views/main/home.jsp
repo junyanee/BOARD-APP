@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link href="carousel.css" rel="stylesheet">
 <script type="text/javascript">
 	var test;
 	$(document).ready(function() {
@@ -101,33 +102,36 @@ $(function() {
 </head>
 <body>
 	<div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
-  		<div class="carousel-indicators">
-    		<button type="button" data-target="#carouselExampleCaptions" data-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-    		<button type="button" data-target="#carouselExampleCaptions" data-slide-to="1" aria-label="Slide 2"></button>
-    		<button type="button" data-target="#carouselExampleCaptions" data-slide-to="2" aria-label="Slide 3"></button>
-  		</div>
+        <ol class="carousel-indicators">
+          <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+          <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+          <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+        </ol>
   		<div class="carousel-inner">
-    		<div class="carousel-item active">
-      			<img src="/resources/img/common/carousel-1.jpg" class="d-block w-100" alt="슬라이드1" style = "max-width:auto; height:550px; overflow:hidden;">
-      			<div class="carousel-caption d-none d-md-block">
-        			<h5>First slide label</h5>
-        			<p>Some representative placeholder content for the first slide.</p>
-      			</div>
-    		</div>
-    		<div class="carousel-item">
-      			<img src="/resources/img/common/carousel-2.jpg" class="d-block w-100" alt="슬라이드2" style = "max-width:auto; height:550px; overflow:hidden;">
-      			<div class="carousel-caption d-none d-md-block">
-        			<h5>Second slide label</h5>
-        			<p>Some representative placeholder content for the second slide.</p>
-      			</div>
-    		</div>
-    		<div class="carousel-item">
-      			<img src="/resources/img/common/carousel-3.jpg" class="d-block w-100" alt="슬라이드3" style = "max-width:auto; height:550px; overflow:hidden">
-      			<div class="carousel-caption d-none d-md-block">
-        			<h5>Third slide label</h5>
-        			<p>Some representative placeholder content for the third slide.</p>
-      			</div>
-    		</div>
+          	<div class="carousel-item active">
+            <img class="third-slide" src="/resources/img/common/slide-01.jpg" alt="Frist slide" style = "min-width:100%; height: 30rem;">
+              	<div class="carousel-caption text-right">
+                	<h1>Welcome, SYDS Boards</h1>
+                	<p>삼양데이타시스템 게시판입니다.</p>
+                	<p><a class="btn btn-lg btn-outline-warning" href="#" role="button">Browse gallery</a></p>
+           		</div>
+          	</div>
+          	<div class="carousel-item">
+            <img class="third-slide" src="/resources/img/common/slide-02.jpg" alt="Second slide" style = "min-width:100%; height:30rem;">
+              	<div class="carousel-caption text-right">
+                	<h1>SYDS Boards</h1>
+                	<p>삼양데이타시스템 게시판입니다.</p>
+                	<p><a class="btn btn-lg btn-outline-warning" href="#" role="button">Browse gallery</a></p>
+           		</div>
+          	</div>
+          	<div class="carousel-item">
+            <img class="third-slide" src="/resources/img/common/slide-03.jpg" alt="Third slide" style = "min-width:100%; height:30rem;">
+				<div class="carousel-caption text-right">
+                	<h1>SYDS Boards</h1>
+                	<p>삼양데이타시스템 게시판입니다.</p>
+                	<p><a class="btn btn-lg btn-outline-warning" href="#" role="button">Browse gallery</a></p>
+           		</div>
+          	</div>
   		</div>
   		<button class="carousel-control-prev" type="button" data-target="#carouselExampleCaptions" data-slide="prev">
     		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -138,20 +142,41 @@ $(function() {
     		<span class="visually-hidden">Next</span>
   		</button>
 	</div>
-	<div class="container" id = "container">
-		<div>
-
-			<div>
-				<p>
-					게시판 홈 화면
-				</p>
+	<div class = "container">
+		<div class = "row">
+			<div class = "jumbotron col-7">
+				<h3>공지사항</h3>
 
 			</div>
-			<div>
-				<button type = "button" onclick = "javascript:call();"> 조회하기</button>
-				<a href = "/Common/insertHome.do"><button type = "button"> ajax 예제</button></a>
+			<div class = "col-1" ></div>
+			<div class = "jumbotron col-4">
+				<h3>News</h3>
 			</div>
 		</div>
+	</div>
+	<div class="container">
+		<div class = "jumbotron">
+			<div class="col-sm-8 mx-auto">
+				<h1>AJAX 데이터 반복 조회</h1>
+				<p class = "lead">JS의 Promise 사용의 이유를 알아보기 위해 AJAX를 통한 데이터 조회를 1000번 실시하고 순서대로 응답이 들어오는지를 확인하기 위한 예제입니다.</p>
+				<p>조회 데이터 개수 : 1000건</p>
+				<button type = "button" class = "btn btn-primary float-right" onclick = "javascript:call();"> 조회하기</button>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <h2>AJAX 데이터 반복 조회</h2>
+            <p>JS의 Promise 사용의 이유를 알아보기 위해 AJAX를 통한 데이터 조회를 1000번 실시하고 순서대로 응답이 들어오는지를 확인하기 위한 예제입니다. </p>
+            <p><a class="btn btn-secondary" onclick = "javascript:call();" role="button">조회하기 &raquo;</a></p>
+          </div>
+          <div class="col-md-6">
+            <h2>AJAX 예제</h2>
+            <p>AJAX를 사용하여 간단한 이름, 나이를 입력하는 예제입니다. </p>
+            <p><a class="btn btn-secondary" href = "/Common/insertHome.do" role="button">예제실습 &raquo;</a></p>
+          </div>
+        </div>
 	</div>
 </body>
 </html>

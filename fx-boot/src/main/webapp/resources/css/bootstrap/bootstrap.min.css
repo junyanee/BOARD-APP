@@ -531,6 +531,7 @@ pre code {
 
 .container {
 	width: 100%;
+	padding-top: 20px;
 	padding-right: 30px;
 	padding-left: 30px;
 	margin-right: auto;
@@ -6017,7 +6018,7 @@ supports ((-webkit-transform-style:preserve-3d ) or (transform-style:preserve-3d
 	-webkit-box-flex: 0;
 	-ms-flex: 0 1 auto;
 	flex: 0 1 auto;
-	width: 30px;
+	width: 50px;
 	height: 3px;
 	margin-right: 3px;
 	margin-left: 3px;
@@ -7318,6 +7319,8 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover
 }
 
 .fixed-top {
+	padding-bottom:0;
+	padding-top:0;
 	position: fixed;
 	top: 0;
 	right: 0;

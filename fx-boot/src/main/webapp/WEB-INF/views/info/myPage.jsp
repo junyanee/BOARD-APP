@@ -153,8 +153,9 @@ function saveProfile() {
 			}
 		});
 		Promise.all([promise]).then(function (values) {
-			alert("정상적으로 처리되었습니다.");
-			location.reload();
+			alert("정상적으로 처리되었습니다. 정보 변경을 위해 다시 로그인해주세요.");
+			location.href = "/Login/Login.do";
+			sessionStorage.clear();
 		});
 	}
 }
@@ -176,8 +177,8 @@ function fn_FileUploadResult(result) {
 <title>마이페이지</title>
 </head>
 <body>
+<div class = "header-divider"></div>
 	<div class = "container">
-	<br>
 	<div style = "display:flex">
 		<h3><c:out value="[${sessionScope.userInfo.sygCode }] ${sessionScope.userInfo.empName }"></c:out></h3> <span style="padding-top: 10px;">님의 페이지</span>
 	</div>
