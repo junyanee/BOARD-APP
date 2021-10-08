@@ -152,10 +152,8 @@ function deleteAdmin() {
 }
 </script>
 <body>
+	<div class = "header-divider"></div>
 	<div class = "container" id = "container">
-
-		<br />
-		<br />
 		<h5>사용자 정보</h5>
 		<div class = "float-right">
 			<a href = "modifyAdminInfo.do"><button type="button" class="btn btn-primary" >관리자 리스트</button></a>

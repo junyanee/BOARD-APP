@@ -10,7 +10,8 @@
 <meta charset="UTF-8">
 <title>404</title>
 </head>
-<body style = "background: #dedede;">
+<body>
+<div class = "header-divider"></div>
 <div class="page-wrap d-flex flex-row align-items-center" style = ".page-wrap {min-height: 100vh;}">
     <div class="container" id = "container">
         <div class="row justify-content-center">

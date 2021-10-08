@@ -11,16 +11,21 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0" />
 <%@ include file="/resources/common/headerTag.jspf"%>
 </head>
-<body>
-	<div class = "container" id = "container">
+<body style = "padding:0">
+	<div>
 	     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 	      <a class="navbar-brand" href="/home.do">SYDS Boards</a>
-
 	      <div class="collapse navbar-collapse" id="navbarsExample04">
 	        <ul class="navbar-nav mr-auto">
-	           <li class="nav-item active">
-	            <a class="nav-link" href="/board-main.do">게시판 <span class="sr-only">(current)</span></a>
-	          </li>
+	        	<li class="nav-item active">
+	            	<a class="nav-link" href="/board-main.do">게시판 <span class="sr-only">(current)</span></a>
+	        	</li>
+	          	<li class="nav-item active">
+	            	<a class="nav-link" href="http://portal.samyang.com/portal/main/portalMain.do">업무 포탈</a>
+	          	</li>
+	          	<li class="nav-item active">
+	            	<a class="nav-link" href="/Info/searchUser.do">사용자 검색</a>
+	          	</li>
 	        </ul>
 			<c:choose>
 	        	<c:when test ="${sessionScope.userInfo != null}">
@@ -54,6 +59,7 @@
 	          		</c:if>
 	        	</ul>
 	        </div>
+	        <div>
 	        <c:choose>
 	        	<c:when test = "${sessionScope.userInfo != null }">
 	       			<a class = "nav-link" href = "/Login/Login.do"><button type="button" class="btn btn-outline-light me-2">로그아웃</button></a>
@@ -62,8 +68,9 @@
 	        		<a class = "nav-link" href = "/Login/Login.do"><button type="button" class="btn btn-outline-light me-2">AD 로그인</button></a>
 	        	</c:otherwise>
 	        </c:choose>
+			</div>
 	      </div>
 	    </nav>
-    </div>
+	</div>
 </body>
 </html>

@@ -9,8 +9,8 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<div class = "header-divider"></div>
 	<div class = "container" id = "container">
-		<br />
 		<h1> 관리자 권한 설정</h1>
 		<hr />
 		<div class = "float-right">

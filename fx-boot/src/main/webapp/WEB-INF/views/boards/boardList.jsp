@@ -112,6 +112,7 @@ function deleteChecked() {
 <title>메인 게시판</title>
 </head>
 <body>
+	<div class = "header-divider"></div>
 	<div class="container" id = "container">
 		<h2>메인 게시판</h2>
 		<hr>

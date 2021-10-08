@@ -138,6 +138,7 @@ function fn_FileUploadResult(result) {
 </head>
 
 <body>
+<div class = "header-divider"></div>
 <div class = "container" id = "container">
 	<h3>새 게시글 작성</h3>
 	<hr />

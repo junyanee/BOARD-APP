@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<div class = "header-divider"></div>
 	<div class = "container" id = "container">
 		<h1> 관리자 페이지 </h1>
 

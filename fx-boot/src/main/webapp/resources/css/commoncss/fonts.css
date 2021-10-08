@@ -1,0 +1,24 @@
+@charset "UTF-8";
+
+@font-face {
+	font-family:'samyang';
+	src: url("/resources/fonts/samyang-Regular.ttf") format('truetype');
+	font-style: normal;
+	font-weight: normal;
+}
+@font-face {
+	font-family:'samyang';
+	src: url("/resources/fonts/samyang-Bold.ttf") format('truetype');
+	font-style: normal;
+	font-weight: bold;
+}
+@font-face {
+	font-family:'samyang';
+	src: url("/resources/fonts/samyang-Medium.ttf") format('truetype');
+	font-style: normal;
+	font-weight: medium;
+}
+
+body {
+	font-family: 'samyang';
+}

@@ -128,9 +128,8 @@ function modifyAuthLevel() {
 }
 </script>
 <body>
+	<div class = "header-divider"></div>
 	<div class = "container" id = "container">
-	<br />
-	<br />
 		<h5>관리자 권한 설정</h5>
 		<div class = "float-left">
 		<p>관리자 권한을 설정하세요</p>

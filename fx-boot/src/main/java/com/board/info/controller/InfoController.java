@@ -171,4 +171,11 @@ public class InfoController {
 		return ajaxResult;
 	}
 
+	@RequestMapping(value = "/searchUser.do")
+	public ModelAndView searchUser(HttpServletRequest request) throws Exception {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("info/searchUser");
+		return mv;
+	}
+
 }
