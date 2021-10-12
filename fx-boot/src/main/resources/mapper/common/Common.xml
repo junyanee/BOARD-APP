@@ -62,6 +62,16 @@
 }
 </select>
 
+<select id = "getUserInfoBySearch" parameterType = "com.board.utility.Search" resultType = "com.board.common.model.UserMaster">
+{
+	call SP_GetUserInfoBySearch
+	(
+		@SearchType = #{searchType, mode = IN, jdbcType = VARCHAR},
+		@Keyword = #{keyword, mode = IN, jdbcType = VARCHAR}
+	)
+}
+</select>
+
 <insert id = "insertPerson" parameterType = "com.board.common.model.PersonDTO">
 	INSERT INTO TB_Person (NAME, AGE) VALUES (#{name}, #{age})
 </insert>

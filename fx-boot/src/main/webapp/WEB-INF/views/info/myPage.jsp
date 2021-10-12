@@ -120,7 +120,6 @@ function saveProfile() {
 			};
 
 			var promise = new Promise(function (resolve, reject) {
-				//$.fng_Ajax(imageAjaxOptions);
 				fng_UploadFile("profileImageForm","/Info/saveProfileImage.do",fn_FileUploadResult);
 				if(resolve) {
 					resolve("이미지 업데이트 성공");
@@ -191,7 +190,8 @@ function fn_FileUploadResult(result) {
 			<div id = "profilePicture" style = "padding-right: 10px; border:dotted thick aliceblue;">
 				<c:choose>
 					<c:when test="${sessionScope.userInfo.profileImagePath != null }">
-						<img src ="downloadProfile.do" width = "200" height = "200" alt = "프로필사진" />
+						<input type = "hidden" value = "${sessionScope.userInfo.empCode }" name = "empCode" />
+						<img src ="downloadProfile.do?empCode=${sessionScope.userInfo.empCode }" width = "200" height = "200" alt = "프로필사진" />
 					</c:when>
 					<c:otherwise>
 						<img src ="/resources/img/common/blank-profile.png" width = "200" height = "200" alt = "프로필사진" />
@@ -248,7 +248,7 @@ function fn_FileUploadResult(result) {
 							</div>
 							<div>
 								<form id = "profileImageForm" enctype = "multipart/form-data">
-									<input type = "file" id = "inputProfileImage" name = "inputProfileImage" onchange = "preview(event)" accept = "image/*" class = "form-control"/>
+									<input type = "file" id = "inputProfileImage" name = "inputProfileImage" onchange = "preview(event)" accept = "image/png" class = "form-control"/>
 								</form>
 							</div>
 						</div>

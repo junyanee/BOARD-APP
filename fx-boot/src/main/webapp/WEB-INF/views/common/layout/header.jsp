@@ -24,7 +24,7 @@
 	            	<a class="nav-link" href="http://portal.samyang.com/portal/main/portalMain.do">업무 포탈</a>
 	          	</li>
 	          	<li class="nav-item active">
-	            	<a class="nav-link" href="/Info/searchUser.do">사용자 검색</a>
+	            	<a class="nav-link" href="/Info/searchUserMain.do">사용자 검색</a>
 	          	</li>
 	        </ul>
 			<c:choose>

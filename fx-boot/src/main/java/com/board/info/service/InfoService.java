@@ -1,5 +1,6 @@
 package com.board.info.service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +52,19 @@ public class InfoService {
 			resultMap.put("resultMsg", "정상적으로 처리되지 못했습니다.");
 		}
 		return resultMap;
+	}
+
+	public String deleteIfProfileImageExists(String path) throws Exception {
+		String result = "";
+		File deleteFile = new File(path);
+		if(deleteFile.exists()) {
+			deleteFile.delete();
+			result = "Y";
+			return result;
+		} else {
+			result = "N";
+			return result;
+		}
 	}
 
 	public Map<String, Object> saveProfileInfo(UserMaster param) throws Exception {

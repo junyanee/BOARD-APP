@@ -198,27 +198,7 @@ function deleteAdmin() {
 			<!-- Search -->
 			<div class = "col-9 row">
 				<div class = "col-2">
-					<select name = "searchType" id = "searchType"
-					style = "
-					color: #495057;
-                	background-color: #fff;
-                	border-color: #ced4da;
-                	display: inline-block;
-                	padding: 6px 12px;
-               		margin-bottom: 0;
-                	font-size: 14px;
-                	font-weight: 400;
-                	line-height: 1.42857143;
-                	text-align: center;
-                	white-space: nowrap;
-                	vertical-align: middle;
-                	-ms-touch-action: manipulation;
-                	touch-action: manipulation;
-               		cursor: pointer;
-                	background-image: none;
-               		border: 1px solid;
-                	border-radius: 4px;
-                	">
+					<select name = "searchType" id = "searchType" class = "searchBar">
 						<option value = "empName">이름</option>
 						<option value = "empCode">사번</option>
 					</select>

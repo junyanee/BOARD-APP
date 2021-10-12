@@ -57,4 +57,8 @@ public class UserMasterService {
 		}
 		return resultMap;
 	}
+
+	public List<UserMaster> getUserInfoBySearch(Search search) throws Exception {
+		return commonMapper.getUserInfoBySearch(search);
+	}
 }
