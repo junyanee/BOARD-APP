@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.URLEncoder;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +35,7 @@ import com.board.board.model.BoardMaster;
 import com.board.board.model.FileMaster;
 import com.board.common.model.ParameterWrapper;
 import com.board.common.model.UserMaster;
+import com.board.common.service.UserMasterService;
 import com.board.info.model.testMaster;
 import com.board.info.service.InfoService;
 import com.board.utility.Search;
@@ -46,6 +49,9 @@ public class InfoController {
 
 	@Autowired
 	InfoService service;
+
+	@Autowired
+	UserMasterService userMasterService;
 
 	@Value("${custom.config.upload.profile-image.path}")
 	private String path;
@@ -106,10 +112,8 @@ public class InfoController {
 	}
 
 	@RequestMapping(value = "/downloadProfile.do")
-	public void downloadProfileImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		HttpSession session = request.getSession(false);
-		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
-
+	public void downloadProfileImage(HttpServletRequest request, HttpServletResponse response, @RequestParam("empCode") String empCode) throws Exception {
+		UserMaster userMaster = userMasterService.getUserInfo(empCode);
 		File userProfileImage = new File(userMaster.getProfileImagePath());
 		FileInputStream fileInputStream = new FileInputStream(userProfileImage);
 		byte[] imageBytes = IOUtils.toByteArray(fileInputStream);
@@ -133,12 +137,10 @@ public class InfoController {
 		MultipartFile file = msr.getFile("inputProfileImage");
 		if(!file.isEmpty()) {
 			String empCode = userMaster.getEmpCode();
-			String fileName = file.getOriginalFilename(); //라이언.jpeg
-			int idx = fileName.indexOf(".");
-			String extension = fileName.substring(idx);
-			String uploadPath = path + "\\" + empCode + extension;
+			String uploadPath = path + "\\" + empCode + ".png";
+			Path filePath = Paths.get(uploadPath);
 			try {
-				file.transferTo(new File(uploadPath));
+				file.transferTo(filePath);
 				service.saveProfileImage(userMaster.getEmpCode(), uploadPath);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -171,10 +173,46 @@ public class InfoController {
 		return ajaxResult;
 	}
 
-	@RequestMapping(value = "/searchUser.do")
-	public ModelAndView searchUser(HttpServletRequest request) throws Exception {
+	@RequestMapping(value = "/searchUserMain.do")
+	public ModelAndView searchUserMain(HttpServletRequest request) throws Exception {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("info/searchUser");
+		mv.setViewName("info/searchUserMain");
+		return mv;
+	}
+
+	@RequestMapping(value = "/searchUser.do")
+	public ModelAndView searchUser(HttpServletRequest request,
+			@RequestParam(required = false, defaultValue = "empName") String searchType,
+			@RequestParam(required = false) String keyword, @ModelAttribute("search") Search search) throws Exception {
+	ModelAndView mv = new ModelAndView();
+
+	// Search
+	mv.addObject("search", search);
+	search.setSearchType(searchType);
+	search.setKeyword(keyword);
+
+	List<UserMaster> searchedUserList = userMasterService.getUserInfoBySearch(search);
+	mv.addObject("searchedUserList", searchedUserList);
+	mv.setViewName("info/searchUserMain");
+	return mv;
+
+	}
+
+	@RequestMapping(value = "/downloadSearchedUserProfile.do")
+	public ModelAndView downloadSearchedUserProfileImage(HttpServletRequest request, HttpServletResponse response, String empCode) throws Exception {
+		ModelAndView mv = new ModelAndView();
+		UserMaster user = userMasterService.getUserInfo(empCode);
+		File userProfileImage = new File(user.getProfileImagePath());
+		FileInputStream fileInputStream = new FileInputStream(userProfileImage);
+		byte[] imageBytes = IOUtils.toByteArray(fileInputStream);
+		response.setContentType("application/x-msdownload");
+		response.setContentLength(imageBytes.length);
+		response.addHeader("Content-Disposition",
+				"attachment;filename=\"" + URLEncoder.encode(userProfileImage.getName(), "UTF-8") + "\";");
+		response.getOutputStream().write(imageBytes);
+		response.getOutputStream().flush();
+		response.getOutputStream().close();
+		mv.addObject("info/searchUserMain", empCode);
 		return mv;
 	}
 

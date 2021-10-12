@@ -30,6 +30,7 @@
 <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/commoncss/fonts.css" />"/>
 <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/commoncss/loginForm.css" />"/>
 <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/commoncss/myBoardListAll.css" />"/>
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/commoncss/searchBar.css" />"/>
 
 <!-- layout (fixed navbar, sticky footer)-->
 <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/commoncss/layout/sticky-footer.css" />"/>

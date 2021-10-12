@@ -119,27 +119,7 @@ function deleteChecked() {
 		<!-- Search  -->
 		<div class = "form-group row">
 			<div class = "col-1">
-				<select name = "searchType" id = "searchType"
-				style = "
-				color: #495057;
-                background-color: #fff;
-                border-color: #ced4da;
-                display: inline-block;
-                padding: 6px 12px;
-                margin-bottom: 0;
-                font-size: 14px;
-                font-weight: 400;
-                line-height: 1.42857143;
-                text-align: center;
-                white-space: nowrap;
-                vertical-align: middle;
-                -ms-touch-action: manipulation;
-                touch-action: manipulation;
-                cursor: pointer;
-                background-image: none;
-                border: 1px solid;
-                border-radius: 4px;
-                ">
+				<select name = "searchType" id = "searchType" class = "searchBar">
 						<option value = "title">제목</option>
 						<option value = "content">본문</option>
 						<option value = "insuser">사번</option>

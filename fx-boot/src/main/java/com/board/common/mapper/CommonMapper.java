@@ -27,4 +27,6 @@ public interface CommonMapper {
 	public ResultMaster setAdmin(UserMaster param) throws Exception;
 
 	public ResultMaster deleteAdmin(UserMaster param) throws Exception;
+
+	public List<UserMaster> getUserInfoBySearch(Search search) throws Exception;
 }
