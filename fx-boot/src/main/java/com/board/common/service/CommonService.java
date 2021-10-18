@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.board.common.mapper.CommonMapper;
+import com.board.common.model.BannerMaster;
 import com.board.common.model.ItemMaster;
 import com.board.common.model.PersonDTO;
 
@@ -24,6 +25,10 @@ public class CommonService {
 
 	public List<PersonDTO> getPersonList() throws Exception {
 		return commonMapper.getPersonList();
+	}
+
+	public List<BannerMaster> getBannerInfo() throws Exception {
+		return commonMapper.getBannerInfo();
 	}
 
 }

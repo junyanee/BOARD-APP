@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.board.board.model.BoardMaster;
+import com.board.common.model.BannerMaster;
 import com.board.common.model.ItemMaster;
 import com.board.common.model.ParameterWrapper;
 import com.board.common.model.PersonDTO;
@@ -35,6 +36,16 @@ public class CommonController {
 		logger.debug("=============getItemCode Call =============");
 		logger.debug("=============getItemCode Call =============");
 		return service.getItemCode(param.param);
+	}
+
+	// home 진입
+	@RequestMapping(value = "/home.do")
+	public ModelAndView mainHome(HttpServletRequest request) throws Exception {
+		ModelAndView mv = new ModelAndView();
+		List<BannerMaster>bannerInfo = service.getBannerInfo();
+		mv.addObject("bannerInfo", bannerInfo);
+		mv.setViewName("main/home");
+		return mv;
 	}
 
 	// 이름, 나이 입력 페이지

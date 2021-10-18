@@ -1,6 +1,5 @@
 package com.board.board.controller;
 
-import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
@@ -66,7 +65,8 @@ public class BoardController {
 			// ticket정보가 session에 없을 경우(logout, 다른사용자 로그인) loginForm으로 이동시키기 위함
 			mv.setViewName("redirect:/Login/Login.do");
 		} else {
-			mv.setViewName("main/home");
+			// mv.setViewName("main/home");
+			mv.setViewName("redirect:/Common/home.do");
 		}
 		return mv;
 	}
