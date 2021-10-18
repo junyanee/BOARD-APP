@@ -4,8 +4,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link href="carousel.css" rel="stylesheet">
 <script type="text/javascript">
+/*
 	var test;
 	$(document).ready(function() {
 		var objs = [];
@@ -39,7 +39,7 @@
 						            }),
 						            IsASync: true
 				        		};
-		 */
+
 
 		var param = {};
 		param["codeValue"] = "COMP";
@@ -57,6 +57,7 @@
 		}
 		$.fng_Ajax(ajaxOptions);
 	});
+*/
 var obj = [];
 	function run(idx) {
 		var idx = idx;
@@ -108,30 +109,61 @@ $(function() {
           <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
         </ol>
   		<div class="carousel-inner">
+			<c:forEach var = "bannerInfo" items = "${bannerInfo }" varStatus = "status">
+			<c:choose>
+				<c:when test="${status.count == 1 }">
+					<div class="carousel-item active">
+            			<img class="third-slide" src=${bannerInfo.imageSrc } alt="slide-${status.count }" style = "min-width:100%; height: 30rem;">
+              			<div class="carousel-caption text-right">
+                			<h1>${bannerInfo.title }</h1>
+                			<p>${bannerInfo.contents }</p>
+                			<p><a class="btn btn-lg btn-outline-warning" href=${bannerInfo.buttonLink } role="button">${bannerInfo.buttonContents }</a></p>
+           				</div>
+          			</div>
+				</c:when>
+				<c:otherwise>
+					<div class="carousel-item">
+            			<img class="third-slide" src=${bannerInfo.imageSrc } alt="slide-${status.count }" style = "min-width:100%; height: 30rem;">
+              			<div class="carousel-caption text-right">
+                			<h1>${bannerInfo.title }</h1>
+                			<p>${bannerInfo.contents }</p>
+                			<p><a class="btn btn-lg btn-outline-warning" href=${bannerInfo.buttonLink } role="button">${bannerInfo.buttonContents }</a></p>
+           				</div>
+          			</div>
+				</c:otherwise>
+			</c:choose>
+			</c:forEach>
+
+			<!--
+
           	<div class="carousel-item active">
             <img class="third-slide" src="/resources/img/common/slide-01.jpg" alt="Frist slide" style = "min-width:100%; height: 30rem;">
               	<div class="carousel-caption text-right">
                 	<h1>Welcome, SYDS Boards</h1>
                 	<p>삼양데이타시스템 게시판입니다.</p>
-                	<p><a class="btn btn-lg btn-outline-warning" href="#" role="button">Browse gallery</a></p>
+                	<p><a class="btn btn-lg btn-outline-warning" href="/board-main.do" role="button">바로 가기</a></p>
            		</div>
           	</div>
           	<div class="carousel-item">
             <img class="third-slide" src="/resources/img/common/slide-02.jpg" alt="Second slide" style = "min-width:100%; height:30rem;">
               	<div class="carousel-caption text-right">
-                	<h1>SYDS Boards</h1>
+                	<h1>Welcome, SYDS Boards</h1>
                 	<p>삼양데이타시스템 게시판입니다.</p>
-                	<p><a class="btn btn-lg btn-outline-warning" href="#" role="button">Browse gallery</a></p>
+                	<p><a class="btn btn-lg btn-outline-warning" href="/board-main.do" role="button">바로 가기</a></p>
            		</div>
           	</div>
           	<div class="carousel-item">
             <img class="third-slide" src="/resources/img/common/slide-03.jpg" alt="Third slide" style = "min-width:100%; height:30rem;">
 				<div class="carousel-caption text-right">
-                	<h1>SYDS Boards</h1>
+                	<h1>Welcome, SYDS Boards</h1>
                 	<p>삼양데이타시스템 게시판입니다.</p>
-                	<p><a class="btn btn-lg btn-outline-warning" href="#" role="button">Browse gallery</a></p>
+                	<p><a class="btn btn-lg btn-outline-warning" href="/board-main.do" role="button">바로 가기</a></p>
            		</div>
           	</div>
+
+          	-->
+
+
   		</div>
   		<button class="carousel-control-prev" type="button" data-target="#carouselExampleCaptions" data-slide="prev">
     		<span class="carousel-control-prev-icon" aria-hidden="true"></span>

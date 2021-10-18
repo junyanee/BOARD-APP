@@ -56,3 +56,5 @@ custom:
     upload:
       profile-image:
         path: C:\\Side-FileStorage\\Employee-ProfileImage
+      banner-image:
+        path: \\resources\\img\\common

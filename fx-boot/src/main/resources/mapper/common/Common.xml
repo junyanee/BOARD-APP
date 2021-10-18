@@ -72,6 +72,15 @@
 }
 </select>
 
+<select id = "getBannerInfo" resultType = "com.board.common.model.BannerMaster">
+{
+	call SP_GetBannerInfo
+	(
+
+	)
+}
+</select>
+
 <insert id = "insertPerson" parameterType = "com.board.common.model.PersonDTO">
 	INSERT INTO TB_Person (NAME, AGE) VALUES (#{name}, #{age})
 </insert>

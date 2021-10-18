@@ -22,5 +22,7 @@ public interface AdminMapper {
 
 	public ResultMaster modifyAuthLevel(AdminMaster param) throws Exception;
 
+	public ResultMaster updateBannerInfo(Map<String, Object> parameterMap) throws Exception;
+
 
 }

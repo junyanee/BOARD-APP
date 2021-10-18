@@ -3,6 +3,7 @@ package com.board.common.mapper;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
+import com.board.common.model.BannerMaster;
 import com.board.common.model.ItemMaster;
 import com.board.common.model.PersonDTO;
 import com.board.common.model.ResultMaster;
@@ -29,4 +30,6 @@ public interface CommonMapper {
 	public ResultMaster deleteAdmin(UserMaster param) throws Exception;
 
 	public List<UserMaster> getUserInfoBySearch(Search search) throws Exception;
+
+	public List<BannerMaster> getBannerInfo() throws Exception;
 }

@@ -47,4 +47,22 @@ public class AdminService {
 		return resultMap;
 
 	}
+
+	public Map<String, Object> updateBannerInfo(String bannerPath1, String bannerPath2, String bannerPath3) throws Exception {
+		ResultMaster resultMaster = new ResultMaster();
+		Map<String, Object> parameterMap = new HashMap<String, Object>();
+		parameterMap.put("bannerPath1", bannerPath1);
+		parameterMap.put("bannerPath2", bannerPath2);
+		parameterMap.put("bannerPath3", bannerPath3);
+		resultMaster = adminMapper.updateBannerInfo(parameterMap);
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		if (resultMaster.getIsSuccess().equals("true")) {
+			resultMap.put("isSuccess", true);
+			resultMap.put("resultMsg", "정상적으로 처리되었습니다.");
+		} else if (resultMaster.getIsSuccess().equals("false")) {
+			resultMap.put("isSuccess", false);
+			resultMap.put("resultMsg", "정상적으로 처리되지 못했습니다.");
+		}
+		return resultMap;
+	}
 }

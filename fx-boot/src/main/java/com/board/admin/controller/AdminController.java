@@ -1,5 +1,7 @@
 package com.board.admin.controller;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,18 +10,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.board.admin.model.AdminMaster;
 import com.board.admin.service.AdminService;
 import com.board.aop.annotation.LoginCheck;
+import com.board.common.model.BannerMaster;
 import com.board.common.model.ParameterWrapper;
+import com.board.common.model.ParameterWrapper3;
 import com.board.common.model.UserMaster;
 import com.board.common.service.UserMasterService;
 import com.board.utility.Search;
@@ -33,6 +40,9 @@ public class AdminController {
 	AdminService adminService;
 	@Autowired
 	UserMasterService userMasterService;
+
+	@Value("${custom.config.upload.banner-image.path}")
+	private String path;
 
 	@RequestMapping(value = "/adminMain.do")
 	public ModelAndView adminHome(HttpServletRequest request) throws Exception {
@@ -177,6 +187,21 @@ public class AdminController {
 
 		ObjectMapper mapper = new ObjectMapper();
 		ajaxResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultMap);
+		return ajaxResult;
+	}
+
+	@RequestMapping(value = "/manageBanner.do")
+	public ModelAndView manageBanner(HttpServletRequest request) throws Exception {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("admin/manageBanner");
+		return mv;
+	}
+
+	@RequestMapping(value = "/updateBannerInfo.do")
+	public String updateBannerInfo(HttpServletRequest request, @RequestBody ParameterWrapper <BannerMaster> params) throws Exception {
+		String imgSrc = params.param.getImageSrc();
+
+		String ajaxResult = "";
 		return ajaxResult;
 	}
 }
