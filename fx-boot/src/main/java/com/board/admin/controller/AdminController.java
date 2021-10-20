@@ -198,10 +198,26 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/updateBannerInfo.do")
-	public String updateBannerInfo(HttpServletRequest request, @RequestBody ParameterWrapper <BannerMaster> params) throws Exception {
-		String imgSrc = params.param.getImageSrc();
-
+	public String updateBannerInfo(HttpServletRequest request, BannerMaster param) throws Exception {
+		MultipartHttpServletRequest msr = (MultipartHttpServletRequest) request;
+		MultipartFile file = msr.getFile("attachImage");
+		if(!file.isEmpty()) {
+			String imageSrc = "/resources/img/common/" + file.getOriginalFilename();
+			String imagePath = msr.getSession().getServletContext().getRealPath(imageSrc);
+			param.setImageSrc(imageSrc);
+			Path filePath = Paths.get(imagePath);
+			try {
+				file.transferTo(filePath);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = adminService.updateBannerInfo(param);
 		String ajaxResult = "";
+
+		ObjectMapper mapper = new ObjectMapper();
+		ajaxResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(resultMap);
 		return ajaxResult;
 	}
 }

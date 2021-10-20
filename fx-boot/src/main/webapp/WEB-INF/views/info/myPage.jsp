@@ -103,21 +103,6 @@ function saveProfile() {
 		if(check) {
 			var form = new FormData();
 			form.append("inputProfileImage", $("#inputProfileImage")[0].files[0]);
-			var imageAjaxOptions = {
-					SvcName: "/Info",
-					MethodName: "saveProfileImage.do",
-					type: 'POST',
-					data: form,
-					processData: false,
-					contentType: false,
-					enctype:"multipart/form-data",
-					Callback: function(result) {
-						console.log("success");
-					},
-					ErrorCallback: function() {
-						console.log("failed");
-					}
-			};
 
 			var promise = new Promise(function (resolve, reject) {
 				fng_UploadFile("profileImageForm","/Info/saveProfileImage.do",fn_FileUploadResult);

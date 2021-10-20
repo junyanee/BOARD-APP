@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.board.admin.model.AdminMaster;
 import com.board.common.mapper.CommonMapper;
+import com.board.common.model.BannerMaster;
 import com.board.common.model.ResultMaster;
 import com.board.utility.Search;
 
@@ -48,13 +49,16 @@ public class AdminService {
 
 	}
 
-	public Map<String, Object> updateBannerInfo(String bannerPath1, String bannerPath2, String bannerPath3) throws Exception {
+	public Map<String, Object> updateBannerInfo(BannerMaster param) throws Exception {
 		ResultMaster resultMaster = new ResultMaster();
-		Map<String, Object> parameterMap = new HashMap<String, Object>();
-		parameterMap.put("bannerPath1", bannerPath1);
-		parameterMap.put("bannerPath2", bannerPath2);
-		parameterMap.put("bannerPath3", bannerPath3);
-		resultMaster = adminMapper.updateBannerInfo(parameterMap);
+		if (param.getButtonCheck() == null) {
+			param.setButtonCheck("N");
+			param.setButtonContents("");
+			param.setButtonLink("");
+		} else if (param.getButtonCheck().equals("on")) {
+			param.setButtonCheck("Y");
+		}
+		resultMaster = adminMapper.updateBannerInfo(param);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		if (resultMaster.getIsSuccess().equals("true")) {
 			resultMap.put("isSuccess", true);
@@ -65,4 +69,6 @@ public class AdminService {
 		}
 		return resultMap;
 	}
+
+
 }

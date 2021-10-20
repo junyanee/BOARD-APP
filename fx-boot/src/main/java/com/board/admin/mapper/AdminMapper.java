@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.board.admin.model.AdminMaster;
+import com.board.common.model.BannerMaster;
 import com.board.common.model.ResultMaster;
 import com.board.utility.Search;
 
@@ -22,7 +23,7 @@ public interface AdminMapper {
 
 	public ResultMaster modifyAuthLevel(AdminMaster param) throws Exception;
 
-	public ResultMaster updateBannerInfo(Map<String, Object> parameterMap) throws Exception;
+	public ResultMaster updateBannerInfo(BannerMaster param) throws Exception;
 
 
 }
