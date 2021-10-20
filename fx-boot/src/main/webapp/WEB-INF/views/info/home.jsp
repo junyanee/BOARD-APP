@@ -18,11 +18,6 @@ function insert() {
 		document.getElementById('name').focus();
 		return;
 	}
-	if(age != null && typeof age != "number") {
-		alert("숫자를 입력해주세요");
-		document.getElementById('age').focus();
-		return;
-	}
 	if(age == null || age == "") {
 		alert("나이를 입력해주세요.");
 		document.getElementById('age').focus();

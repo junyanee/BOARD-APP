@@ -1,5 +1,7 @@
 package com.board.common.model;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,5 +15,7 @@ public class BannerMaster {
 	String imageSrc;
 	String buttonLink;
 	String buttonContents;
+	MultipartFile attachImage;
+
 }
 

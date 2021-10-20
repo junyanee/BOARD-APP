@@ -63,24 +63,19 @@ var obj = [];
 		var idx = idx;
 			$.ajax({
 				type: "GET",
-				url : "selectAll.do",
+				url : "/selectAll.do",
 				data : {"idx" : idx},
+				dataType: 'json',
 				success: function(response) {
-					//var result = JSON.stringify(response);
-					//console.log("SUCCESS: " + result)
-					//obj.push(JSON.parse(result));
+					var result = JSON.stringify(response);
+					console.log("SUCCESS: " + result)
 					obj.push(response);
-
 					},
 				error: function(response) {
 					console.log("ERROR: " + idx);
-				},
-				dataType: 'json',
-				async: true
+				}
 			});
-
 	}
-
 	function call() {
 		for (var i = 151; i < 1151; i ++) {
 			run(i);
@@ -117,7 +112,9 @@ $(function() {
               			<div class="carousel-caption text-right">
                 			<h1>${bannerInfo.title }</h1>
                 			<p>${bannerInfo.contents }</p>
-                			<p><a class="btn btn-lg btn-outline-warning" href=${bannerInfo.buttonLink } role="button">${bannerInfo.buttonContents }</a></p>
+                			<c:if test="${bannerInfo.buttonCheck == 'Y' }">
+                				<p><a class="btn btn-lg btn-outline-warning" href=${bannerInfo.buttonLink } role="button">${bannerInfo.buttonContents }</a></p>
+                			</c:if>
            				</div>
           			</div>
 				</c:when>
@@ -127,43 +124,14 @@ $(function() {
               			<div class="carousel-caption text-right">
                 			<h1>${bannerInfo.title }</h1>
                 			<p>${bannerInfo.contents }</p>
-                			<p><a class="btn btn-lg btn-outline-warning" href=${bannerInfo.buttonLink } role="button">${bannerInfo.buttonContents }</a></p>
+                			<c:if test="${bannerInfo.buttonCheck == 'Y' }">
+                				<p><a class="btn btn-lg btn-outline-warning" href=${bannerInfo.buttonLink } role="button">${bannerInfo.buttonContents }</a></p>
+           					</c:if>
            				</div>
           			</div>
 				</c:otherwise>
 			</c:choose>
 			</c:forEach>
-
-			<!--
-
-          	<div class="carousel-item active">
-            <img class="third-slide" src="/resources/img/common/slide-01.jpg" alt="Frist slide" style = "min-width:100%; height: 30rem;">
-              	<div class="carousel-caption text-right">
-                	<h1>Welcome, SYDS Boards</h1>
-                	<p>삼양데이타시스템 게시판입니다.</p>
-                	<p><a class="btn btn-lg btn-outline-warning" href="/board-main.do" role="button">바로 가기</a></p>
-           		</div>
-          	</div>
-          	<div class="carousel-item">
-            <img class="third-slide" src="/resources/img/common/slide-02.jpg" alt="Second slide" style = "min-width:100%; height:30rem;">
-              	<div class="carousel-caption text-right">
-                	<h1>Welcome, SYDS Boards</h1>
-                	<p>삼양데이타시스템 게시판입니다.</p>
-                	<p><a class="btn btn-lg btn-outline-warning" href="/board-main.do" role="button">바로 가기</a></p>
-           		</div>
-          	</div>
-          	<div class="carousel-item">
-            <img class="third-slide" src="/resources/img/common/slide-03.jpg" alt="Third slide" style = "min-width:100%; height:30rem;">
-				<div class="carousel-caption text-right">
-                	<h1>Welcome, SYDS Boards</h1>
-                	<p>삼양데이타시스템 게시판입니다.</p>
-                	<p><a class="btn btn-lg btn-outline-warning" href="/board-main.do" role="button">바로 가기</a></p>
-           		</div>
-          	</div>
-
-          	-->
-
-
   		</div>
   		<button class="carousel-control-prev" type="button" data-target="#carouselExampleCaptions" data-slide="prev">
     		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -174,6 +142,7 @@ $(function() {
     		<span class="visually-hidden">Next</span>
   		</button>
 	</div>
+	<!--
 	<div class = "container">
 		<div class = "row">
 			<div class = "jumbotron col-7">
@@ -186,6 +155,7 @@ $(function() {
 			</div>
 		</div>
 	</div>
+	  -->
 	<div class="container">
 		<div class = "jumbotron">
 			<div class="col-sm-8 mx-auto">

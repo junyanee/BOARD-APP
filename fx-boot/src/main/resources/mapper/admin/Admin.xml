@@ -53,5 +53,19 @@
 }
 </select>
 
+<select id = "updateBannerInfo" parameterType = "com.board.common.model.BannerMaster" resultType = "com.board.common.model.ResultMaster">
+{
+	call SP_UpdateBannerInfo
+	(
+		@IDX = #{idx, mode = IN, jdbcType = INTEGER},
+		@Title = #{title, mode = IN, jdbcType = VARCHAR},
+		@Contents = #{contents, mode = IN, jdbcType = VARCHAR},
+		@ImageSrc = #{imageSrc, mode = IN, jdbcType = VARCHAR},
+		@ButtonCheck = #{buttonCheck, mode = IN, jdbcType = VARCHAR},
+		@ButtonContents = #{buttonContents, mode = IN, jdbcType = VARCHAR},
+		@ButtonLink = #{buttonLink, mode = IN, jdbcType = VARCHAR}
+	)
+}
+</select>
 
 </mapper>

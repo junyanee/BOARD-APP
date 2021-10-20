@@ -9,40 +9,40 @@
 <script type="text/javascript">
 function checkActivate(form) {
 	if (form.buttonCheck.checked == true) {
-		form.buttonContents.disabled = false;
-		form.buttonLink.disabled = false;
+		form.buttonContents.removeAttribute("readonly");
+		form.buttonLink.removeAttribute("readonly");
 	} else {
+		form.buttonContents.setAttribute("readonly", true)
+		form.buttonLink.setAttribute("readonly", true)
 		form.buttonContents.value = "";
 		form.buttonLink.value = "";
-		form.buttonContents.disabled = true;
-		form.buttonLink.disabled = true;
+
 	}
 }
 function updateBannerInfo() {
-	// var first = $('#firstBanner').serializeObject();
-	var form = new FormData();
-	form.append("imageSrc", $('#imageSrc')[0].files[0]);
-	var param1 = new FormData($('#firstBanner')[0]);
 
-	var bannerAjaxOptions = {
-			SvcName: "/admin",
-			MethodName: "updateBannerInfo.do",
-			data: form,
-			enctype:"multipart/form-data",
-			processData: false,
-			contentType: false,
-			async: false,
-			Callback: function() {
-				alert("성공");
-			},
-			ErrorCallback: function() {
-				alert("실패");
-			}
-	};
-	$.fng_Ajax(bannerAjaxOptions);
+	result = confirm("저장하시겠습니까??");
 
+	if (result) {
+		fng_UploadFile("firstBanner","/admin/updateBannerInfo.do",
+				fng_UploadFile("secondBanner","/admin/updateBannerInfo.do",
+						fng_UploadFile("thirdBanner","/admin/updateBannerInfo.do", fn_FileUploadResult)));
+
+	}
 }
+//파일 업로드 결과 callback
+function fn_FileUploadResult(result) {
+ var string = result;
+ var json = JSON.parse(string);
+	if(json.isSuccess == true) {
+		alert("업데이트가 정상적으로 완료되었습니다.");
+		window.location.href = "/admin/adminCheck.do"
 
+	}else if(json.isSuccess == false) {
+		alert("업데이트가 실패했습니다.");
+		return;
+	}
+}
 </script>
 </head>
 <body>
@@ -54,9 +54,10 @@ function updateBannerInfo() {
 	<p style = "text-align:center;"> 변경하고자 하는 배너 정보를 입력 해주세요.</p>
 	<form id = "firstBanner" name = "firstBanner" enctype="multipart/form-data">
 		<h5>배너1</h5>
+		<input type = "hidden" id = "idx" name = "idx" value = "1" />
 		<div style = "border: solid 1px; padding : 15px;">
 			<label for = "imageSrc" class = "form-label">배너 이미지1</label>
-			<input class = "form-control" id = "imageSrc" name = "imageSrc1" type = "file" />
+			<input class = "form-control" id = "firstImage" name = "attachImage" type = "file" />
 		<div style = "color:red;" class = "form-text">
 			<p> * 배너 이미지는 가로 1500픽셀, 세로 550픽셀로 등록해주세요.</p>
 		</div>
@@ -75,10 +76,10 @@ function updateBannerInfo() {
 			<br>
 			<div class = "container">
 				<label for = "buttonContents" class = "form-label">버튼 내용</label>
-				<input class = "form-control" id = "buttonContents" name = "buttonContents" type = "text" disabled />
+				<input class = "form-control" id = "buttonContents" name = "buttonContents" type = "text" readonly />
 				<br>
 				<label for = "buttonLink" class = "form-label">버튼 링크(URL)</label>
-				<input class = "form-control" id = "buttonLink" name = "buttonLink" type = "text" disabled />
+				<input class = "form-control" id = "buttonLink" name = "buttonLink" type = "text" readonly />
 			</div>
 		</div>
 		</div>
@@ -86,9 +87,10 @@ function updateBannerInfo() {
 	<hr />
 		<form id = "secondBanner" name = "secondBanner" enctype="multipart/form-data">
 		<h5>배너2</h5>
+		<input type = "hidden" id = "idx" name = "idx" value = "2" />
 		<div style = "border: solid 1px; padding : 15px;">
 			<label for = "imageSrc" class = "form-label">배너 이미지2</label>
-			<input class = "form-control" id = "imageSrc" name = "imageSrc2" type = "file" />
+			<input class = "form-control" id = "secondImage" name = "attachImage" type = "file" />
 		<div style = "color:red;" class = "form-text">
 			<p> * 배너 이미지는 가로 1500픽셀, 세로 550픽셀로 등록해주세요.</p>
 		</div>
@@ -107,10 +109,10 @@ function updateBannerInfo() {
 			<br>
 			<div class = "container">
 				<label for = "buttonContents" class = "form-label">버튼 내용</label>
-				<input class = "form-control" id = "buttonContents" name = "buttonContents" type = "text" disabled />
+				<input class = "form-control" id = "buttonContents" name = "buttonContents" type = "text" readonly />
 				<br>
 				<label for = "buttonLink" class = "form-label">버튼 링크(URL)</label>
-				<input class = "form-control" id = "buttonLink" name = "buttonLink" type = "text" disabled />
+				<input class = "form-control" id = "buttonLink" name = "buttonLink" type = "text" readonly />
 			</div>
 		</div>
 		</div>
@@ -118,9 +120,10 @@ function updateBannerInfo() {
 	<hr />
 		<form id = "thirdBanner" name = "thirdBanner" enctype="multipart/form-data">
 		<h5>배너3</h5>
+		<input type = "hidden" id = "idx" name = "idx" value = "3" />
 		<div style = "border: solid 1px; padding : 15px;">
 			<label for = "imageSrc" class = "form-label">배너 이미지3</label>
-			<input class = "form-control" id = "imageSrc" name = "imageSrc3" type = "file" />
+			<input class = "form-control" id = "thirdImage" name = "attachImage" type = "file" />
 		<div style = "color:red;" class = "form-text">
 			<p> * 배너 이미지는 가로 1500픽셀, 세로 550픽셀로 등록해주세요.</p>
 		</div>
@@ -139,10 +142,10 @@ function updateBannerInfo() {
 			<br>
 			<div class = "container">
 				<label for = "buttonContents" class = "form-label">버튼 내용</label>
-				<input class = "form-control" id = "buttonContents" name = "buttonContents" type = "text" disabled />
+				<input class = "form-control" id = "buttonContents" name = "buttonContents" type = "text" readonly />
 				<br>
 				<label for = "buttonLink" class = "form-label">버튼 링크(URL)</label>
-				<input class = "form-control" id = "buttonLink" name = "buttonLink" type = "text" disabled />
+				<input class = "form-control" id = "buttonLink" name = "buttonLink" type = "text" readonly />
 			</div>
 		</div>
 		</div>
