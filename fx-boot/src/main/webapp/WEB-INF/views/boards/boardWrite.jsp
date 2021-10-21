@@ -168,7 +168,7 @@ function fn_FileUploadResult(result) {
 		</form>
 
 
-	<button class="btn btn-primary" type="button" id="saveButton" onclick="javascript:insertBoard();">글쓰기</button>
+	<button class="btn btn-primary float-right" type="button" id="saveButton" onclick="javascript:insertBoard();">글쓰기</button>
 </div>
 </body>
 </html>

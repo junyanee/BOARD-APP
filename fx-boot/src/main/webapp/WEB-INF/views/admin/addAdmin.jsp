@@ -107,7 +107,6 @@ function setAdmin() {
 				}
 			}
 			Promise.all([promise]).then(function (values) {
-				alert(values);
 				location.reload();
 			});
 		}
@@ -126,7 +125,7 @@ function deleteAdmin() {
 				var param1 = checkedList.parent().parent().eq(i).children().eq(2).text();
 				var param2 = checkedList.parent().parent().eq(i).children().eq(5).text().trim();
 				if (param2 == '일반') {
-					alert(param2 + "은 이미 일반 사용자입니다.");
+					alert(param1 + "은 이미 일반 사용자입니다.");
 				} else {
 					var ajaxOptions = {
 							SvcName : "/admin",
@@ -144,7 +143,6 @@ function deleteAdmin() {
 				}
 			}
 			Promise.all([promise]).then(function (values) {
-				alert(values);
 				location.reload();
 			});
 		}
