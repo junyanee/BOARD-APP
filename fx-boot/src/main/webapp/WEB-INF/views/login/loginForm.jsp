@@ -48,7 +48,7 @@ function enterKey() {
 </head>
 <body>
 	<div class="sidenav">
-		<div class="login-main-text">
+		<div class="login-main-text" style = "padding-top: 350px">
 		<img src="/resources/img/logo/logo1.png" alt="삼양데이타시스템 로고"
 				width="500">
 		</div>
@@ -56,7 +56,7 @@ function enterKey() {
 	</div>
 	<div class="main">
 		<div class="col-md-6 col-sm-12">
-			<div class="login-form">
+			<div class="login-form" >
 				<form method="POST" action="./LoginProc.do" name = "loginForm" id = "loginForm">
 				<div>
 					<h2> 로그인 </h2>

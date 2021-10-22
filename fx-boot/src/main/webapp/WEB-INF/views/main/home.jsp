@@ -97,6 +97,7 @@ $(function() {
 <title>Home</title>
 </head>
 <body>
+	<div style = "height: 50px;"></div>
 	<div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
           <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
