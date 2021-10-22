@@ -69,7 +69,7 @@ function deleteChanges() {
 	var html = `
 	<c:choose>
 		<c:when test="${sessionScope.userInfo.profileImagePath != null }">
-			<img src ="downloadProfile.do" name = "image" width = "200" height = "200" alt = "프로필사진" />
+			<img src ="downloadProfile.do?empCode=${sessionScope.userInfo.empCode}" name = "image" width = "200" height = "200" alt = "프로필사진" />
 		</c:when>
 		<c:otherwise>
 			<img src ="/resources/img/common/blank-profile.png" name = "image" width = "200" height = "200" alt = "프로필사진" />
@@ -223,7 +223,7 @@ function fn_FileUploadResult(result) {
 							<div id = "preview" style = "text-align:center; border:solid thin aliceblue;">
 								<c:choose>
 									<c:when test="${sessionScope.userInfo.profileImagePath != null }">
-										<img src ="downloadProfile.do" name = "image" width = "200" height = "200" alt = "프로필사진" />
+										<img src ="downloadProfile.do?empCode=${sessionScope.userInfo.empCode}" name = "image" width = "200" height = "200" alt = "프로필사진" />
 									</c:when>
 									<c:otherwise>
 										<img src ="/resources/img/common/blank-profile.png" name = "image" width = "200" height = "200" alt = "프로필사진" />
