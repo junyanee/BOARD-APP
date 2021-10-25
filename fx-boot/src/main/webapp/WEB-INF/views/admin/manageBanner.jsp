@@ -27,7 +27,6 @@ function updateBannerInfo() {
 		fng_UploadFile("firstBanner","/admin/updateBannerInfo.do",
 				fng_UploadFile("secondBanner","/admin/updateBannerInfo.do",
 						fng_UploadFile("thirdBanner","/admin/updateBannerInfo.do", fn_FileUploadResult)));
-
 	}
 }
 //파일 업로드 결과 callback

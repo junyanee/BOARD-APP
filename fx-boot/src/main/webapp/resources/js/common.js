@@ -171,7 +171,6 @@ function fng_JsonToUrlParam(JsonData) {
 }
 
 ////////////////////파일 업로드////////////////////
-
 function fng_UploadFile(formId, url, callback) {
 
 	var form = $('#' + formId)[0];

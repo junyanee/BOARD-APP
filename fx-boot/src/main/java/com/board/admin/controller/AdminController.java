@@ -41,8 +41,7 @@ public class AdminController {
 	@Autowired
 	UserMasterService userMasterService;
 
-	@Value("${custom.config.upload.banner-image.path}")
-	private String path;
+
 
 	@RequestMapping(value = "/adminMain.do")
 	public ModelAndView adminHome(HttpServletRequest request) throws Exception {

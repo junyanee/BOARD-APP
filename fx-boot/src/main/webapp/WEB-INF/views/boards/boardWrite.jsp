@@ -17,38 +17,6 @@ $(document).ready(function (){
 	 sSkinURI: "/resources/se2/SmartEditor2Skin.html",
 	 fCreator: "createSEditor2"
 	});
-/*
-	$('#saveButton').click(function() {
-		oEditors.getById['newArticle.contents'].exec("UPDATE_CONTENTS_FIELD", []);
-		var title = document.getElementById('newArticle.title').value;
-		var contents = document.getElementById('newArticle.contents').value;
-		// 제목 Validation Check
-		if(title == null || title == "") {
-			alert("제목을 입력해주세요.");
-			document.getElementById('newArticle.title').focus();
-			return;
-		}
-		// 내용 Validation Check
-		if (contents == null || contents == "" || contents == '&nbsp;' || contents == '<p>&nbsp;</p>' ||
-			contents == '<br>' || contents == '<br/>' || contents == '<p><br></p>') {
-			alert("내용을 입력해주세요.");
-			oEditors.getById['newArticle.contents'].exec("FOCUS");
-			return;
-		}
-		// 게시글 저장 (form 전송)
-		var result = confirm("저장하시겠습니까");
-		if(result) {
-			alert("저장완료");
-			document.getElementById('boardForm').submit();
-		} else {
-			return;
-		}
-
-
-	});
-	*/
-
-
 });
 function insertBoard() {
 

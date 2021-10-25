@@ -57,5 +57,3 @@ custom:
     upload:
       profile-image:
         path: C:\\Side-FileStorage\\Employee-ProfileImage
-      banner-image:
-        path: C:\\Side\\workspace\\BOARD-WEB-APPLICATION\\fx-boot\\src\\main\\webapp\\resources\\img\\common
