@@ -4,6 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script type="text/javascript">
+</script>
 <title>Insert title here</title>
 </head>
 <body>

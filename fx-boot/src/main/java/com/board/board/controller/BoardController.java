@@ -4,6 +4,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,6 +35,7 @@ import com.board.common.service.LoginService;
 import com.board.utility.ScriptUtils;
 import com.board.utility.Search;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nhncorp.lucy.security.xss.XssSaxFilter;
 
 @RestController
 @RequestMapping(value = "/")
@@ -65,7 +67,8 @@ public class BoardController {
 			// ticket정보가 session에 없을 경우(logout, 다른사용자 로그인) loginForm으로 이동시키기 위함
 			mv.setViewName("redirect:/Login/Login.do");
 		} else {
-			// mv.setViewName("main/home");
+			session.setAttribute("CSRF_TOKEN", UUID.randomUUID().toString());
+			System.out.println(session.getAttribute("CSRF_TOKEN"));
 			mv.setViewName("redirect:/Common/home.do");
 		}
 		return mv;
@@ -113,13 +116,18 @@ public class BoardController {
 	}
 
 	// 새 게시글 작성 (POST)
-	// @LoginCheck
+//	@LoginCheck
 	@RequestMapping(value = "/boardWrite.do", method = RequestMethod.POST)
 	public String boardWritePOST(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody ParameterWrapper<BoardMaster> param) throws Exception {
 		HttpSession session = request.getSession(false);
 		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
 
+		XssSaxFilter filter = XssSaxFilter.getInstance("lucy-xss-superset.xml", true); // true : filterComment off
+		String filteredTitle = filter.doFilter(param.param.getTitle());
+		String filteredContentes = filter.doFilter(param.param.getContents());
+		param.param.setTitle(filteredTitle);
+		param.param.setContents(filteredContentes);
 		param.param.setInsertUser(userMaster.getEmpCode());
 		param.param.setModifyUser(userMaster.getEmpCode());
 		int boardIdx = boardService.insertArticle(param.param);
@@ -236,6 +244,12 @@ public class BoardController {
 		UserMaster userMaster = (UserMaster) session.getAttribute("userInfo");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		String ajaxResult = "";
+
+		XssSaxFilter filter = XssSaxFilter.getInstance("lucy-xss-superset.xml", true); // true : filterComment off
+		String filteredTitle = filter.doFilter(param.param.getTitle());
+		String filteredContentes = filter.doFilter(param.param.getContents());
+		param.param.setTitle(filteredTitle);
+		param.param.setContents(filteredContentes);
 		param.param.setModifyUser(userMaster.getEmpCode());
 		resultMap = boardService.modifyArticle(param.param);
 
