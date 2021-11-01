@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,11 @@ import com.board.common.model.ParameterWrapper;
 import com.board.common.model.ParameterWrapper3;
 import com.board.common.model.UserMaster;
 import com.board.common.service.UserMasterService;
+import com.board.utility.ScriptUtils;
 import com.board.utility.Search;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jdk.javadoc.internal.doclets.formats.html.markup.Script;
 
 @RestController
 @RequestMapping(value = "/admin")
@@ -41,8 +45,7 @@ public class AdminController {
 	@Autowired
 	UserMasterService userMasterService;
 
-	@Value("${custom.config.upload.banner-image.path}")
-	private String path;
+
 
 	@RequestMapping(value = "/adminMain.do")
 	public ModelAndView adminHome(HttpServletRequest request) throws Exception {
@@ -55,13 +58,16 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/adminCheck.do")
-	public ModelAndView adminCheck(HttpServletRequest request) throws Exception {
+	public ModelAndView adminCheck(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ModelAndView mv = new ModelAndView();
 
 		HttpSession session = request.getSession(true);
 		AdminMaster adminMaster = (AdminMaster)session.getAttribute("adminInfo");
 		if (adminMaster.getAuthLevel() <= 2) {
-			mv.setViewName("admin/adminMain");
+			mv.setViewName("redirect:/admin/adminMain.do");
+		} else {
+			ScriptUtils.alert(response, "정상적이지 않은 접근입니다. 홈으로 돌아갑니다.");
+			mv.setViewName("redirect:/Common/home.do");
 		}
 
 		return mv;

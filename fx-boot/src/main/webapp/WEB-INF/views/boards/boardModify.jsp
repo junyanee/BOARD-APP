@@ -5,6 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name = "_csrf" content="${_csrf.token }"/>
+<meta name = "_csrf_header" content="${_csrf.headerName }" />
 <title>게시글 수정</title>
 <script type="text/javascript">
 var oEditors = [];
@@ -17,6 +19,12 @@ $(document).ready(function (){
 	 sSkinURI: "/resources/se2/SmartEditor2Skin.html",
 	 fCreator: "createSEditor2"
 	});
+
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	$(document).ajaxSend(function (e, xhr, options){
+		xhr.setRequestHeader(header, token);
+	})
 });
 function modifyArticle() {
 	// 공지사항 체크

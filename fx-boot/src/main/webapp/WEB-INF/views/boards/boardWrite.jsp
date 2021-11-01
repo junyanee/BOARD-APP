@@ -5,6 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name = "_csrf" content="${_csrf.token }"/>
+<meta name = "_csrf_header" content="${_csrf.headerName }" />
 <title>새 게시글 작성</title>
 <script type="text/javascript">
 var oEditors = [];
@@ -17,38 +19,12 @@ $(document).ready(function (){
 	 sSkinURI: "/resources/se2/SmartEditor2Skin.html",
 	 fCreator: "createSEditor2"
 	});
-/*
-	$('#saveButton').click(function() {
-		oEditors.getById['newArticle.contents'].exec("UPDATE_CONTENTS_FIELD", []);
-		var title = document.getElementById('newArticle.title').value;
-		var contents = document.getElementById('newArticle.contents').value;
-		// 제목 Validation Check
-		if(title == null || title == "") {
-			alert("제목을 입력해주세요.");
-			document.getElementById('newArticle.title').focus();
-			return;
-		}
-		// 내용 Validation Check
-		if (contents == null || contents == "" || contents == '&nbsp;' || contents == '<p>&nbsp;</p>' ||
-			contents == '<br>' || contents == '<br/>' || contents == '<p><br></p>') {
-			alert("내용을 입력해주세요.");
-			oEditors.getById['newArticle.contents'].exec("FOCUS");
-			return;
-		}
-		// 게시글 저장 (form 전송)
-		var result = confirm("저장하시겠습니까");
-		if(result) {
-			alert("저장완료");
-			document.getElementById('boardForm').submit();
-		} else {
-			return;
-		}
 
-
-	});
-	*/
-
-
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	$(document).ajaxSend(function (e, xhr, options){
+		xhr.setRequestHeader(header, token);
+	})
 });
 function insertBoard() {
 
@@ -86,6 +62,8 @@ function insertBoard() {
 	var result = confirm("저장하시겠습니까?");
 	var param;
 	param = $(boardForm).serializeObject();
+
+
 
 	var boardAjaxOptions = {
 			SvcName: "",
@@ -136,7 +114,6 @@ function fn_FileUploadResult(result) {
 
 </script>
 </head>
-
 <body>
 <div class = "header-divider"></div>
 <div class = "container" id = "container">
@@ -159,13 +136,12 @@ function fn_FileUploadResult(result) {
 			<textarea class="form-control" name="contents"
 				id="contents" rows="15" cols="200"></textarea>
 		</div>
-
 		<div class="mb-3">
 			<label for="formFileMultiple" class="form-label">파일 업로드</label>
 			<input class="form-control fileUpload" type="file" id="uploadFile" name = "uploadFile" multiple = "multiple">
 		</div>
 		<input type="hidden" id="boardIdx" name="boardIdx" value=""/>
-		</form>
+	</form>
 
 
 	<button class="btn btn-primary float-right" type="button" id="saveButton" onclick="javascript:insertBoard();">글쓰기</button>

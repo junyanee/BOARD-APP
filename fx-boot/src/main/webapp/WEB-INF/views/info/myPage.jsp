@@ -101,9 +101,6 @@ function saveProfile() {
 	if (result) {
 		var check = $("#inputProfileImage").val();
 		if(check) {
-			var form = new FormData();
-			form.append("inputProfileImage", $("#inputProfileImage")[0].files[0]);
-
 			var promise = new Promise(function (resolve, reject) {
 				fng_UploadFile("profileImageForm","/Info/saveProfileImage.do",fn_FileUploadResult);
 				if(resolve) {
@@ -112,7 +109,6 @@ function saveProfile() {
 					reject(Error("이미지 업데이트 실패"))
 				}
 			});
-
 		}
 		 // input 값 VO 매칭
 		var param = {"email" : email, "mobileTelNum" : mobileTelNum, "officeTelNum" : officeTelNum};

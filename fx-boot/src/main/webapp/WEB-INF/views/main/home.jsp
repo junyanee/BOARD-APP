@@ -68,7 +68,7 @@ var obj = [];
 				dataType: 'json',
 				success: function(response) {
 					var result = JSON.stringify(response);
-					console.log("SUCCESS: " + result)
+					//console.log("SUCCESS: " + result)
 					obj.push(response);
 					},
 				error: function(response) {
