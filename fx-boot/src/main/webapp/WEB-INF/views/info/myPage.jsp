@@ -6,7 +6,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
+<meta name = "_csrf" content="${_csrf.token }"/>
+<meta name = "_csrf_header" content="${_csrf.headerName }" />
 <script>
+$(document).ready(function (){
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	$(document).ajaxSend(function (e, xhr, options){
+		xhr.setRequestHeader(header, token);
+	})
+});
+
 function getMore() {
 	var url = "getMyBoardListAll.do";
 	location.href = url;
@@ -42,7 +53,7 @@ function deleteChecked() {
 			}
 			Promise.all([promise]).then(function (values) {
 				alert(values);
-				location.reload();
+				location.reload(true);
 			});
 		}
 	}

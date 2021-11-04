@@ -58,6 +58,8 @@ public class AdminService {
 		} else if (param.getButtonCheck().equals("on")) {
 			param.setButtonCheck("Y");
 		}
+		if (param.getTitle().isBlank()) { param.setTitle("Welcome, SYDS Boards!"); }
+		if (param.getContents().isBlank()) { param.setContents("환영합니다. 삼양데이타시스템 게시판입니다."); }
 		resultMaster = adminMapper.updateBannerInfo(param);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		if (resultMaster.getIsSuccess().equals("true")) {

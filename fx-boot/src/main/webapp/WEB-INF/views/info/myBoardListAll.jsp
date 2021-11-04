@@ -5,7 +5,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
+<meta name = "_csrf" content="${_csrf.token }"/>
+<meta name = "_csrf_header" content="${_csrf.headerName }" />
 <script type="text/javascript">
+$(document).ready(function (){
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	$(document).ajaxSend(function (e, xhr, options){
+		xhr.setRequestHeader(header, token);
+	})
+});
+
 // 이전 버튼
 function fn_prev(page, range, rangeSize, searchType, keyword) {
 	var page = ((range - 2) * rangeSize) + 1;
@@ -101,7 +112,7 @@ function deleteChecked() {
 			}
 			Promise.all([promise]).then(function (values) {
 				alert(values);
-				location.reload();
+				location.reload(true);
 			});
 		}
 	}
@@ -137,7 +148,7 @@ function deleteChecked() {
 			}
 			Promise.all([promise]).then(function (values) {
 				alert(values);
-				location.reload();
+				location.reload(true);
 			});
 		}
 	}
