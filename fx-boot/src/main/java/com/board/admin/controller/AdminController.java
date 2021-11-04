@@ -217,6 +217,9 @@ public class AdminController {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		} else {
+			String imageSrc = "/resources/img/common/slide-01.jpg";
+			param.setImageSrc(imageSrc);
 		}
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap = adminService.updateBannerInfo(param);
