@@ -102,19 +102,9 @@ function modifyAuthLevel() {
 					var ajaxOptions = {
 							SvcName: "/admin",
 							MethodName: "modifyAuthLevel.do",
-							Params : { param1 : param1, param2 : param2 },
-							Callback : function(result) {
-								if(result.isSuccess = 'true') {
-									alert(result.resultMsg);
-									location.reload(true);
-								} else {
-									alert(result.resultMsg);
-								}
-							}
+							Params : { param1 : param1, param2 : param2 }
 						};
-					$.fng_Ajax(ajaxOptions);
 
-					/*
 					var promise = new Promise(function(resolve, reject) {
 						$.fng_Ajax(ajaxOptions);
 						if(resolve) {
@@ -123,16 +113,13 @@ function modifyAuthLevel() {
 							reject(Error("권한이 변경되지 않았습니다."));
 						}
 					});
-					*/
 				}
 
 			}
-			/*
 			Promise.all([promise]).then(function (values) {
 				alert(values);
 				location.reload(true);
 			});
-			*/
 		}
 	}
 }
