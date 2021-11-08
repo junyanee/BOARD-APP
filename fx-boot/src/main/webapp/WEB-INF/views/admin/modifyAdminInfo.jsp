@@ -102,7 +102,15 @@ function modifyAuthLevel() {
 					var ajaxOptions = {
 							SvcName: "/admin",
 							MethodName: "modifyAuthLevel.do",
-							Params : { param1 : param1, param2 : param2 }
+							Params : { param1 : param1, param2 : param2 },
+							Callback : function(result) {
+								if(result.isSuccess = 'true') {
+									alert(result.resultMsg);
+									location.reload(true);
+								} else {
+									alert(result.resultMsg);
+								}
+							}
 						};
 
 					var promise = new Promise(function(resolve, reject) {
@@ -117,7 +125,6 @@ function modifyAuthLevel() {
 
 			}
 			Promise.all([promise]).then(function (values) {
-				alert(values);
 				location.reload(true);
 			});
 		}
