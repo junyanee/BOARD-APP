@@ -13,9 +13,9 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.headers()
-				.frameOptions().disable()
-				.frameOptions().sameOrigin()
+				.frameOptions().sameOrigin() // 같은 Origin에서 렌더링 허용
+//				.frameOptions().disable() // iframe 방어 안함
 			.and()
-			.httpBasic().disable();
+			.httpBasic().disable(); // Spring Security
 	}
 }
