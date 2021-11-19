@@ -112,9 +112,7 @@ function modifyAuthLevel() {
 								}
 							}
 						};
-					$.fng_Ajax(ajaxOptions);
 
-					/*
 					var promise = new Promise(function(resolve, reject) {
 						$.fng_Ajax(ajaxOptions);
 						if(resolve) {
@@ -123,16 +121,12 @@ function modifyAuthLevel() {
 							reject(Error("권한이 변경되지 않았습니다."));
 						}
 					});
-					*/
 				}
 
 			}
-			/*
 			Promise.all([promise]).then(function (values) {
-				alert(values);
 				location.reload(true);
 			});
-			*/
 		}
 	}
 }

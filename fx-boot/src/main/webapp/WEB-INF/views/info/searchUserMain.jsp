@@ -85,7 +85,7 @@ $(document).on('click', '#btnSearch', function(e) {
 												${searchedUserList.mobileTelNum }</td>
 										</tr>
 										<tr>
-											<th colspan="3"></th>
+											<td colspan = "4" style = "background-color:#ffffff;"></td>
 										</tr>
 									</c:forEach>
 								</c:when>

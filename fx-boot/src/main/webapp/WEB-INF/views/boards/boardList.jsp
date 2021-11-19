@@ -143,6 +143,7 @@ function deleteChecked() {
 				<button class = "btn btn-default btn-primary" type = "button" name = "btnSearch" id = "btnSearch">검색</button>
 			</div>
 		</div>
+		<!-- boardLIst -->
 		<div class="table-responsive-md">
 			<table class="table table-hover">
 				<thead class="table-light">

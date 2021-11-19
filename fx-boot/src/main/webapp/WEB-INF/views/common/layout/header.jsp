@@ -26,6 +26,11 @@
 	          	<li class="nav-item active">
 	            	<a class="nav-link" href="/Info/searchUserMain.do">사용자 검색</a>
 	          	</li>
+
+	          	<li class="nav-item active">
+	            	<a class="nav-link" href="/chat/chatHome.do">채팅</a>
+	          	</li>
+
 	        </ul>
 			<c:choose>
 	        	<c:when test ="${sessionScope.userInfo != null}">

@@ -117,6 +117,7 @@ function setAdmin() {
 				}
 			}
 			Promise.all([promise]).then(function (values) {
+				alert(values);
 				location.reload(true);
 			});
 		}
@@ -153,6 +154,7 @@ function deleteAdmin() {
 				}
 			}
 			Promise.all([promise]).then(function (values) {
+				alert(values);
 				location.reload(true);
 			});
 		}
